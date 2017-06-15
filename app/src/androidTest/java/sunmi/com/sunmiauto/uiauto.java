@@ -6,11 +6,11 @@ import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.Configurator;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
+
 
 
 import org.junit.After;
@@ -21,7 +21,6 @@ import org.junit.Rule;
 import org.junit.Test;
 
 import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by Administrator on 2017/6/7.
@@ -88,7 +87,7 @@ public class uiauto {
     }
 
     @Test
-    public void test用户中心() {
+    public void testUserCenter() {
         sleep(3000);
         screenshotCap("before_enter");
         UiObject2 settingObj = device.findObject(By.text("用户中心"));
@@ -103,7 +102,7 @@ public class uiauto {
     }
 
     @Test
-    public void test打开无线网() {
+    public void testOpenWiFi() {
         screenshotCap("berfore_enter");
         UiObject2 settingObj = device.findObject(By.text("设置"));
         settingObj.clickAndWait(Until.newWindow(), 1000);
@@ -117,7 +116,7 @@ public class uiauto {
     }
 
     @Test
-    public void test打开蓝牙() {
+    public void testOpenBT() {
         screenshotCap("berfore_enter");
         sleep(2000);
         UiObject2 settingObj = device.findObject(By.text("设置"));
@@ -165,9 +164,9 @@ public class uiauto {
         throw new IllegalArgumentException("Could not find test class!");
     }
 
-    public static void sleep(int mint) {
+    public static void sleep(int sleep) {
         try {
-            Thread.sleep(mint);
+            Thread.sleep(sleep);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
