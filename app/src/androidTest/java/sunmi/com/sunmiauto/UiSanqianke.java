@@ -65,7 +65,6 @@ public class UiSanqianke {
     //该测试类结束后执行操作
     public static void clearDown() throws MessagingException, InterruptedException {
         Log.i("ssss","ddddd");
-        new SendMail().sendEmail("hello,what the fuuuuuuuuuuu");
         Thread.sleep(10000);
     }
 
