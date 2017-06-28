@@ -115,7 +115,7 @@ public class UiAuto {
                 .append("</html>");
         mailInfo.setContent(demo.toString());
         Boolean b = SimpleMail.sendHtmlMail(mailInfo);// 发送html格式
-        Log.v("aftersend",b+"");
+        Log.v("aftersend",b+""+"66666666666");
     }
 
     @Test
