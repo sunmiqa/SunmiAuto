@@ -82,40 +82,40 @@ public class UiAuto {
     //该测试类结束后执行操作
     public static void clearDown() throws MessagingException {
 //        new SendMail().sendEmail("hello,this is Alan");
-        MailInfo mailInfo = new MailInfo();
-        mailInfo.setMailServerHost("smtp.exmail.qq.com");
-        mailInfo.setMailServerPort("25");
-        mailInfo.setValidate(true);
-        mailInfo.setUsername("zhangjiyang@sunmi.com");
-        mailInfo.setPassword("Sunmi2017");// 您的邮箱密码
-        mailInfo.setFromAddress("zhangjiyang@sunmi.com");
-        mailInfo.setToAddress("zhangjiyang@sunmi.com");
-        mailInfo.setSubject("SUNMIAUTODEMO_TESTRESULT"+Calendar.getInstance().getTime());
+//        MailInfo mailInfo = new MailInfo();
+//        mailInfo.setMailServerHost("smtp.exmail.qq.com");
+//        mailInfo.setMailServerPort("25");
+//        mailInfo.setValidate(true);
+//        mailInfo.setUsername("zhangjiyang@sunmi.com");
+//        mailInfo.setPassword("Sunmi2017");// 您的邮箱密码
+//        mailInfo.setFromAddress("zhangjiyang@sunmi.com");
+//        mailInfo.setToAddress("zhangjiyang@sunmi.com");
+//        mailInfo.setSubject("SUNMIAUTODEMO_TESTRESULT"+Calendar.getInstance().getTime());
 
         //附件
         String[] attachFileNames={"sdcard//Download//Sunset.jpg"};
-        mailInfo.setAttachFileNames(attachFileNames);
+//        mailInfo.setAttachFileNames(attachFileNames);
 
         // 这个类主要来发送邮件
         //mailInfo.setContent("设置邮箱内容");
         //SimpleMail.sendTextMail(mailInfo);// 发送文体格式
-        StringBuffer demo = new StringBuffer();
-        demo.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">")
-                .append("<html>")
-                .append("<head>")
-                .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">")
-                .append("<title>测试邮件</title>")
-                .append("<style type=\"text/css\">")
-                .append(".test{font-family:\"Microsoft Yahei\";font-size: 18px;color: red;}")
-                .append("</style>")
-                .append("</head>")
-                .append("<body>")
-                .append("<span class=\"test\">http://172.16.3.149:8090/spoon-output/index.html</span>")
-                .append("</body>")
-                .append("</html>");
-        mailInfo.setContent(demo.toString());
-        Boolean b = SimpleMail.sendHtmlMail(mailInfo);// 发送html格式
-        Log.v("aftersend",b+""+"66666666666");
+//        StringBuffer demo = new StringBuffer();
+//        demo.append("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\">")
+//                .append("<html>")
+//                .append("<head>")
+//                .append("<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">")
+//                .append("<title>测试邮件</title>")
+//                .append("<style type=\"text/css\">")
+//                .append(".test{font-family:\"Microsoft Yahei\";font-size: 18px;color: red;}")
+//                .append("</style>")
+//                .append("</head>")
+//                .append("<body>")
+//                .append("<span class=\"test\">http://172.16.3.149:8090/spoon-output/index.html</span>")
+//                .append("</body>")
+//                .append("</html>");
+//        mailInfo.setContent(demo.toString());
+//        Boolean b = SimpleMail.sendHtmlMail(mailInfo);// 发送html格式
+//        Log.v("aftersend",b+""+"66666666666");
     }
 
     @Test
