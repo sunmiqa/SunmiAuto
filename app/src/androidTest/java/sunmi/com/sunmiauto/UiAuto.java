@@ -90,7 +90,7 @@ public class UiAuto {
         mailInfo.setPassword("Sunmi2017");// 您的邮箱密码
         mailInfo.setFromAddress("zhangjiyang@sunmi.com");
         mailInfo.setToAddress("zhangjiyang@sunmi.com");
-        mailInfo.setSubject("设置邮箱标题"+Calendar.getInstance().getTime());
+        mailInfo.setSubject("SUNMIAUTODEMO_TESTRESULT"+Calendar.getInstance().getTime());
 
         //附件
         String[] attachFileNames={"sdcard//Download//Sunset.jpg"};
@@ -110,7 +110,7 @@ public class UiAuto {
                 .append("</style>")
                 .append("</head>")
                 .append("<body>")
-                .append("<span class=\"test\">大家好，这里是测试Demo</span>")
+                .append("<span class=\"test\">http://172.16.3.149:8090/spoon-output/index.html</span>")
                 .append("</body>")
                 .append("</html>");
         mailInfo.setContent(demo.toString());
