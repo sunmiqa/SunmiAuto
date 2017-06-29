@@ -5,7 +5,6 @@ import android.os.Environment;
 import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.UiCollection;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
@@ -22,7 +21,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
-import java.util.Calendar;
 
 import javax.mail.MessagingException;
 
@@ -228,11 +226,11 @@ public class UiAuto {
         for(int i = trace.length - 1; i >= 0; --i) {
             StackTraceElement element = trace[i];
             if("android.test.InstrumentationTestCase".equals(element.getClassName()) && "runMethod".equals(element.getMethodName())) {
-                return trace[i - 2];
+                return trace[i - 3];
             }
 
             if("org.junit.runners.model.FrameworkMethod$1".equals(element.getClassName()) && "runReflectiveCall".equals(element.getMethodName())) {
-                return trace[i - 2];
+                return trace[i - 3];
             }
         }
 
@@ -288,7 +286,7 @@ public class UiAuto {
         device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
         screenshotCap("afterClickHotAll");
         UiObject2 hotAllObj = device.findObject(By.res("woyou.market:id/list_view"));
-        Assert.assertNotNull("不存在",hotAllObj);
+        Assert.assertNotNull("找不到res为woyou.market:id/list_view的对象",hotAllObj);
     }
 
     //测试热门应用滑动查看
@@ -377,6 +375,5 @@ public class UiAuto {
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         hotAllScroll.scrollTextIntoView("安装");
         device.findObject(By.text("安装")).click();
-
     }
 }
