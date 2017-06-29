@@ -24,6 +24,7 @@ import java.io.File;
 
 import javax.mail.MessagingException;
 
+
 /**
  * Created by Administrator on 2017/6/7.
  */
@@ -37,8 +38,9 @@ public class UiAuto {
     //每条测试用例开始前执行操作
     public void setup() throws RemoteException {
         device.pressRecentApps();
-        sleep(2000);
+        sleep(5000);
         UiObject2 cleanObj = device.findObject(By.res("com.android.systemui:id/clean"));
+        Log.v("clean",cleanObj.getResourceName());
         sleep(2000);
         cleanObj.click();
         sleep(1000);
@@ -50,7 +52,7 @@ public class UiAuto {
     @After
     //每条测试用例结束后执行操作
     public void teardown() throws RemoteException {
-        sleep(3000);
+        sleep(1000);
         device.pressHome();
     }
 
@@ -82,7 +84,9 @@ public class UiAuto {
 
     @AfterClass
     //该测试类结束后执行操作
-    public static void clearDown() throws MessagingException {
+    public static void clearDown() throws MessagingException, RemoteException {
+
+//        imageGenerator.saveAsHtmlWithMap("hello-world.html", "hello-world.png");
 //        new SendMail().sendEmail("hello,this is Alan");
 //        MailInfo mailInfo = new MailInfo();
 //        mailInfo.setMailServerHost("smtp.exmail.qq.com");
@@ -216,7 +220,7 @@ public class UiAuto {
         }
         String screenshotName = System.currentTimeMillis() + "_" + tag + ".png";
         File screenshotFile = new File(dir, screenshotName);
-        device.takeScreenshot(screenshotFile);
+        device.takeScreenshot(screenshotFile,0.2F,50);
         sleep(2000);
     }
 
@@ -249,9 +253,10 @@ public class UiAuto {
     public void testOpenAppStore(){
         screenshotCap("beforeEnter");
         device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.waitForIdle(5000);
         screenshotCap("afterEnter");
         UiObject2 suggObj = device.findObject(By.res("woyou.market:id/fab_me"));
-        Assert.assertNotNull("不存在",suggObj);
+        Assert.assertNotNull("未找到用户入口，判断打开应用市场失败",suggObj);
     }
 
     @Test
@@ -264,116 +269,116 @@ public class UiAuto {
         UiObject2 newestAllObj = device.findObject(By.res("woyou.market:id/list_view"));
         Assert.assertNotNull("不存在",newestAllObj);
     }
-
-    //测试新品应用滑动查看
-    @Test
-    public void testNewScroll() throws UiObjectNotFoundException {
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
-        newAllScroll.setAsHorizontalList();
-        newAllScroll.scrollToEnd(20,10);
-        newAllScroll.scrollToBeginning(20,10);
-    }
-
-    //测试热门中全部应用查看
-    @Test
-    public void testCheckHotApps(){
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterClickHotAll");
-        UiObject2 hotAllObj = device.findObject(By.res("woyou.market:id/list_view"));
-        Assert.assertNotNull("找不到res为woyou.market:id/list_view的对象",hotAllObj);
-    }
-
-    //测试热门应用滑动查看
-    @Test
-    public void testHotScroll() throws UiObjectNotFoundException {
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/linear_hot_view"));
-        hotAllScroll.scrollToEnd(20,10);
-        hotAllScroll.scrollToBeginning(20,10);
-    }
-
-    //测试分类信息正确
-    @Test
-    public void testCheckCategory() throws UiObjectNotFoundException {
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("enterCategory");
-        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
-        String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
-        for (String s:appCategory
-             ) {
-            boolean b = cateScroll.scrollTextIntoView(s);
-            Assert.assertTrue(s+"--分类不存在",b);
-        }
-    }
-
-    //测试进入分类正确
-    @Test
-    public void testEnterCategory() throws UiObjectNotFoundException {
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("enterCategory");
-        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
-        String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
-        for (String s:appCategory
-                ) {
-            boolean b = cateScroll.scrollTextIntoView(s);
-            Assert.assertTrue(s+"--分类不存在",b);
-            UiObject2 sCategoryObj = device.findObject(By.text(s));
-            sCategoryObj.clickAndWait(Until.newWindow(),5000);
-            UiObject2 cateNmaeObj = device.findObject(By.res("woyou.market:id/tv_title"));
-            String cateName = cateNmaeObj.getText();
-            Assert.assertEquals("应该是"+s+",而实际是"+cateName,s,cateName);
-            device.pressBack();
-        }
-    }
-
-    //测试进入我的
-    @Test
-    public void testEnterMine(){
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),5000);
-        UiObject2 mineObj = device.findObject(By.res("woyou.market:id/tv_title").text("我的"));
-        Assert.assertNotNull("不存在\"我的\"",mineObj);
-    }
-
-    //测试从应用商店跳转到登录商米账户界面
-    @Test
-    public void testEnterLoginPageFromAppStore(){
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),5000);
-        device.findObject(By.res("woyou.market:id/item_user_info")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("enterUserLoginCenter");
-        String actulPkg = device.getCurrentPackageName();
-        Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是"+actulPkg,"com.sunmi.usercenter",actulPkg);
-    }
-
-    //测试安装热门中一个应用
-    @Test
-    public void testInstallAppFromHot() throws UiObjectNotFoundException {
-        screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
-        screenshotCap("afterClickHotAll");
-        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        hotAllScroll.scrollTextIntoView("安装");
-        device.findObject(By.text("安装")).click();
-    }
+//
+//    //测试新品应用滑动查看
+//    @Test
+//    public void testNewScroll() throws UiObjectNotFoundException {
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
+//        newAllScroll.setAsHorizontalList();
+//        newAllScroll.scrollToEnd(20,10);
+//        newAllScroll.scrollToBeginning(20,10);
+//    }
+//
+//    //测试热门中全部应用查看
+//    @Test
+//    public void testCheckHotApps(){
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterClickHotAll");
+//        UiObject2 hotAllObj = device.findObject(By.res("woyou.market:id/list_view"));
+//        Assert.assertNotNull("找不到res为woyou.market:id/list_view的对象",hotAllObj);
+//    }
+//
+//    //测试热门应用滑动查看
+//    @Test
+//    public void testHotScroll() throws UiObjectNotFoundException {
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/linear_hot_view"));
+//        hotAllScroll.scrollToEnd(20,10);
+//        hotAllScroll.scrollToBeginning(20,10);
+//    }
+//
+//    //测试分类信息正确
+//    @Test
+//    public void testCheckCategory() throws UiObjectNotFoundException {
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("enterCategory");
+//        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
+//        String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
+//        for (String s:appCategory
+//             ) {
+//            boolean b = cateScroll.scrollTextIntoView(s);
+//            Assert.assertTrue(s+"--分类不存在",b);
+//        }
+//    }
+//
+//    //测试进入分类正确
+//    @Test
+//    public void testEnterCategory() throws UiObjectNotFoundException {
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("enterCategory");
+//        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
+//        String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
+//        for (String s:appCategory
+//                ) {
+//            boolean b = cateScroll.scrollTextIntoView(s);
+//            Assert.assertTrue(s+"--分类不存在",b);
+//            UiObject2 sCategoryObj = device.findObject(By.text(s));
+//            sCategoryObj.clickAndWait(Until.newWindow(),5000);
+//            UiObject2 cateNmaeObj = device.findObject(By.res("woyou.market:id/tv_title"));
+//            String cateName = cateNmaeObj.getText();
+//            Assert.assertEquals("应该是"+s+",而实际是"+cateName,s,cateName);
+//            device.pressBack();
+//        }
+//    }
+//
+//    //测试进入我的
+//    @Test
+//    public void testEnterMine(){
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),5000);
+//        UiObject2 mineObj = device.findObject(By.res("woyou.market:id/tv_title").text("我的"));
+//        Assert.assertNotNull("不存在\"我的\"",mineObj);
+//    }
+//
+//    //测试从应用商店跳转到登录商米账户界面
+//    @Test
+//    public void testEnterLoginPageFromAppStore(){
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),5000);
+//        device.findObject(By.res("woyou.market:id/item_user_info")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("enterUserLoginCenter");
+//        String actulPkg = device.getCurrentPackageName();
+//        Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是"+actulPkg,"com.sunmi.usercenter",actulPkg);
+//    }
+//
+//    //测试安装热门中一个应用
+//    @Test
+//    public void testInstallAppFromHot() throws UiObjectNotFoundException {
+//        screenshotCap("beforeEnter");
+//        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterEnter");
+//        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
+//        screenshotCap("afterClickHotAll");
+//        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+//        hotAllScroll.scrollTextIntoView("安装");
+//        device.findObject(By.text("安装")).click();
+//    }
 }

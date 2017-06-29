@@ -52,4 +52,5 @@ dependencies {
     compile files('libs/runner-0.3-release-no-dep.jar')
     compile files('libs/spoon-client-1.7.1.jar')
     compile files('libs/uiautomator-v18-2.1.1-release-no-dep.jar')
+    compile files('libs/html2image-0.9.jar')
 }
