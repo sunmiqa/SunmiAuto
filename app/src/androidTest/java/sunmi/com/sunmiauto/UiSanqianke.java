@@ -68,10 +68,10 @@ public class UiSanqianke {
         Thread.sleep(10000);
     }
 
-    @Test
-    public void testRecentKey() throws RemoteException, MessagingException {
-        device.pressRecentApps();
-    }
+//    @Test
+//    public void testRecentKey() throws RemoteException, MessagingException {
+//        device.pressRecentApps();
+//    }
 
 //    @Test
 //    public void testSanqianke() throws UiObjectNotFoundException, IOException {
