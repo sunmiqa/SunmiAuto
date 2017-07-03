@@ -255,8 +255,8 @@ public class UiAuto {
         device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
         device.waitForIdle(5000);
         screenshotCap("afterEnter");
-        UiObject2 suggObj = device.findObject(By.res("woyou.market:id/fab_me"));
-        Assert.assertNotNull("未找到用户入口，判断打开应用市场失败",suggObj);
+//        UiObject2 suggObj = device.findObject(By.res("woyou.market:id/fab_me"));
+//        Assert.assertNotNull("未找到用户入口，判断打开应用市场失败",suggObj);
     }
 
     @Test
