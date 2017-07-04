@@ -249,22 +249,24 @@ public class UiAuto {
         }
     }
 
+    //测试能够成功打开应用市场
     @Test
     public void testOpenAppStore(){
         screenshotCap("beforeEnter");
         device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
-        device.waitForIdle(5000);
+        device.waitForIdle(10000);
         screenshotCap("afterEnter");
 //        UiObject2 suggObj = device.findObject(By.res("woyou.market:id/fab_me"));
 //        Assert.assertNotNull("未找到用户入口，判断打开应用市场失败",suggObj);
     }
 
+    //测试新品应用存在
     @Test
     public void testCheckNewArrive(){
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/tv_newest_all").text("全部")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/tv_newest_all").text("全部")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterClickNewestAll");
         UiObject2 newestAllObj = device.findObject(By.res("woyou.market:id/list_view"));
         Assert.assertNotNull("不存在",newestAllObj);
@@ -274,7 +276,7 @@ public class UiAuto {
     @Test
     public void testNewScroll() throws UiObjectNotFoundException {
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
         UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
         newAllScroll.setAsHorizontalList();
@@ -286,9 +288,9 @@ public class UiAuto {
     @Test
     public void testCheckHotApps(){
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterClickHotAll");
         UiObject2 hotAllObj = device.findObject(By.res("woyou.market:id/list_view"));
         Assert.assertNotNull("找不到res为woyou.market:id/list_view的对象",hotAllObj);
@@ -298,7 +300,7 @@ public class UiAuto {
     @Test
     public void testHotScroll() throws UiObjectNotFoundException {
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/linear_hot_view"));
         hotAllScroll.scrollToEnd(20,10);
@@ -309,9 +311,9 @@ public class UiAuto {
     @Test
     public void testCheckCategory() throws UiObjectNotFoundException {
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("enterCategory");
         UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
         String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
@@ -326,9 +328,9 @@ public class UiAuto {
     @Test
     public void testEnterCategory() throws UiObjectNotFoundException {
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("enterCategory");
         UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
         String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
@@ -337,7 +339,7 @@ public class UiAuto {
             boolean b = cateScroll.scrollTextIntoView(s);
             Assert.assertTrue(s+"--分类不存在",b);
             UiObject2 sCategoryObj = device.findObject(By.text(s));
-            sCategoryObj.clickAndWait(Until.newWindow(),5000);
+            sCategoryObj.clickAndWait(Until.newWindow(),10000);
             UiObject2 cateNmaeObj = device.findObject(By.res("woyou.market:id/tv_title"));
             String cateName = cateNmaeObj.getText();
             Assert.assertEquals("应该是"+s+",而实际是"+cateName,s,cateName);
@@ -349,9 +351,9 @@ public class UiAuto {
     @Test
     public void testEnterMine(){
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),10000);
         UiObject2 mineObj = device.findObject(By.res("woyou.market:id/tv_title").text("我的"));
         Assert.assertNotNull("不存在\"我的\"",mineObj);
     }
@@ -360,10 +362,10 @@ public class UiAuto {
     @Test
     public void testEnterLoginPageFromAppStore(){
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),5000);
-        device.findObject(By.res("woyou.market:id/item_user_info")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/fab_me")).clickAndWait(Until.newWindow(),10000);
+        device.findObject(By.res("woyou.market:id/item_user_info")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("enterUserLoginCenter");
         String actulPkg = device.getCurrentPackageName();
         Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是"+actulPkg,"com.sunmi.usercenter",actulPkg);
@@ -373,9 +375,9 @@ public class UiAuto {
     @Test
     public void testInstallAppFromHot() throws UiObjectNotFoundException {
         screenshotCap("beforeEnter");
-        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.text("应用市场")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterEnter");
-        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("afterClickHotAll");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         hotAllScroll.scrollTextIntoView("安装");
