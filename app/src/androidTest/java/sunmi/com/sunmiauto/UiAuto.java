@@ -4,11 +4,9 @@ import android.app.Instrumentation;
 import android.os.Build;
 import android.os.Environment;
 import android.os.RemoteException;
-import android.provider.Settings;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
-import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
@@ -212,6 +210,7 @@ public class UiAuto {
         StackTraceElement testClass = findTestClassTraceElement(Thread.currentThread().getStackTrace());
         String className = testClass.getClassName().replaceAll("[^A-Za-z0-9._-]", "_");
         String methodName = testClass.getMethodName();
+        Log.v("Extenrnal",Environment.getExternalStorageState());
         File dir=new File(Environment.getExternalStorageDirectory()
                 +File.separator+"app_spoon-screenshots"+File.separator
                 +className+File.separator+methodName);
@@ -320,12 +319,15 @@ public class UiAuto {
         ArrayList<String> appCategory = new ArrayList<>();
         switch (Build.DEVICE){
             case "V1-B18":
+                Log.v("enterV1-B18","V1-B18");
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
                 break;
             case "V1s-G":
+                Log.v("enterV1s-G","V1s-G");
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
                 break;
             default:
+                Log.v("enterDefault","default");
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
         }
         for (String s:appCategory
@@ -347,12 +349,15 @@ public class UiAuto {
         ArrayList<String> appCategory = new ArrayList<>();
         switch (Build.DEVICE){
             case "V1-B18":
+                Log.v("enterV1-B18","V1-B18");
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
                 break;
             case "V1s-G":
+                Log.v("enterV1s-G","V1s-G");
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
                 break;
             default:
+                Log.v("enterDefault","default");
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
         }
         for (String s:appCategory
