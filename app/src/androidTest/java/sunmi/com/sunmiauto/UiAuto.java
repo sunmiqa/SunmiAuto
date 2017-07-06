@@ -333,7 +333,7 @@ public class UiAuto {
                 appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
         }
         for (String s:appCategory
-             ) {
+                ) {
             boolean b = cateScroll.scrollTextIntoView(s);
             Assert.assertTrue(s+"--分类不存在",b);
         }
