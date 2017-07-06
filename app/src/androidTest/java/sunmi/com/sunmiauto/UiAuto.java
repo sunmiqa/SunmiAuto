@@ -1,8 +1,10 @@
 package sunmi.com.sunmiauto;
 
 import android.app.Instrumentation;
+import android.os.Build;
 import android.os.Environment;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
@@ -22,6 +24,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
@@ -314,7 +317,17 @@ public class UiAuto {
         device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("enterCategory");
         UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
-        String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
+        ArrayList<String> appCategory = new ArrayList<>();
+        switch (Build.DEVICE){
+            case "V1-B18":
+                appCategory.add("外卖");appCategory.add("支付");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
+                break;
+            case "V1s-G":
+                appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
+                break;
+            default:
+                appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
+        }
         for (String s:appCategory
              ) {
             boolean b = cateScroll.scrollTextIntoView(s);
@@ -331,7 +344,17 @@ public class UiAuto {
         device.findObject(By.text("分类")).clickAndWait(Until.newWindow(),10000);
         screenshotCap("enterCategory");
         UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
-        String[] appCategory = {"外卖","支付","团购","餐饮","电商","酒店","零售","工具","配送","旅游","理财","EET"};
+        ArrayList<String> appCategory = new ArrayList<>();
+        switch (Build.DEVICE){
+            case "V1-B18":
+                appCategory.add("外卖");appCategory.add("支付");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
+                break;
+            case "V1s-G":
+                appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
+                break;
+            default:
+                appCategory.add("外卖");appCategory.add("支付");appCategory.add("团购");appCategory.add("餐饮");appCategory.add("电商");appCategory.add("酒店");appCategory.add("零售");appCategory.add("工具");appCategory.add("配送");appCategory.add("旅游");appCategory.add("理财");appCategory.add("EET");
+        }
         for (String s:appCategory
                 ) {
             boolean b = cateScroll.scrollTextIntoView(s);
