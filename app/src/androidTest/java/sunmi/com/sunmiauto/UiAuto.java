@@ -46,6 +46,7 @@ public class UiAuto {
         cleanObj.click();
         device.waitForIdle(10000);
         device.pressHome();
+        device.pressBack();
     }
 
     @After
