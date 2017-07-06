@@ -47,6 +47,7 @@ public class UiAuto {
         device.waitForIdle(10000);
         device.pressHome();
         device.pressBack();
+        device.pressMenu();
     }
 
     @After
