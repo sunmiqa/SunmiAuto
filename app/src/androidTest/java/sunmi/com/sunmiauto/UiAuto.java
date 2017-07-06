@@ -6,6 +6,7 @@ import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
@@ -36,17 +37,14 @@ public class UiAuto {
 
     @Before
     //每条测试用例开始前执行操作
-    public void setup() throws RemoteException {
+    public void setup() throws RemoteException, UiObjectNotFoundException {
         device.pressRecentApps();
-        sleep(5000);
+        device.wait(Until.findObject(By.res("com.android.systemui:id/clean")),10000);
         UiObject2 cleanObj = device.findObject(By.res("com.android.systemui:id/clean"));
-        Log.v("clean",cleanObj.getResourceName());
-        sleep(2000);
+        Log.v("clean",cleanObj.getClassName());
         cleanObj.click();
-        sleep(1000);
+        device.waitForIdle(10000);
         device.pressHome();
-        sleep(2000);
-
     }
 
     @After
