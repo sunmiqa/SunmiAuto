@@ -41,6 +41,7 @@ public class UiAuto {
     //每条测试用例开始前执行操作
     public void setup() throws RemoteException, UiObjectNotFoundException, IOException {
         device.executeShellCommand("am start -n woyou.market/store.ui.activity.HomeActivity");
+        device.findObject(By.text("推荐")).click();
     }
 
     @After
