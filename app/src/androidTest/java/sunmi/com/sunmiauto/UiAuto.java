@@ -43,6 +43,7 @@ public class UiAuto {
         device.executeShellCommand("am start -n woyou.market/store.ui.activity.HomeActivity");
         sleep(2000);
         device.findObject(By.text("推荐")).click();
+        device.pressRecentApps();
     }
 
     @After
