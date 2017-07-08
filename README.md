@@ -1,2 +1,1 @@
-# SUNMIAuto_Demo
-The first githubProject
+SunmiAuto clone from SUNMIAutoDemo
