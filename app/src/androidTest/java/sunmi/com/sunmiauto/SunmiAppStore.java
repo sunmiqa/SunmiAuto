@@ -43,7 +43,6 @@ public class SunmiAppStore {
         device.executeShellCommand("am start -n woyou.market/store.ui.activity.HomeActivity");
         SunmiUtil.sleep(2000);
         device.findObject(By.text("推荐")).click();
-        device.pressRecentApps();
     }
 
     @After
