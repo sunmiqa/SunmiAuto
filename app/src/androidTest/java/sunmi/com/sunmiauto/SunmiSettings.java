@@ -1,3 +1,5 @@
+
+
 package sunmi.com.sunmiauto;
 
 import android.support.test.uiautomator.By;
@@ -61,5 +63,10 @@ public class SunmiSettings {
         sleep(2000);
         screenshotCap("after_click");
         sleep(2000);
+    }
+    
+    @Test
+    public void testModifyIbeacon(){
+        
     }
 }
