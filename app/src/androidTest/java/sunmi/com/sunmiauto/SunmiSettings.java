@@ -40,6 +40,8 @@ public class SunmiSettings {
 
     @Test
     public void testDataUsage(){
+        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
+        sleep(2000);
         UiObject2 settingObj = device.findObject(By.text("设置"));
         settingObj.clickAndWait(Until.newWindow(),5000);
         screenshotCap("setting_interface");
@@ -52,6 +54,8 @@ public class SunmiSettings {
 
     @Test
     public void testOpenBT() {
+        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
+        sleep(2000);
         screenshotCap("berfore_enter");
         sleep(2000);
         UiObject2 settingObj = device.findObject(By.text("设置"));
