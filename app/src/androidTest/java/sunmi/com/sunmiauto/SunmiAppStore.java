@@ -116,8 +116,11 @@ public class SunmiAppStore {
         SunmiUtil.screenshotCap("afterEnter");
         UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
         newAllScroll.setAsHorizontalList();
-        newAllScroll.scrollToEnd(20, 10);
-        newAllScroll.scrollToBeginning(20, 10);
+        newAllScroll.scrollToBeginning(10, 10);
+        newAllScroll.scrollToEnd(10, 10);
+        newAllScroll.scrollToBeginning(10, 10);
+        UiScrollable newAllScroll1 = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
+        Assert.assertNotNull("新品上架模块未能找到",newAllScroll1);
     }
 
     //测试热门中全部应用查看
