@@ -105,7 +105,7 @@ public class SunmiAppStore {
         device.findObject(By.res("woyou.market:id/tv_newest_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
         SunmiUtil.screenshotCap("afterClickNewestAll");
         UiObject2 newestAllObj = device.findObject(By.res("woyou.market:id/list_view"));
-        Assert.assertNotNull("不存在", newestAllObj);
+        Assert.assertNotNull("不存在woyou.market:id/list_view resId", newestAllObj);
     }
 
     //测试新品应用滑动查看
@@ -144,6 +144,8 @@ public class SunmiAppStore {
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/linear_hot_view"));
         hotAllScroll.scrollToEnd(20, 10);
         hotAllScroll.scrollToBeginning(20, 10);
+        UiObject2 hotObj = device.findObject(By.res("woyou.market:id/item_hot_title"));
+        Assert.assertNotNull("热门应用Title为能够找到",hotObj);
     }
 
     //测试分类信息正确
