@@ -10,6 +10,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static sunmi.com.sunmiauto.SunmiUtil.device;
 import static sunmi.com.sunmiauto.SunmiUtil.screenshotCap;
 import static sunmi.com.sunmiauto.SunmiUtil.sleep;
@@ -20,53 +22,41 @@ import static sunmi.com.sunmiauto.SunmiUtil.sleep;
 
 public class SunmiSettings {
     @Before
-    public void setup(){
-        device.pressHome();
+    public void setup() throws IOException {
+        device.executeShellCommand("am start -n com.android.settings/.Settings");
     }
 
     @Test
     public void testWiFi(){
-        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
-        sleep(2000);
-        UiObject2 settingObj = device.findObject(By.text("设置"));
-        settingObj.clickAndWait(Until.newWindow(),5000);
         screenshotCap("setting_interface");
         UiObject2 wifiops = device.findObject(By.text("WLAN"));
         wifiops.clickAndWait(Until.newWindow(),5000);
         screenshotCap("wifi_interface");
         UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        Assert.assertEquals("Wifi开关应该为打开状态",true,wifiButton.isChecked());
+        Assert.assertEquals("Wifi开关默认应该为打开状态",true,wifiButton.isChecked());
     }
 
     @Test
     public void testDataUsage(){
-        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
-        sleep(2000);
-        UiObject2 settingObj = device.findObject(By.text("设置"));
-        settingObj.clickAndWait(Until.newWindow(),5000);
         screenshotCap("setting_interface");
         UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
         ethOps.clickAndWait(Until.newWindow(),5000);
         screenshotCap("dataUsage_interface");
         UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
-        Assert.assertNotNull("未找到流量使用情况标识，出错",dataUsageObj);
+        Assert.assertNotNull("未找到流量使用情况标识",dataUsageObj);
     }
 
     @Test
     public void testOpenBT() {
-        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
-        sleep(2000);
-        screenshotCap("berfore_enter");
-        sleep(2000);
-        UiObject2 settingObj = device.findObject(By.text("设置"));
-        settingObj.clickAndWait(Until.newWindow(), 1000);
-        sleep(2000);
         screenshotCap("after_enter");
         UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
         WlanObj.click();
         sleep(2000);
         screenshotCap("after_click");
+        UiObject2 BTButtonObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
         sleep(2000);
+        Assert.assertTrue("蓝牙开关默认不是打开状态",BTButtonObj.isChecked());
+
     }
     
     @Test
