@@ -47,6 +47,7 @@ public class SunmiAppStore {
     public void setup() throws RemoteException, UiObjectNotFoundException, IOException {
         clearAllRecentApps();
         findAppAndOpenByText("应用市场");
+        sleep(2000);
     }
 
     @After
