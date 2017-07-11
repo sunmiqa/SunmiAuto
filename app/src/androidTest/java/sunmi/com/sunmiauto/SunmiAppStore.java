@@ -300,7 +300,7 @@ public class SunmiAppStore {
         String name = installNameObj.getText();
         UiObject2 installObjnew =  fullInstallObj.getParent().findObject(By.text("安装"));
         installObjnew.click();
-        Assert.assertTrue("下载安装了150秒，仍然未安装好",installObjnew.wait(Until.textEquals("打开"),150000));
+        Assert.assertTrue("下载安装了300秒，仍然未安装好",installObjnew.wait(Until.textEquals("打开"),300000));
         SunmiUtil.screenshotCap("install_info");
         device.pressHome();
         findAppByText(name);
@@ -376,6 +376,7 @@ public class SunmiAppStore {
         sleep(2000);
         UiObject2 backButton = device.findObject(By.res("woyou.market:id/btn_back"));
         backButton.clickAndWait(Until.newWindow(),5000);
+        sleep(2000);
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
         Assert.assertNotNull(mineEntrence);
     }
