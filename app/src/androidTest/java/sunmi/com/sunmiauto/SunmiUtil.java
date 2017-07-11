@@ -3,8 +3,12 @@ package sunmi.com.sunmiauto;
 import android.app.Instrumentation;
 import android.os.Build;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.support.test.InstrumentationRegistry;
+import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
+import android.support.test.uiautomator.UiObject2;
+import android.support.test.uiautomator.Until;
 import android.util.Log;
 
 import java.io.File;
@@ -14,10 +18,64 @@ import java.io.File;
  */
 
 public class SunmiUtil {
-
     static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     static UiDevice device = UiDevice.getInstance(instrumentation);
 
+    //清除最近使用程序
+    public static void clearAllRecentApps() throws RemoteException {
+        device.pressHome();
+        device.pressRecentApps();
+        sleep(2000);
+        UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/clean"));
+        sleep(1000);
+        clearObj.clickAndWait(Until.newWindow(),5000);
+    }
+
+    //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
+    public static boolean findAppByText(String appName){
+        device.pressHome();
+        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
+        Log.v("sssss",Integer.toString(pages));
+        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
+        for(int i = 0;i < pages - 1;i++){
+            Log.v("ssss",Integer.toString(i));
+            UiObject2 appObj = device.findObject(By.text(appName));
+            if(null != appObj){
+                return true;
+            }
+            else {
+                sleep(2000);
+                device.swipe(device.getDisplayWidth()-5,device.getDisplayHeight()/2,5,device.getDisplayHeight()/2,10);
+                sleep(2000);
+            }
+        }
+        return false;
+    }
+
+    //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
+    public static boolean findAppAndOpenByText(String appName){
+        device.pressHome();
+        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
+        Log.v("sssss",Integer.toString(pages));
+        device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
+        for(int i = 0;i < pages - 1;i++){
+            Log.v("ssss",Integer.toString(i));
+            UiObject2 appObj = device.findObject(By.text(appName));
+            if(null != appObj){
+                appObj.clickAndWait(Until.newWindow(),5000);
+                return true;
+            }
+            else {
+                sleep(2000);
+                device.swipe(device.getDisplayWidth()-5,device.getDisplayHeight()/2,5,device.getDisplayHeight()/2,10);
+                sleep(2000);
+            }
+        }
+        return false;
+    }
+
+
+    //截图并保存图片到相关的测试类,测试case目录下
     public static void screenshotCap(String tag) {
         StackTraceElement testClass = findTestClassTraceElement(Thread.currentThread().getStackTrace());
         String className = testClass.getClassName().replaceAll("[^A-Za-z0-9._-]", "_");
@@ -36,7 +94,7 @@ public class SunmiUtil {
         sleep(2000);
     }
 
-
+    //获取栈信息，该方法用于获取当前正在进行的测试case类信息，方法信息
     public static StackTraceElement findTestClassTraceElement(StackTraceElement[] trace) {
         for (StackTraceElement e : trace) {
             Log.v("traceTest", e.getClassName() + ":" + e.getMethodName());
@@ -63,6 +121,7 @@ public class SunmiUtil {
         throw new IllegalArgumentException("Could not find test class!");
     }
 
+    //sleep方法
     public static void sleep(int sleep) {
         try {
             Thread.sleep(sleep);

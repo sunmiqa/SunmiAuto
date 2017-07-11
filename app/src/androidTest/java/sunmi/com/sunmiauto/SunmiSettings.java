@@ -2,12 +2,16 @@
 
 package sunmi.com.sunmiauto;
 
+import android.os.RemoteException;
 import android.support.test.uiautomator.By;
+import android.support.test.uiautomator.Configurator;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.Until;
+import android.util.Log;
 
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -21,9 +25,27 @@ import static sunmi.com.sunmiauto.SunmiUtil.sleep;
  */
 
 public class SunmiSettings {
+
+    @BeforeClass
+    public static void beforeTestClass(){
+        Long i1 = Configurator.getInstance().getActionAcknowledgmentTimeout();
+        Long i2 = Configurator.getInstance().getKeyInjectionDelay();
+        Long i3 = Configurator.getInstance().getScrollAcknowledgmentTimeout();
+        Long i4 = Configurator.getInstance().getWaitForIdleTimeout();
+        Long i5 = Configurator.getInstance().getWaitForSelectorTimeout();
+        Log.v("ActionTimeOut",i1.toString());
+        Log.v("ActionTimeOut",i2.toString());
+        Log.v("ActionTimeOut",i3.toString());
+        Log.v("ActionTimeOut",i4.toString());
+        Log.v("ActionTimeOut",i5.toString());
+    }
+
     @Before
-    public void setup() throws IOException {
-        device.executeShellCommand("am start -n com.android.settings/.Settings");
+    public void setup() throws IOException, RemoteException {
+        SunmiUtil.clearAllRecentApps();
+        SunmiUtil.findAppByText("设置");
+        sleep(2000);
+        device.findObject(By.text("设置")).clickAndWait(Until.newWindow(),5000);
     }
 
     @Test
