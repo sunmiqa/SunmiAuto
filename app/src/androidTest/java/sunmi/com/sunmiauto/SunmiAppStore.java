@@ -400,6 +400,16 @@ public class SunmiAppStore {
         sleep(2000);
         String shopName = device.findObject(By.res("woyou.market:id/tv_shop_name")).getText();
         Assert.assertNotEquals("未登录",shopName);
+        UiObject2 userCenterEntrence1 = device.findObject(By.res("woyou.market:id/item_user_info"));
+        userCenterEntrence1.clickAndWait(Until.newWindow(),5000);
+        UiObject2 currAccountObj = device.findObject(By.res("com.sunmi.usercenter:id/rel_now_account"));
+        currAccountObj.clickAndWait(Until.newWindow(),5000);
+        UiObject2 outAccountObj = device.findObject(By.res("com.sunmi.usercenter:id/btn_login_out"));
+        outAccountObj.clickAndWait(Until.newWindow(),5000);
+        UiObject2 pwdTextObj = device.findObject(By.res("com.sunmi.usercenter:id/edit"));
+        pwdTextObj.clear();
+        pwdTextObj.setText("sunmi2016");
+        device.findObject(By.res("com.sunmi.usercenter:id/right")).clickAndWait(Until.newWindow(),5000);
     }
 
     //测试能够进入到购买记录界面
