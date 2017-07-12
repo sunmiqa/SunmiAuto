@@ -60,18 +60,19 @@ public class SunmiUtil {
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(2000);
-        for(int i = 0;i < pages - 1;i++){
-            Log.v("ssss",Integer.toString(i));
+        int i = 0;
+        while(i < pages){
             UiObject2 appObj = device.findObject(By.text(appName));
             if(null != appObj){
                 appObj.clickAndWait(Until.newWindow(),5000);
                 return true;
             }
-            else {
+            else if(i < pages -1){
                 sleep(2000);
                 device.swipe(device.getDisplayWidth()-5,device.getDisplayHeight()/2,5,device.getDisplayHeight()/2,10);
                 sleep(2000);
             }
+            i++;
         }
         return false;
     }

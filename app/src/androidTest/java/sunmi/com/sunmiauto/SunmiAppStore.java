@@ -413,77 +413,176 @@ public class SunmiAppStore {
         Assert.assertNotNull(buyHistory);
     }
 
-//    @Test
-//    public void testUpdatableApps(){
-//
-//    }
-//
-//    @Test
-//    public void testInstallingApps(){
-//
-//    }
-//
-//    @Test
-//    public void testOpenAutoUpdateButton(){
-//
-//    }
-//
-//    @Test
-//    public void testOpenSaveDataButton(){
-//
-//    }
-//    @Test
-//    public void testEnterFeedback(){
-//
-//    }
-//    @Test
-//    public void testCheckServiceProvider(){
-//
-//    }
-//    @Test
-//    public void testCheckRecentVersion(){
-//
-//    }
-//    @Test
-//    public void testCheckAppDetail(){
-//
-//    }
-//    @Test
-//    public void testCommentBeforeInstall(){
-//
-//    }
-//    @Test
-//    public void testCommentAfterInstall(){
-//
-//    }
-//
-//    @Test
-//    public void testFoldupAppDetail(){
-//
-//    }
-//
-//    @Test
-//    public void testCheckAppDetailStatusNotInstalled(){
-//
-//    }
-//
-//    @Test
-//    public void testCheckAppDetailStatusDownloading(){
-//
-//    }
-//
-//    @Test
-//    public void testCheckAppDetailStatusInstalling(){
-//
-//    }
-//
-//    @Test
-//    public void testCheckAppDetailStatusInstalled(){
-//
-//    }
-//
-//    @Test
-//    public void testCheckSearchHistory(){
-//
-//    }
+    //测试检查能够进入到应用更新界面
+    @Test
+    public void testUpdatableApps(){
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        UiObject2 updateOption = device.findObject(By.res("woyou.market:id/item_update_app"));
+        updateOption.clickAndWait(Until.newWindow(),5000);
+        UiObject2 updateHistory = device.findObject(By.text("应用更新"));
+        Assert.assertNotNull(updateHistory);
+    }
+
+    //测试检查能够进入到安装应用界面
+    @Test
+    public void testInstallingApps(){
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        UiObject2 installOption = device.findObject(By.res("woyou.market:id/item_install_app"));
+        installOption.clickAndWait(Until.newWindow(),5000);
+        UiObject2 installHistory = device.findObject(By.text("安装列表"));
+        Assert.assertNotNull(installHistory);
+    }
+
+    //测试检查应用自动更新开关默认打开
+    @Test
+    public void testOpenAutoUpdateButton(){
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        UiObject2 updateSwitch = device.findObject(By.res("woyou.market:id/switch_auto_update"));
+        Assert.assertTrue("应用自动更新开关默认应该打开，当前时关闭",updateSwitch.isChecked());
+    }
+
+    //测试检查省流量开关默认打开
+    @Test
+    public void testOpenSaveDataButton(){
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        UiObject2 saveSwitch = device.findObject(By.res("woyou.market:id/switch_save_flow"));
+        Assert.assertTrue("省流量开关默认应该打开，当前时关闭",saveSwitch.isCheckable());
+    }
+
+    //测试从反馈入口进入到反馈中
+    @Test
+    public void testEnterFeedback() throws UiObjectNotFoundException {
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        UiScrollable mineScroll = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+        mineScroll.scrollTextIntoView("反馈");
+        UiObject2 feedbackObj = device.findObject(By.text("反馈"));
+        feedbackObj.clickAndWait(Until.newWindow(),5000);
+        String currentPkgName = device.getCurrentPackageName();
+        Assert.assertEquals("期望当前包名为com.sunmi.userfeedback，而实际为"+currentPkgName,"com.sunmi.userfeedback",currentPkgName);
+    }
+
+    //测试检查当前的服务商
+    @Test
+    public void testCheckServiceProvider() throws UiObjectNotFoundException {
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        UiScrollable mineScroll = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+        mineScroll.scrollTextIntoView("服务商");
+        UiObject2 serviceProObj = device.findObject(By.text("服务商"));
+        Assert.assertNotNull("未找到服务商信息",serviceProObj);
+    }
+
+    //测试检查当前的appstore版本
+    @Test
+    public void testCheckRecentVersion() throws UiObjectNotFoundException {
+        UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
+        mineEntrence.clickAndWait(Until.newWindow(), 5000);
+        UiScrollable mineScroll = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+        mineScroll.scrollTextIntoView("当前版本");
+        UiObject2 serviceProObj = device.findObject(By.text("当前版本"));
+        Assert.assertNotNull("未找到版本信息", serviceProObj);
+    }
+
+    //测试从热门应用进入到应用详情中，应用详情和点击进入的应用信息一致
+    @Test
+    public void testCheckAppDetail() throws UiObjectNotFoundException {
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
+        String appName = fullAppObj.getChild(new UiSelector().resourceId("woyou.market:id/tv_name")).getText();
+        fullAppObj.clickAndWaitForNewWindow(5000);
+        UiObject2 nameObj = device.findObject(By.res("woyou.market:id/tv_name"));
+        Assert.assertEquals("期望的名字是"+appName+"，而实际是"+nameObj.getText(),appName,nameObj.getText());
+    }
+
+    //测试应用未安装应用无法评论
+    @Test
+    public void testCommentBeforeInstall() throws IOException, UiObjectNotFoundException {
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
+        installObj.getParent().getParent().clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/tv_install_comment_app")).clickAndWait(Until.newWindow(),5000);
+        UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
+        Assert.assertNull(rateObj);
+    }
+
+    //测试已安装应用可以发表评论
+    @Test
+    public void testCommentAfterInstall() throws UiObjectNotFoundException {
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("打开"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("打开"));
+        installObj.getParent().getParent().clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.res("woyou.market:id/tv_install_comment_app")).clickAndWait(Until.newWindow(),5000);
+        UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
+        Assert.assertNotNull(rateObj);
+    }
+
+    //测试应用详情中点击顶部收起按钮退出应用详情界面
+    @Test
+    public void testFoldupAppDetail() throws UiObjectNotFoundException {
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
+        fullAppObj.clickAndWaitForNewWindow(5000);
+        UiObject2 foldupButton = device.findObject(By.res("woyou.market:id/iv_arrow"));
+        foldupButton.clickAndWait(Until.newWindow(),5000);
+        UiScrollable hotAllScroll1 = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        Assert.assertNotNull(hotAllScroll1);
+    }
+
+    //测试应用点击安装时候，安装按钮变为暂停按钮
+    @Test
+    public void testCheckAppDetailStatusDownloading() throws UiObjectNotFoundException, InterruptedException {
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
+        installObj.click();
+        Assert.assertTrue(installObj.wait(Until.textEquals("暂停"),5000));
+    }
+
+    //测试应用点击暂停下载时候，暂停按钮变成继续按钮
+    @Test
+    public void testCheckAppDetailStatusInstalling() throws UiObjectNotFoundException {
+        device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部")).clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
+        installObj.click();
+        device.wait(Until.findObject(By.res("woyou.market:id/tv_install").text("暂停")),5000);
+        UiObject2 pauseButton = device.findObject(By.res("woyou.market:id/tv_install").text("暂停"));
+        pauseButton.click();
+        Assert.assertTrue(pauseButton.wait(Until.textEquals("继续"),5000));
+    }
+
+    //检查搜索历史记录正常，搜索一个应用，该应用名称和历史记录中第一个相同
+    @Test
+    public void testCheckSearchHistory() throws UiObjectNotFoundException {
+        UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
+        searchObj.click();
+        sleep(2000);
+        UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
+        searchObj1.click();
+        searchObj1.setText("tt");
+        UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
+        UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
+        String appName = appNameObj.getText();
+        appInfo.click();
+        device.pressBack();
+        UiObject2 clearButton = device.findObject(By.res("woyou.market:id/iv_delete"));
+        clearButton.click();
+        sleep(2000);
+        String historyObjName = device.findObject(By.res("woyou.market:id/history_key")).findObject(By.clazz("android.widget.TextView")).getText();
+        Assert.assertEquals("期望的名字是"+appName+",而实际是"+historyObjName,appName,historyObjName);
+    }
 }
