@@ -37,6 +37,7 @@ public class SunmiUtil {
         int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
+        sleep(2000);
         for(int i = 0;i < pages - 1;i++){
             Log.v("ssss",Integer.toString(i));
             UiObject2 appObj = device.findObject(By.text(appName));
@@ -58,6 +59,7 @@ public class SunmiUtil {
         int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
+        sleep(2000);
         for(int i = 0;i < pages - 1;i++){
             Log.v("ssss",Integer.toString(i));
             UiObject2 appObj = device.findObject(By.text(appName));
