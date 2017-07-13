@@ -354,7 +354,8 @@ public class SunmiAppStore {
             String appName = device.findObject(By.res("woyou.market:id/grid_view")).findObject(By.res("woyou.market:id/tv_name")).getText();
             UiObject2 hotSearchObj = device.findObject(By.res("woyou.market:id/grid_view")).findObject(By.res("woyou.market:id/item_app"));
             hotSearchObj.clickAndWait(Until.newWindow(),5000);
-            String appDetailName = device.findObject(By.res("woyou.market:id/tv_name")).getText();
+            UiObject2 appDetailObj = device.findObject(By.res("woyou.market:id/tv_name"));
+            String appDetailName = appDetailObj.getText();
             Assert.assertEquals(appName,appDetailName);
         }else{
             Assert.fail("没有任何热搜应用，需要确定是否确实不存在热搜应用");
@@ -592,6 +593,7 @@ public class SunmiAppStore {
     //测试应用点击安装时候，安装按钮变为暂停按钮
     @Test
     public void testCheckAppDetailStatusDownloading() throws UiObjectNotFoundException, InterruptedException {
+        device.wait(Until.hasObject(By.res("woyou.market:id/tv_hot_all").text("全部")),20000);
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
         hotObj.clickAndWait(Until.newWindow(), 10000);
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
@@ -603,7 +605,7 @@ public class SunmiAppStore {
 
     //测试应用点击暂停下载时候，暂停按钮变成继续按钮
     @Test
-    public void testCheckAppDetailStatusInstalling() throws UiObjectNotFoundException {
+    public void testCheckAppDetailStatusPause() throws UiObjectNotFoundException {
         UiObject2 allObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
         allObj.clickAndWait(Until.newWindow(), 10000);
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
@@ -614,6 +616,25 @@ public class SunmiAppStore {
         UiObject2 pauseButton = device.findObject(By.res("woyou.market:id/tv_install").text("暂停"));
         pauseButton.click();
         Assert.assertTrue(pauseButton.wait(Until.textEquals("继续"),5000));
+    }
+
+    //测试应用点击暂停下载时候，暂停按钮变成继续按钮，再点击继续按钮，继续按钮变成暂停按钮状态
+    @Test
+    public void testCheckAppDetailStatusPauseGoon() throws UiObjectNotFoundException {
+        UiObject2 allObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
+        allObj.clickAndWait(Until.newWindow(), 10000);
+        UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
+        installObj.click();
+        device.wait(Until.findObject(By.res("woyou.market:id/tv_install").text("暂停")),5000);
+        UiObject2 pauseButton = device.findObject(By.res("woyou.market:id/tv_install").text("暂停"));
+        pauseButton.click();
+        pauseButton.wait(Until.findObject(By.res("woyou.market:id/tv_install").text("继续")),5000);
+        UiObject2 goonButton = device.findObject(By.res("woyou.market:id/tv_install").text("继续"));
+        goonButton.click();
+        Assert.assertTrue(goonButton.wait(Until.textEquals("暂停"),5000));
+
     }
 
     //检查搜索历史记录正常，搜索一个应用，该应用名称和历史记录中第一个相同
