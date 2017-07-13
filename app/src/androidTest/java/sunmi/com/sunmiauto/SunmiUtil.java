@@ -25,7 +25,7 @@ public class SunmiUtil {
     public static void clearAllRecentApps() throws RemoteException {
         device.pressHome();
         device.pressRecentApps();
-        sleep(2000);
+        sleep(4000);
         UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/clean"));
         sleep(1000);
         clearObj.clickAndWait(Until.newWindow(),5000);
@@ -34,7 +34,12 @@ public class SunmiUtil {
     //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
     public static boolean findAppByText(String appName){
         device.pressHome();
-        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
+        UiObject2 indicatorObj = device.findObject(By.res("com.woyou.launcher:id/page_indicator"));
+        int pages = indicatorObj.getChildCount();
+        UiObject2 appIcon = device.findObject(By.text(appName));
+        if(null != appIcon){
+            return true;
+        }
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(2000);
@@ -58,6 +63,11 @@ public class SunmiUtil {
         device.pressHome();
         int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
         Log.v("sssss",Integer.toString(pages));
+        UiObject2 appIcon = device.findObject(By.text(appName));
+        if(null != appIcon){
+            appIcon.clickAndWait(Until.newWindow(),5000);
+            return true;
+        }
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(2000);
         int i = 0;
