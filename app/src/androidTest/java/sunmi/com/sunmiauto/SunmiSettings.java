@@ -45,7 +45,8 @@ public class SunmiSettings {
         SunmiUtil.clearAllRecentApps();
         SunmiUtil.findAppByText("设置");
         sleep(2000);
-        device.findObject(By.text("设置")).clickAndWait(Until.newWindow(),5000);
+        UiObject2 setObj = device.findObject(By.text("设置"));
+        setObj.clickAndWait(Until.newWindow(),5000);
     }
 
     @Test
