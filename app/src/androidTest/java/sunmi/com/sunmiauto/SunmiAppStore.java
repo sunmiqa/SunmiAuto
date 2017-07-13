@@ -631,6 +631,7 @@ public class SunmiAppStore {
         String appName = appNameObj.getText();
         appInfo.click();
         device.pressBack();
+        sleep(1000);
         UiObject2 clearButton = device.findObject(By.res("woyou.market:id/iv_delete"));
         clearButton.click();
         sleep(2000);
