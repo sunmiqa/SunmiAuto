@@ -25,15 +25,16 @@ public class SunmiUtil {
     public static void clearAllRecentApps() throws RemoteException {
         device.pressHome();
         device.pressRecentApps();
-        sleep(4000);
-        UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/clean"));
-        sleep(1000);
+        device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),10000);
+        sleep(2000);
+        UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
         clearObj.clickAndWait(Until.newWindow(),5000);
     }
 
     //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
     public static boolean findAppByText(String appName){
         device.pressHome();
+        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
         UiObject2 indicatorObj = device.findObject(By.res("com.woyou.launcher:id/page_indicator"));
         int pages = indicatorObj.getChildCount();
         UiObject2 appIcon = device.findObject(By.text(appName));
@@ -61,6 +62,7 @@ public class SunmiUtil {
     //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
     public static boolean findAppAndOpenByText(String appName){
         device.pressHome();
+        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
         int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
         Log.v("sssss",Integer.toString(pages));
         UiObject2 appIcon = device.findObject(By.text(appName));
@@ -103,6 +105,7 @@ public class SunmiUtil {
         }
         String screenshotName = System.currentTimeMillis() + "_" + tag + ".png";
         File screenshotFile = new File(dir, screenshotName);
+        sleep(1000);
         device.takeScreenshot(screenshotFile, 0.2F, 50);
         sleep(2000);
     }

@@ -28,6 +28,7 @@ public class SunmiSettings {
 
     @BeforeClass
     public static void beforeTestClass(){
+        Configurator configurator = Configurator.getInstance();
         Long i1 = Configurator.getInstance().getActionAcknowledgmentTimeout();
         Long i2 = Configurator.getInstance().getKeyInjectionDelay();
         Long i3 = Configurator.getInstance().getScrollAcknowledgmentTimeout();
@@ -38,6 +39,8 @@ public class SunmiSettings {
         Log.v("ActionTimeOut",i3.toString());
         Log.v("ActionTimeOut",i4.toString());
         Log.v("ActionTimeOut",i5.toString());
+        configurator.setKeyInjectionDelay(1000L);
+        Log.v("mmmmm",String.valueOf(configurator.getKeyInjectionDelay()));
     }
 
     @Before
@@ -84,6 +87,5 @@ public class SunmiSettings {
     
     @Test
     public void testModifyIbeacon(){
-        
     }
 }
