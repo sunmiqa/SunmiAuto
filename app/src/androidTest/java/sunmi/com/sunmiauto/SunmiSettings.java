@@ -47,8 +47,10 @@ public class SunmiSettings {
     public void setup() throws IOException, RemoteException {
         SunmiUtil.clearAllRecentApps();
         SunmiUtil.findAppByText("设置");
-        sleep(2000);
+        long begin = System.currentTimeMillis();
         UiObject2 setObj = device.findObject(By.text("设置"));
+        long end = System.currentTimeMillis();
+        Log.v("sleepTime", String.valueOf(end-begin));
         setObj.clickAndWait(Until.newWindow(),5000);
     }
 

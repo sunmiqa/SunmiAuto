@@ -24,6 +24,7 @@ public class SunmiUtil {
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {
         device.pressHome();
+        device.pressHome();
         device.pressRecentApps();
         device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),10000);
         sleep(2000);
@@ -34,13 +35,13 @@ public class SunmiUtil {
     //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
     public static boolean findAppByText(String appName){
         device.pressHome();
-        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
-        UiObject2 indicatorObj = device.findObject(By.res("com.woyou.launcher:id/page_indicator"));
-        int pages = indicatorObj.getChildCount();
         UiObject2 appIcon = device.findObject(By.text(appName));
         if(null != appIcon){
             return true;
         }
+        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
+        UiObject2 indicatorObj = device.findObject(By.res("com.woyou.launcher:id/page_indicator"));
+        int pages = indicatorObj.getChildCount();
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(2000);
@@ -59,24 +60,25 @@ public class SunmiUtil {
         return false;
     }
 
-    //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
+    //传递一个应用名称，找到该名称的应用并打开，找到返回true，未找到返回false
     public static boolean findAppAndOpenByText(String appName){
         device.pressHome();
-        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
-        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
-        Log.v("sssss",Integer.toString(pages));
         UiObject2 appIcon = device.findObject(By.text(appName));
         if(null != appIcon){
             appIcon.clickAndWait(Until.newWindow(),5000);
             return true;
         }
+        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
+        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
+        Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(2000);
         int i = 0;
         while(i < pages){
             UiObject2 appObj = device.findObject(By.text(appName));
             if(null != appObj){
-                appObj.clickAndWait(Until.newWindow(),5000);
+                appObj.clickAndWait(Until.newWindow(),10000);
+                device.waitForIdle();
                 return true;
             }
             else if(i < pages -1){

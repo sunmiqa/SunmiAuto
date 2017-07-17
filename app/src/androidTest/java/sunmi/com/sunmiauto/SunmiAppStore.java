@@ -324,7 +324,7 @@ public class SunmiAppStore {
         Assert.assertNotNull("未找到"+name,nameObj);
     }
 
-    //测试搜索“谷歌浏览器Google”，该应用显示在结果列表中第一位
+    //测试搜索“DUDU”，该应用显示在结果列表中第一位
     @Test
     public void testSearchByTitle() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -334,12 +334,12 @@ public class SunmiAppStore {
         sleep(2000);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("谷歌浏览器Google");
+        searchObj1.setText("DUDU");
         SunmiUtil.screenshotCap("inputSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
         UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
-        Assert.assertEquals("谷歌浏览器Google Chrome",appNameObj.getText());
+        Assert.assertEquals("DUDU",appNameObj.getText());
     }
 
     //测试热搜应用存在
@@ -387,7 +387,7 @@ public class SunmiAppStore {
         sleep(2000);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("Google");
+        searchObj1.setText("DUDU");
         SunmiUtil.screenshotCap("inputSearchContentInterface");
         UiObject2 clearButton = device.findObject(By.res("woyou.market:id/iv_delete"));
         clearButton.click();
@@ -684,11 +684,10 @@ public class SunmiAppStore {
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         installObj.click();
         SunmiUtil.screenshotCap("afterClickInstallBtn");
-        device.wait(Until.findObject(By.res("woyou.market:id/tv_install").text("暂停")),5000);
-        UiObject2 pauseButton = device.findObject(By.res("woyou.market:id/tv_install").text("暂停"));
-        pauseButton.click();
+        installObj.wait(Until.textEquals("暂停"),5000);
+        installObj.click();
         SunmiUtil.screenshotCap("afterClickPauseBtn");
-        Assert.assertTrue(pauseButton.wait(Until.textEquals("继续"),5000));
+        Assert.assertTrue(installObj.wait(Until.textEquals("继续"),5000));
     }
 
     //测试应用点击暂停下载时候，暂停按钮变成继续按钮，再点击继续按钮，继续按钮变成暂停按钮状态
@@ -703,15 +702,13 @@ public class SunmiAppStore {
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         installObj.click();
         SunmiUtil.screenshotCap("afterClickInstallBtn");
-        device.wait(Until.findObject(By.res("woyou.market:id/tv_install").text("暂停")),5000);
-        UiObject2 pauseButton = device.findObject(By.res("woyou.market:id/tv_install").text("暂停"));
-        pauseButton.click();
+        installObj.wait(Until.textEquals("暂停"),5000);
+        installObj.click();
         SunmiUtil.screenshotCap("afterClickPauseBtn");
-        pauseButton.wait(Until.findObject(By.res("woyou.market:id/tv_install").text("继续")),5000);
-        UiObject2 goonButton = device.findObject(By.res("woyou.market:id/tv_install").text("继续"));
-        goonButton.click();
+        installObj.wait(Until.textEquals("继续"),5000);
+        installObj.click();
         SunmiUtil.screenshotCap("afterClickGoonBtn");
-        Assert.assertTrue(goonButton.wait(Until.textEquals("暂停"),5000));
+        Assert.assertTrue(installObj.wait(Until.textEquals("暂停"),5000));
 
     }
 
@@ -725,7 +722,7 @@ public class SunmiAppStore {
         sleep(2000);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("tt");
+        searchObj1.setText("cam");
         SunmiUtil.screenshotCap("enterSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
