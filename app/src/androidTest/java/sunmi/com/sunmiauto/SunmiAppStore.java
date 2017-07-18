@@ -108,19 +108,19 @@ public class SunmiAppStore {
         Assert.assertNotNull("不存在woyou.market:id/list_view resId", newestAllObj);
     }
 
-    //测试新品应用滑动查看
-    @Test
-    public void testNewScroll() throws UiObjectNotFoundException {
-        SunmiUtil.screenshotCap("appStoreHome");
-        UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
-        newAllScroll.setAsHorizontalList();
-        newAllScroll.scrollToBeginning(10, 10);
-        newAllScroll.scrollToEnd(10, 10);
-        newAllScroll.scrollToBeginning(10, 10);
-        SunmiUtil.screenshotCap("afterNewAppsScroll");
-        UiScrollable newAllScroll1 = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
-        Assert.assertNotNull("新品上架模块未能找到",newAllScroll1);
-    }
+//    //测试新品应用滑动查看
+//    @Test
+//    public void testNewScroll() throws UiObjectNotFoundException {
+//        SunmiUtil.screenshotCap("appStoreHome");
+//        UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
+//        newAllScroll.setAsHorizontalList();
+//        newAllScroll.scrollToBeginning(10, 10);
+//        newAllScroll.scrollToEnd(10, 10);
+//        newAllScroll.scrollToBeginning(10, 10);
+//        SunmiUtil.screenshotCap("afterNewAppsScroll");
+//        UiScrollable newAllScroll1 = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
+//        Assert.assertNotNull("新品上架模块未能找到",newAllScroll1);
+//    }
 
     //测试热门中全部应用查看
     @Test
@@ -145,66 +145,66 @@ public class SunmiAppStore {
         Assert.assertNotNull("热门应用Title为能够找到",hotObj);
     }
 
-    //测试分类信息正确
-    @Test
-    public void testCheckCategory() throws UiObjectNotFoundException {
-        SunmiUtil.screenshotCap("appStoreHome");
-        UiObject2 categoryObj = device.findObject(By.text("分类"));
-        categoryObj.clickAndWait(Until.newWindow(), 10000);
-        SunmiUtil.screenshotCap("categoryInterface");
-        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
-        ArrayList<String> appCategory = new ArrayList<>();
-        switch (Build.DEVICE) {
-            case "V1-B18":
-                Log.v("enterV1-B18", "V1-B18");
-                appCategory.add("外卖");
-                appCategory.add("支付");
-                appCategory.add("餐饮");
-                appCategory.add("电商");
-                appCategory.add("酒店");
-                appCategory.add("零售");
-                appCategory.add("工具");
-                appCategory.add("配送");
-                appCategory.add("旅游");
-                appCategory.add("理财");
-                appCategory.add("EET");
-                break;
-            case "V1s-G":
-                Log.v("enterV1s-G", "V1s-G");
-                appCategory.add("外卖");
-                appCategory.add("支付");
-                appCategory.add("团购");
-                appCategory.add("餐饮");
-                appCategory.add("电商");
-                appCategory.add("酒店");
-                appCategory.add("零售");
-                appCategory.add("工具");
-                appCategory.add("配送");
-                appCategory.add("旅游");
-                appCategory.add("理财");
-                appCategory.add("EET");
-                break;
-            default:
-                Log.v("enterDefault", "default");
-                appCategory.add("外卖");
-                appCategory.add("支付");
-                appCategory.add("团购");
-                appCategory.add("餐饮");
-                appCategory.add("电商");
-                appCategory.add("酒店");
-                appCategory.add("零售");
-                appCategory.add("工具");
-                appCategory.add("配送");
-                appCategory.add("旅游");
-                appCategory.add("理财");
-                appCategory.add("EET");
-        }
-        for (String s : appCategory
-                ) {
-            boolean b = cateScroll.scrollTextIntoView(s);
-            Assert.assertTrue(s + "--分类不存在", b);
-        }
-    }
+//    //测试分类信息正确
+//    @Test
+//    public void testCheckCategory() throws UiObjectNotFoundException {
+//        SunmiUtil.screenshotCap("appStoreHome");
+//        UiObject2 categoryObj = device.findObject(By.text("分类"));
+//        categoryObj.clickAndWait(Until.newWindow(), 10000);
+//        SunmiUtil.screenshotCap("categoryInterface");
+//        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
+//        ArrayList<String> appCategory = new ArrayList<>();
+//        switch (Build.DEVICE) {
+//            case "V1-B18":
+//                Log.v("enterV1-B18", "V1-B18");
+//                appCategory.add("外卖");
+//                appCategory.add("支付");
+//                appCategory.add("餐饮");
+//                appCategory.add("电商");
+//                appCategory.add("酒店");
+//                appCategory.add("零售");
+//                appCategory.add("工具");
+//                appCategory.add("配送");
+//                appCategory.add("旅游");
+//                appCategory.add("理财");
+//                appCategory.add("EET");
+//                break;
+//            case "V1s-G":
+//                Log.v("enterV1s-G", "V1s-G");
+//                appCategory.add("外卖");
+//                appCategory.add("支付");
+//                appCategory.add("团购");
+//                appCategory.add("餐饮");
+//                appCategory.add("电商");
+//                appCategory.add("酒店");
+//                appCategory.add("零售");
+//                appCategory.add("工具");
+//                appCategory.add("配送");
+//                appCategory.add("旅游");
+//                appCategory.add("理财");
+//                appCategory.add("EET");
+//                break;
+//            default:
+//                Log.v("enterDefault", "default");
+//                appCategory.add("外卖");
+//                appCategory.add("支付");
+//                appCategory.add("团购");
+//                appCategory.add("餐饮");
+//                appCategory.add("电商");
+//                appCategory.add("酒店");
+//                appCategory.add("零售");
+//                appCategory.add("工具");
+//                appCategory.add("配送");
+//                appCategory.add("旅游");
+//                appCategory.add("理财");
+//                appCategory.add("EET");
+//        }
+//        for (String s : appCategory
+//                ) {
+//            boolean b = cateScroll.scrollTextIntoView(s);
+//            Assert.assertTrue(s + "--分类不存在", b);
+//        }
+//    }
 
     //测试进入分类正确
     @Test
@@ -315,7 +315,12 @@ public class SunmiAppStore {
         UiObject2 installObjnew =  fullInstallObj.getParent().findObject(By.text("安装"));
         installObjnew.click();
         SunmiUtil.screenshotCap("afterClickInstallBtn");
-        Assert.assertTrue("下载安装了300秒，仍然未安装好",installObjnew.wait(Until.textEquals("打开"),300000));
+        boolean installSucc = installObjnew.wait(Until.textEquals("打开"),300000);
+        if(!installSucc){
+            installObjnew.click();
+            SunmiUtil.screenshotCap("installFailed");
+            Assert.fail("下载安装了300秒，仍然未安装好,暂停了下载");
+        }
         SunmiUtil.screenshotCap("afterInstalled");
         device.pressHome();
         findAppByText(name);
@@ -633,6 +638,7 @@ public class SunmiAppStore {
         SunmiUtil.screenshotCap("enterAppDetail");
         UiObject2 commentObj = device.findObject(By.res("woyou.market:id/tv_install_comment_app"));
         commentObj.clickAndWait(Until.newWindow(),5000);
+        device.wait(Until.hasObject(By.res("woyou.market:id/rating_bar")),5000);
         SunmiUtil.screenshotCap("afterClickComment");
         UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
         Assert.assertNotNull(rateObj);
@@ -668,8 +674,8 @@ public class SunmiAppStore {
         hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         installObj.click();
-        SunmiUtil.screenshotCap("afterClickInstallBtn");
         Assert.assertTrue(installObj.wait(Until.textEquals("暂停"),5000));
+        SunmiUtil.screenshotCap("afterClickInstallBtn");
     }
 
     //测试应用点击暂停下载时候，暂停按钮变成继续按钮
@@ -686,8 +692,8 @@ public class SunmiAppStore {
         SunmiUtil.screenshotCap("afterClickInstallBtn");
         installObj.wait(Until.textEquals("暂停"),5000);
         installObj.click();
-        SunmiUtil.screenshotCap("afterClickPauseBtn");
         Assert.assertTrue(installObj.wait(Until.textEquals("继续"),5000));
+        installObj.click();
     }
 
     //测试应用点击暂停下载时候，暂停按钮变成继续按钮，再点击继续按钮，继续按钮变成暂停按钮状态
@@ -701,13 +707,10 @@ public class SunmiAppStore {
         hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         installObj.click();
-        SunmiUtil.screenshotCap("afterClickInstallBtn");
         installObj.wait(Until.textEquals("暂停"),5000);
         installObj.click();
-        SunmiUtil.screenshotCap("afterClickPauseBtn");
         installObj.wait(Until.textEquals("继续"),5000);
         installObj.click();
-        SunmiUtil.screenshotCap("afterClickGoonBtn");
         Assert.assertTrue(installObj.wait(Until.textEquals("暂停"),5000));
 
     }
@@ -739,4 +742,5 @@ public class SunmiAppStore {
         String historyObjName = device.findObject(By.res("woyou.market:id/history_key")).findObject(By.clazz("android.widget.TextView")).getText();
         Assert.assertEquals("期望的名字是"+appName+",而实际是"+historyObjName,appName,historyObjName);
     }
+
 }
