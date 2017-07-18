@@ -675,7 +675,7 @@ public class SunmiAppStore {
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         installObj.click();
         Assert.assertTrue(installObj.wait(Until.textEquals("暂停"),5000));
-        SunmiUtil.screenshotCap("afterClickInstallBtn");
+        installObj.click();
     }
 
     //测试应用点击暂停下载时候，暂停按钮变成继续按钮
