@@ -12,7 +12,9 @@ import android.util.Log;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 
@@ -24,6 +26,7 @@ import static sunmi.com.sunmiauto.SunmiUtil.sleep;
  * Created by fengy on 2017/7/8.
  */
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
 
     @BeforeClass
@@ -55,7 +58,7 @@ public class SunmiSettings {
     }
 
     @Test
-    public void testWiFi(){
+    public void test001WiFi(){
         screenshotCap("setting_interface");
         UiObject2 wifiops = device.findObject(By.text("WLAN"));
         wifiops.clickAndWait(Until.newWindow(),5000);
@@ -65,7 +68,7 @@ public class SunmiSettings {
     }
 
     @Test
-    public void testDataUsage(){
+    public void test002DataUsage(){
         screenshotCap("setting_interface");
         UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
         ethOps.clickAndWait(Until.newWindow(),5000);
@@ -75,7 +78,7 @@ public class SunmiSettings {
     }
 
     @Test
-    public void testOpenBT() {
+    public void test003OpenBT() {
         screenshotCap("after_enter");
         UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
         WlanObj.click();
@@ -88,6 +91,6 @@ public class SunmiSettings {
     }
     
     @Test
-    public void testModifyIbeacon(){
+    public void test004ModifyIbeacon(){
     }
 }

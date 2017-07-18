@@ -29,7 +29,7 @@ public class SunmiUtil {
         device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),10000);
         sleep(2000);
         UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
-        clearObj.clickAndWait(Until.newWindow(),10000);
+        clearObj.clickAndWait(Until.newWindow(),20000);
     }
 
     //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
