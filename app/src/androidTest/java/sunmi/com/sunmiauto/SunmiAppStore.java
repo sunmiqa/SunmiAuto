@@ -636,12 +636,15 @@ public class SunmiAppStore {
         UiObject2 fullAppObj = installObj.getParent().getParent();
         fullAppObj.clickAndWait(Until.newWindow(),5000);
         SunmiUtil.screenshotCap("enterAppDetail");
-        UiObject2 commentObj = device.findObject(By.res("woyou.market:id/tv_install_comment_app"));
-        commentObj.clickAndWait(Until.newWindow(),5000);
-        device.wait(Until.hasObject(By.res("woyou.market:id/rating_bar")),5000);
-        SunmiUtil.screenshotCap("afterClickComment");
-        UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
-        Assert.assertNotNull(rateObj);
+        for (int i = 0; i < 20; i++) {
+            UiObject2 commentObj = device.findObject(By.res("woyou.market:id/tv_install_comment_app"));
+            commentObj.clickAndWait(Until.newWindow(),5000);
+            device.wait(Until.hasObject(By.res("woyou.market:id/rating_bar")),5000);
+            SunmiUtil.screenshotCap("afterClickComment");
+            UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
+            Assert.assertNotNull(rateObj);
+            device.pressBack();
+        }
     }
 
     //测试应用详情中点击顶部收起按钮退出应用详情界面
