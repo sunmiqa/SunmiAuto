@@ -28,6 +28,7 @@ import static sunmi.com.sunmiauto.SunmiUtil.sleep;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
+    final int timeoutSeconds = 10000;
 
     @BeforeClass
     public static void beforeTestClass(){
@@ -54,14 +55,14 @@ public class SunmiSettings {
         UiObject2 setObj = device.findObject(By.text("设置"));
         long end = System.currentTimeMillis();
         Log.v("sleepTime", String.valueOf(end-begin));
-        setObj.clickAndWait(Until.newWindow(),5000);
+        setObj.clickAndWait(Until.newWindow(),timeoutSeconds);
     }
 
     @Test
     public void test001WiFi(){
         screenshotCap("setting_interface");
         UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(),5000);
+        wifiops.clickAndWait(Until.newWindow(),timeoutSeconds);
         screenshotCap("wifi_interface");
         UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertEquals("Wifi开关默认应该为打开状态",true,wifiButton.isChecked());
@@ -71,7 +72,7 @@ public class SunmiSettings {
     public void test002DataUsage(){
         screenshotCap("setting_interface");
         UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
-        ethOps.clickAndWait(Until.newWindow(),5000);
+        ethOps.clickAndWait(Until.newWindow(),timeoutSeconds);
         screenshotCap("dataUsage_interface");
         UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
         Assert.assertNotNull("未找到流量使用情况标识",dataUsageObj);

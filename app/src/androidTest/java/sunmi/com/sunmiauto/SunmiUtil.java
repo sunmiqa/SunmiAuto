@@ -20,6 +20,7 @@ import java.io.File;
 public class SunmiUtil {
     static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     static UiDevice device = UiDevice.getInstance(instrumentation);
+    static final int timeoutSeconds = 10000;
 
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {
@@ -27,18 +28,18 @@ public class SunmiUtil {
             device.pressHome();
             device.pressHome();
             device.pressRecentApps();
-            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),10000);
+            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),timeoutSeconds);
             sleep(2000);
             UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
-            clearObj.clickAndWait(Until.newWindow(),20000);
+            clearObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         }catch (NullPointerException e){
             device.pressHome();
             device.pressHome();
             device.pressRecentApps();
-            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),10000);
+            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),timeoutSeconds);
             sleep(2000);
             UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
-            clearObj.clickAndWait(Until.newWindow(),20000);
+            clearObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         }
 
     }
@@ -51,7 +52,7 @@ public class SunmiUtil {
         if(null != appIcon){
             return true;
         }
-        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
+        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),timeoutSeconds);
         UiObject2 indicatorObj = device.findObject(By.res("com.woyou.launcher:id/page_indicator"));
         int pages = indicatorObj.getChildCount();
         Log.v("sssss",Integer.toString(pages));
@@ -78,10 +79,10 @@ public class SunmiUtil {
         device.pressHome();
         UiObject2 appIcon = device.findObject(By.text(appName));
         if(null != appIcon){
-            appIcon.clickAndWait(Until.newWindow(),5000);
+            appIcon.clickAndWait(Until.newWindow(),timeoutSeconds);
             return true;
         }
-        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),10000);
+        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),timeoutSeconds);
         int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
@@ -90,7 +91,7 @@ public class SunmiUtil {
         while(i < pages){
             UiObject2 appObj = device.findObject(By.text(appName));
             if(null != appObj){
-                appObj.clickAndWait(Until.newWindow(),10000);
+                appObj.clickAndWait(Until.newWindow(),timeoutSeconds);
                 device.waitForIdle();
                 return true;
             }

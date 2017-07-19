@@ -44,7 +44,8 @@ import static sunmi.com.sunmiauto.SunmiUtil.*;
 public class SunmiAppStore {
     static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     static UiDevice device = UiDevice.getInstance(instrumentation);
-
+    final int timeoutSeconds = 10000;
+    final int downloadSeconds = 300000;
 
     @Before
     //每条测试用例开始前执行操作
@@ -106,7 +107,7 @@ public class SunmiAppStore {
     public void test002CheckNewArrive() {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 newObj = device.findObject(By.res("woyou.market:id/tv_newest_all").text("全部"));
-        newObj.clickAndWait(Until.newWindow(), 10000);
+        newObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("newAppsAll");
         UiObject2 newestAllObj = device.findObject(By.res("woyou.market:id/list_view"));
         Assert.assertNotNull("不存在woyou.market:id/list_view resId", newestAllObj);
@@ -131,7 +132,7 @@ public class SunmiAppStore {
     public void test003CheckHotApps() {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
-        hotObj.clickAndWait(Until.newWindow(), 10000);
+        hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAppsAll");
         UiObject2 hotAllObj = device.findObject(By.res("woyou.market:id/list_view"));
         Assert.assertNotNull("找不到res为woyou.market:id/list_view的对象", hotAllObj);
@@ -215,7 +216,7 @@ public class SunmiAppStore {
     public void test005EnterCategory() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 categoryObj = device.findObject(By.text("分类"));
-        categoryObj.clickAndWait(Until.newWindow(), 10000);
+        categoryObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("categoryInterface");
         UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
         ArrayList<String> appCategory = new ArrayList<>();
@@ -269,7 +270,7 @@ public class SunmiAppStore {
             boolean b = cateScroll.scrollTextIntoView(s);
             Assert.assertTrue(s + "--分类不存在", b);
             UiObject2 sCategoryObj = device.findObject(By.text(s));
-            sCategoryObj.clickAndWait(Until.newWindow(), 10000);
+            sCategoryObj.clickAndWait(Until.newWindow(), timeoutSeconds);
             UiObject2 cateNmaeObj = device.findObject(By.res("woyou.market:id/tv_title"));
             String cateName = cateNmaeObj.getText();
             Assert.assertEquals("应该是" + s + ",而实际是" + cateName, s, cateName);
@@ -282,7 +283,7 @@ public class SunmiAppStore {
     public void test006EnterMine() {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntObj = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntObj.clickAndWait(Until.newWindow(), 10000);
+        mineEntObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 mineObj = device.findObject(By.res("woyou.market:id/tv_title").text("我的"));
         Assert.assertNotNull("不存在\"我的\"", mineObj);
@@ -293,10 +294,10 @@ public class SunmiAppStore {
     public void test007EnterLoginPageFromAppStore() {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntObj = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntObj.clickAndWait(Until.newWindow(), 10000);
+        mineEntObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 userObj = device.findObject(By.res("woyou.market:id/item_user_info"));
-        userObj.clickAndWait(Until.newWindow(), 10000);
+        userObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("loginInterface");
         String actulPkg = device.getCurrentPackageName();
         Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是" + actulPkg, "com.sunmi.usercenter", actulPkg);
@@ -310,7 +311,7 @@ public class SunmiAppStore {
             public boolean checkForCondition() {
                 UiObject2 confirmObj = device.findObject(By.res("woyou.market:id/tv_confirm"));
                 if(null != confirmObj){
-                    confirmObj.clickAndWait(Until.newWindow(),5000);
+                    confirmObj.clickAndWait(Until.newWindow(),timeoutSeconds);
                     return true;
                 }
                 return false;
@@ -319,7 +320,7 @@ public class SunmiAppStore {
 
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
-        hotObj.clickAndWait(Until.newWindow(), 10000);
+        hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("allHotAppsInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         hotAllScroll.scrollTextIntoView("安装");
@@ -331,7 +332,7 @@ public class SunmiAppStore {
         UiObject2 installObjnew =  fullInstallObj.getParent().findObject(By.text("安装"));
         installObjnew.click();
         SunmiUtil.screenshotCap("afterClickInstallBtn");
-        boolean installSucc = installObjnew.wait(Until.textEquals("打开"),300000);
+        boolean installSucc = installObjnew.wait(Until.textEquals("打开"),downloadSeconds);
         if(!installSucc){
             installObjnew.click();
             SunmiUtil.screenshotCap("installFailed");
@@ -388,7 +389,7 @@ public class SunmiAppStore {
         if(hotAppCount != 0){
             String appName = device.findObject(By.res("woyou.market:id/grid_view")).findObject(By.res("woyou.market:id/tv_name")).getText();
             UiObject2 hotSearchObj = device.findObject(By.res("woyou.market:id/grid_view")).findObject(By.res("woyou.market:id/item_app"));
-            hotSearchObj.clickAndWait(Until.newWindow(),5000);
+            hotSearchObj.clickAndWait(Until.newWindow(),timeoutSeconds);
             SunmiUtil.screenshotCap("clickHotsearchFirstOne");
             UiObject2 appDetailObj = device.findObject(By.res("woyou.market:id/tv_name"));
             String appDetailName = appDetailObj.getText();
@@ -427,7 +428,7 @@ public class SunmiAppStore {
         SunmiUtil.screenshotCap("afterClickSearchBar");
         sleep(2000);
         UiObject2 backButton = device.findObject(By.res("woyou.market:id/btn_back"));
-        backButton.clickAndWait(Until.newWindow(),5000);
+        backButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterClickBackBtn");
         sleep(2000);
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
@@ -439,10 +440,10 @@ public class SunmiAppStore {
     public void test014Login(){
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 userCenterEntrence = device.findObject(By.res("woyou.market:id/item_user_info"));
-        userCenterEntrence.clickAndWait(Until.newWindow(),5000);
+        userCenterEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("loginInterface");
         UiObject2 loginText = device.findObject(By.res("com.sunmi.usercenter:id/edit_login_username"));
         loginText.clear();
@@ -452,22 +453,22 @@ public class SunmiAppStore {
         pwdText.setText("sunmi2016");
         SunmiUtil.screenshotCap("afterInputInfo");
         UiObject2 loginButton = device.findObject(By.res("com.sunmi.usercenter:id/btn_login"));
-        loginButton.clickAndWait(Until.newWindow(),5000);
+        loginButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterClickLogin");
         sleep(2000);
         String shopName = device.findObject(By.res("woyou.market:id/tv_shop_name")).getText();
         Assert.assertNotEquals("未登录",shopName);
         UiObject2 userCenterEntrence1 = device.findObject(By.res("woyou.market:id/item_user_info"));
-        userCenterEntrence1.clickAndWait(Until.newWindow(),5000);
+        userCenterEntrence1.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 currAccountObj = device.findObject(By.res("com.sunmi.usercenter:id/rel_now_account"));
-        currAccountObj.clickAndWait(Until.newWindow(),5000);
+        currAccountObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 outAccountObj = device.findObject(By.res("com.sunmi.usercenter:id/btn_login_out"));
-        outAccountObj.clickAndWait(Until.newWindow(),5000);
+        outAccountObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 pwdTextObj = device.findObject(By.res("com.sunmi.usercenter:id/edit"));
         pwdTextObj.clear();
         pwdTextObj.setText("sunmi2016");
         UiObject2 loginOutButton = device.findObject(By.res("com.sunmi.usercenter:id/right"));
-        loginOutButton.clickAndWait(Until.newWindow(),5000);
+        loginOutButton.clickAndWait(Until.newWindow(),timeoutSeconds);
     }
 
     //测试能够进入到购买记录界面
@@ -475,9 +476,9 @@ public class SunmiAppStore {
     public void test015BuiedApps(){
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 userCenterEntrence = device.findObject(By.res("woyou.market:id/item_user_info"));
-        userCenterEntrence.clickAndWait(Until.newWindow(),5000);
+        userCenterEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 loginText = device.findObject(By.res("com.sunmi.usercenter:id/edit_login_username"));
         loginText.clear();
         loginText.setText("zhangjiyang@sunmi.com");
@@ -485,26 +486,26 @@ public class SunmiAppStore {
         pwdText.clear();
         pwdText.setText("sunmi2016");
         UiObject2 loginButton = device.findObject(By.res("com.sunmi.usercenter:id/btn_login"));
-        loginButton.clickAndWait(Until.newWindow(),5000);
+        loginButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterLoginUsercenterInterface");
         sleep(2000);
         UiObject2 buyOption = device.findObject(By.res("woyou.market:id/item_buy_app"));
-        buyOption.clickAndWait(Until.newWindow(),5000);
+        buyOption.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("buiedHisInterface");
         UiObject2 buyHistory = device.findObject(By.text("购买记录"));
         Assert.assertNotNull(buyHistory);
         device.pressBack();
         UiObject2 userCenterEntrence1 = device.findObject(By.res("woyou.market:id/item_user_info"));
-        userCenterEntrence1.clickAndWait(Until.newWindow(),5000);
+        userCenterEntrence1.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 currAccountObj = device.findObject(By.res("com.sunmi.usercenter:id/rel_now_account"));
-        currAccountObj.clickAndWait(Until.newWindow(),5000);
+        currAccountObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 outAccountObj = device.findObject(By.res("com.sunmi.usercenter:id/btn_login_out"));
-        outAccountObj.clickAndWait(Until.newWindow(),5000);
+        outAccountObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         UiObject2 pwdTextObj = device.findObject(By.res("com.sunmi.usercenter:id/edit"));
         pwdTextObj.clear();
         pwdTextObj.setText("sunmi2016");
         UiObject2 loginOutButton = device.findObject(By.res("com.sunmi.usercenter:id/right"));
-        loginOutButton.clickAndWait(Until.newWindow(),5000);
+        loginOutButton.clickAndWait(Until.newWindow(),timeoutSeconds);
     }
 
     //测试检查能够进入到appUpdateInterface
@@ -512,10 +513,10 @@ public class SunmiAppStore {
     public void test016UpdatableApps(){
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 updateOption = device.findObject(By.res("woyou.market:id/item_update_app"));
-        updateOption.clickAndWait(Until.newWindow(),5000);
+        updateOption.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("appUpdateInterface");
         UiObject2 updateHistory = device.findObject(By.text("应用更新"));
         Assert.assertNotNull(updateHistory);
@@ -526,10 +527,10 @@ public class SunmiAppStore {
     public void test017InstallingApps(){
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 installOption = device.findObject(By.res("woyou.market:id/item_install_app"));
-        installOption.clickAndWait(Until.newWindow(),5000);
+        installOption.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("appInstallInterface");
         UiObject2 installHistory = device.findObject(By.text("安装列表"));
         Assert.assertNotNull(installHistory);
@@ -540,7 +541,7 @@ public class SunmiAppStore {
     public void test018OpenAutoUpdateButton(){
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 updateSwitch = device.findObject(By.res("woyou.market:id/switch_auto_update"));
         Assert.assertTrue("应用自动更新开关默认应该打开，当前时关闭",updateSwitch.isChecked());
@@ -551,7 +552,7 @@ public class SunmiAppStore {
     public void test019OpenSaveDataButton(){
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiObject2 saveSwitch = device.findObject(By.res("woyou.market:id/switch_save_flow"));
         Assert.assertTrue("省流量开关默认应该打开，当前时关闭",saveSwitch.isCheckable());
@@ -562,13 +563,13 @@ public class SunmiAppStore {
     public void test020EnterFeedback() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiScrollable mineScroll = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
         mineScroll.scrollTextIntoView("反馈");
         SunmiUtil.screenshotCap("ScrollToFeedbackInterface");
         UiObject2 feedbackObj = device.findObject(By.text("反馈"));
-        feedbackObj.clickAndWait(Until.newWindow(),5000);
+        feedbackObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("enterFeedbackInterface");
         String currentPkgName = device.getCurrentPackageName();
         Assert.assertEquals("期望当前包名为com.sunmi.userfeedback，而实际为"+currentPkgName,"com.sunmi.userfeedback",currentPkgName);
@@ -579,7 +580,7 @@ public class SunmiAppStore {
     public void test021CheckServiceProvider() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(),5000);
+        mineEntrence.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiScrollable mineScroll = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
         mineScroll.scrollTextIntoView("服务商");
@@ -593,7 +594,7 @@ public class SunmiAppStore {
     public void test022CheckRecentVersion() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
-        mineEntrence.clickAndWait(Until.newWindow(), 5000);
+        mineEntrence.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("mineHome");
         UiScrollable mineScroll = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
         mineScroll.scrollTextIntoView("当前版本");
@@ -607,12 +608,12 @@ public class SunmiAppStore {
     public void test023CheckAppDetail() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
-        hotObj.clickAndWait(Until.newWindow(), 10000);
+        hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
         String appName = fullAppObj.getChild(new UiSelector().resourceId("woyou.market:id/tv_name")).getText();
-        fullAppObj.clickAndWaitForNewWindow(5000);
+        fullAppObj.clickAndWaitForNewWindow(timeoutSeconds);
         SunmiUtil.screenshotCap("enterHotAppsFirstOne");
         UiObject2 nameObj = device.findObject(By.res("woyou.market:id/tv_name"));
         Assert.assertEquals("期望的名字是"+appName+"，而实际是"+nameObj.getText(),appName,nameObj.getText());
@@ -623,17 +624,17 @@ public class SunmiAppStore {
     public void test024CommentBeforeInstall() throws IOException, UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
-        hotObj.clickAndWait(Until.newWindow(), 10000);
+        hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
         SunmiUtil.screenshotCap("scrollInstallBtnInterface");
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         UiObject2 fullAppObj = installObj.getParent().getParent();
-        fullAppObj.clickAndWait(Until.newWindow(),5000);
+        fullAppObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("uninstalledAppDetail");
         UiObject2 commentObj = device.findObject(By.res("woyou.market:id/tv_install_comment_app"));
-        commentObj.clickAndWait(Until.newWindow(),5000);
+        commentObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterClickComment");
         UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
         Assert.assertNull(rateObj);
@@ -644,17 +645,17 @@ public class SunmiAppStore {
     public void test025CommentAfterInstall() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
-        hotObj.clickAndWait(Until.newWindow(), 10000);
+        hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("打开"));
         UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("打开"));
         UiObject2 fullAppObj = installObj.getParent().getParent();
-        fullAppObj.clickAndWait(Until.newWindow(),5000);
+        fullAppObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("enterAppDetail");
         UiObject2 commentObj = device.findObject(By.res("woyou.market:id/tv_install_comment_app"));
-        commentObj.clickAndWait(Until.newWindow(),5000);
-        device.wait(Until.hasObject(By.res("woyou.market:id/rating_bar")),5000);
+        commentObj.clickAndWait(Until.newWindow(),timeoutSeconds);
+        device.wait(Until.hasObject(By.res("woyou.market:id/rating_bar")),timeoutSeconds);
         SunmiUtil.screenshotCap("afterClickComment");
         UiObject2 rateObj = device.findObject(By.res("woyou.market:id/rating_bar"));
         Assert.assertNotNull(rateObj);
@@ -666,14 +667,14 @@ public class SunmiAppStore {
     public void test026FoldupAppDetail() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
-        hotObj.clickAndWait(Until.newWindow(), 10000);
+        hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
-        fullAppObj.clickAndWaitForNewWindow(5000);
+        fullAppObj.clickAndWaitForNewWindow(timeoutSeconds);
         SunmiUtil.screenshotCap("enterAppDetail");
         UiObject2 foldupButton = device.findObject(By.res("woyou.market:id/iv_arrow"));
-        foldupButton.clickAndWait(Until.newWindow(),5000);
+        foldupButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("foldUpAppDetail");
         UiScrollable hotAllScroll1 = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         Assert.assertNotNull(hotAllScroll1);
