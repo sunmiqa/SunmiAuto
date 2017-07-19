@@ -20,7 +20,7 @@ import java.io.File;
 public class SunmiUtil {
     static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     static UiDevice device = UiDevice.getInstance(instrumentation);
-    static final int timeoutSeconds = 10000;
+    static final int timeoutSeconds = 20000;
 
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {

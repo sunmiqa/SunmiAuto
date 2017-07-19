@@ -28,7 +28,7 @@ import static sunmi.com.sunmiauto.SunmiUtil.sleep;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
-    final int timeoutSeconds = 10000;
+    final int timeoutSeconds = 20000;
 
     @BeforeClass
     public static void beforeTestClass(){

@@ -44,7 +44,7 @@ import static sunmi.com.sunmiauto.SunmiUtil.*;
 public class SunmiAppStore {
     static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     static UiDevice device = UiDevice.getInstance(instrumentation);
-    final int timeoutSeconds = 10000;
+    final int timeoutSeconds = 20000;
     final int downloadSeconds = 300000;
 
     @Before
