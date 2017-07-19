@@ -13,6 +13,7 @@ import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
+import android.support.test.uiautomator.UiWatcher;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
 
@@ -304,6 +305,18 @@ public class SunmiAppStore {
     //测试安装热门中一个应用
     @Test
     public void test008InstallAppFromHot() throws UiObjectNotFoundException, IOException {
+        device.registerWatcher("downLoadFail", new UiWatcher() {
+            @Override
+            public boolean checkForCondition() {
+                UiObject2 confirmObj = device.findObject(By.res("woyou.market:id/tv_confirm"));
+                if(null != confirmObj){
+                    confirmObj.clickAndWait(Until.newWindow(),5000);
+                    return true;
+                }
+                return false;
+            }
+        });
+
         SunmiUtil.screenshotCap("appStoreHome");
         UiObject2 hotObj = device.findObject(By.res("woyou.market:id/tv_hot_all").text("全部"));
         hotObj.clickAndWait(Until.newWindow(), 10000);
