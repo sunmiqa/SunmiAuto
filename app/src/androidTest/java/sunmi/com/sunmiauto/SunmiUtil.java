@@ -58,7 +58,7 @@ public class SunmiUtil {
         Log.v("sssss",Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(2000);
-        for(int i = 0;i < pages - 1;i++){
+        for(int i = 0;i < pages;i++){
             Log.v("ssss",Integer.toString(i));
             UiObject2 appObj = device.findObject(By.text(appName));
             if(null != appObj){
