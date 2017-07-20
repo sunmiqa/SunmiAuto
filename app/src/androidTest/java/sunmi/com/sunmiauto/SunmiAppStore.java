@@ -340,10 +340,9 @@ public class SunmiAppStore {
         }
         SunmiUtil.screenshotCap("afterInstalled");
         device.pressHome();
-        findAppByText(name);
+        Boolean b = findAppByText(name);
         SunmiUtil.screenshotCap("findInstalledApp");
-        UiObject2 nameObj = device.findObject(By.text(name));
-        Assert.assertNotNull("未找到"+name,nameObj);
+        Assert.assertTrue("桌面上未找到\""+name+"\"这个应用",b);
     }
 
     //测试搜索“DUDU”，该应用显示在结果列表中第一位
