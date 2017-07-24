@@ -1,4 +1,4 @@
-package sunmi.com.sunmiauto;
+package sunmi.com.sunmiauto.testcases;
 
 import android.app.Instrumentation;
 import android.os.Build;
@@ -31,18 +31,13 @@ import java.util.ArrayList;
 
 import javax.mail.MessagingException;
 
-import static sunmi.com.sunmiauto.SunmiUtil.clearAllRecentApps;
-import static sunmi.com.sunmiauto.SunmiUtil.findAppAndOpenByText;
-import static sunmi.com.sunmiauto.SunmiUtil.findAppByText;
-import static sunmi.com.sunmiauto.SunmiUtil.sleep;
-
 
 /**
  * Created by Administrator on 2017/6/7.
  */
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SunmiAppStore_v3_3_15 {
+public class SunmiAppStore {
     static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     static UiDevice device = UiDevice.getInstance(instrumentation);
     final int timeoutSeconds = 20000;
@@ -51,9 +46,9 @@ public class SunmiAppStore_v3_3_15 {
     @Before
     //每条测试用例开始前执行操作
     public void setup() throws RemoteException, UiObjectNotFoundException, IOException {
-        clearAllRecentApps();
-        findAppAndOpenByText("应用市场");
-        sleep(2000);
+        SunmiUtil.clearAllRecentApps();
+        SunmiUtil.findAppAndOpenByText("应用市场");
+        SunmiUtil.sleep(2000);
     }
 
     @After
@@ -107,11 +102,11 @@ public class SunmiAppStore_v3_3_15 {
     @Test
     public void test002CheckNewArrive() {
         SunmiUtil.screenshotCap("appStoreHome");
-        UiObject2 newObj = device.findObject(By.res("woyou.market:id/tv_newset_all").text("全部"));
+        UiObject2 newObj = device.findObject(By.res("woyou.market:id/tv_newest_all").text("全部"));
         newObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("newAppsAll");
         UiObject2 newestAllObj = device.findObject(By.res("woyou.market:id/list_view"));
-        Assert.assertNotNull("不存在woyou.market:id/list_view res Id", newestAllObj);
+        Assert.assertNotNull("不存在woyou.market:id/list_view resId", newestAllObj);
     }
 
 //    //测试新品应用滑动查看
@@ -341,7 +336,7 @@ public class SunmiAppStore_v3_3_15 {
         }
         SunmiUtil.screenshotCap("afterInstalled");
         device.pressHome();
-        Boolean b = findAppByText(name);
+        Boolean b = SunmiUtil.findAppByText(name);
         SunmiUtil.screenshotCap("findInstalledApp");
         Assert.assertTrue("桌面上未找到\""+name+"\"这个应用",b);
     }
@@ -353,13 +348,13 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         SunmiUtil.screenshotCap("afterClickSearchBar");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
         searchObj1.setText("DUDU");
         SunmiUtil.screenshotCap("inputSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject appInfo = appList.getChildByInstance(new UiSelector().className("android.widget.FrameLayout"),0);
+        UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
         UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
         Assert.assertEquals("DUDU",appNameObj.getText());
     }
@@ -371,7 +366,7 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         SunmiUtil.screenshotCap("afterClickSearchBar");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 hotSearchObj = device.findObject(By.res("woyou.market:id/search_hot_text"));
         UiObject2 hotWordObj = hotSearchObj.findObject(By.clazz("android.widget.TextView"));
         Assert.assertEquals("热搜应用",hotWordObj.getText());
@@ -384,7 +379,7 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         SunmiUtil.screenshotCap("afterClickSearchBar");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         int hotAppCount = device.findObject(By.res("woyou.market:id/grid_view")).getChildCount();
         if(hotAppCount != 0){
             String appName = device.findObject(By.res("woyou.market:id/grid_view")).findObject(By.res("woyou.market:id/tv_name")).getText();
@@ -406,7 +401,7 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         SunmiUtil.screenshotCap("afterClickSearchBar");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
         searchObj1.setText("DUDU");
@@ -426,11 +421,11 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         SunmiUtil.screenshotCap("afterClickSearchBar");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 backButton = device.findObject(By.res("woyou.market:id/btn_back"));
         backButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterClickBackBtn");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 mineEntrence = device.findObject(By.res("woyou.market:id/fab_me"));
         Assert.assertNotNull(mineEntrence);
     }
@@ -455,7 +450,7 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 loginButton = device.findObject(By.res("com.sunmi.usercenter:id/btn_login"));
         loginButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterClickLogin");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         String shopName = device.findObject(By.res("woyou.market:id/tv_shop_name")).getText();
         Assert.assertNotEquals("未登录",shopName);
         UiObject2 userCenterEntrence1 = device.findObject(By.res("woyou.market:id/item_user_info"));
@@ -488,7 +483,7 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 loginButton = device.findObject(By.res("com.sunmi.usercenter:id/btn_login"));
         loginButton.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("afterLoginUsercenterInterface");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 buyOption = device.findObject(By.res("woyou.market:id/item_buy_app"));
         buyOption.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("buiedHisInterface");
@@ -611,7 +606,7 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().className("android.widget.FrameLayout"));
+        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
         String appName = fullAppObj.getChild(new UiSelector().resourceId("woyou.market:id/tv_name")).getText();
         fullAppObj.clickAndWaitForNewWindow(timeoutSeconds);
         SunmiUtil.screenshotCap("enterHotAppsFirstOne");
@@ -627,9 +622,9 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/id_tv_install_view").text("安装"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
         SunmiUtil.screenshotCap("scrollInstallBtnInterface");
-        UiObject2 installObj = device.findObject(By.res("woyou.market:id/id_tv_install_view").text("安装"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         UiObject2 fullAppObj = installObj.getParent().getParent();
         fullAppObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("uninstalledAppDetail");
@@ -648,8 +643,8 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/id_tv_install_view").text("打开"));
-        UiObject2 installObj = device.findObject(By.res("woyou.market:id/id_tv_install_view").text("打开"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("打开"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("打开"));
         UiObject2 fullAppObj = installObj.getParent().getParent();
         fullAppObj.clickAndWait(Until.newWindow(),timeoutSeconds);
         SunmiUtil.screenshotCap("enterAppDetail");
@@ -670,7 +665,7 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), timeoutSeconds);
         SunmiUtil.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().className("android.widget.FrameLayout"));
+        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
         fullAppObj.clickAndWaitForNewWindow(timeoutSeconds);
         SunmiUtil.screenshotCap("enterAppDetail");
         UiObject2 foldupButton = device.findObject(By.res("woyou.market:id/iv_arrow"));
@@ -740,23 +735,23 @@ public class SunmiAppStore_v3_3_15 {
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         SunmiUtil.screenshotCap("afterClickSearchBtn");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
         searchObj1.setText("cam");
         SunmiUtil.screenshotCap("enterSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject appInfo = appList.getChildByInstance(new UiSelector().className("android.widget.FrameLayout"),0);
+        UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
         UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
         String appName = appNameObj.getText();
         appInfo.click();
         SunmiUtil.screenshotCap("enterTheFirstSearchResult");
         device.pressBack();
-        sleep(1000);
+        SunmiUtil.sleep(1000);
         UiObject2 clearButton = device.findObject(By.res("woyou.market:id/iv_delete"));
         clearButton.click();
         SunmiUtil.screenshotCap("clearSearchBar");
-        sleep(2000);
+        SunmiUtil.sleep(2000);
         String historyObjName = device.findObject(By.res("woyou.market:id/history_key")).findObject(By.clazz("android.widget.TextView")).getText();
         Assert.assertEquals("期望的名字是"+appName+",而实际是"+historyObjName,appName,historyObjName);
     }

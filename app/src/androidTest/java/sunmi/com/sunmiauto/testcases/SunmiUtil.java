@@ -1,4 +1,4 @@
-package sunmi.com.sunmiauto;
+package sunmi.com.sunmiauto.testcases;
 
 import android.app.Instrumentation;
 import android.os.Build;

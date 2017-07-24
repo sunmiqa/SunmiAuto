@@ -1,6 +1,6 @@
 
 
-package sunmi.com.sunmiauto;
+package sunmi.com.sunmiauto.testcases;
 
 import android.os.RemoteException;
 import android.support.test.uiautomator.By;
@@ -17,10 +17,6 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
-
-import static sunmi.com.sunmiauto.SunmiUtil.device;
-import static sunmi.com.sunmiauto.SunmiUtil.screenshotCap;
-import static sunmi.com.sunmiauto.SunmiUtil.sleep;
 
 /**
  * Created by fengy on 2017/7/8.
@@ -54,7 +50,7 @@ public class SunmiSettings {
         SunmiUtil.clearAllRecentApps();
         SunmiUtil.findAppByText("设置");
         long begin = System.currentTimeMillis();
-        UiObject2 setObj = device.findObject(By.text("设置"));
+        UiObject2 setObj = SunmiUtil.device.findObject(By.text("设置"));
         long end = System.currentTimeMillis();
         Log.v("sleepTime", String.valueOf(end-begin));
         setObj.clickAndWait(Until.newWindow(),timeoutSeconds);
@@ -62,33 +58,33 @@ public class SunmiSettings {
 
     @Test
     public void test001WiFi(){
-        screenshotCap("setting_interface");
-        UiObject2 wifiops = device.findObject(By.text("WLAN"));
+        SunmiUtil.screenshotCap("setting_interface");
+        UiObject2 wifiops = SunmiUtil.device.findObject(By.text("WLAN"));
         wifiops.clickAndWait(Until.newWindow(),timeoutSeconds);
-        screenshotCap("wifi_interface");
-        UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
+        SunmiUtil.screenshotCap("wifi_interface");
+        UiObject2 wifiButton = SunmiUtil.device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertEquals("Wifi开关默认应该为打开状态",true,wifiButton.isChecked());
     }
 
     @Test
     public void test002DataUsage(){
-        screenshotCap("setting_interface");
-        UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
+        SunmiUtil.screenshotCap("setting_interface");
+        UiObject2 ethOps = SunmiUtil.device.findObject(By.text("流量使用情况"));
         ethOps.clickAndWait(Until.newWindow(),timeoutSeconds);
-        screenshotCap("dataUsage_interface");
-        UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
+        SunmiUtil.screenshotCap("dataUsage_interface");
+        UiObject2 dataUsageObj = SunmiUtil.device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
         Assert.assertNotNull("未找到流量使用情况标识",dataUsageObj);
     }
 
     @Test
     public void test003OpenBT() {
-        screenshotCap("after_enter");
-        UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
+        SunmiUtil.screenshotCap("after_enter");
+        UiObject2 WlanObj = SunmiUtil.device.findObject(By.text("蓝牙"));
         WlanObj.click();
-        sleep(2000);
-        screenshotCap("after_click");
-        UiObject2 BTButtonObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        sleep(2000);
+        SunmiUtil.sleep(2000);
+        SunmiUtil.screenshotCap("after_click");
+        UiObject2 BTButtonObj = SunmiUtil.device.findObject(By.res("com.android.settings:id/switch_widget"));
+        SunmiUtil.sleep(2000);
         Assert.assertTrue("蓝牙开关默认不是打开状态",BTButtonObj.isChecked());
 
     }
