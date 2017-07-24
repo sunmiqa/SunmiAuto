@@ -29,6 +29,8 @@ import static sunmi.com.sunmiauto.SunmiUtil.sleep;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
     final int timeoutSeconds = 20000;
+    final String networkNameTest = "AutoTestNetwork";
+    final String networkPwdTest = "autotest388";
 
     @BeforeClass
     public static void beforeTestClass(){
@@ -89,6 +91,27 @@ public class SunmiSettings {
         sleep(2000);
         Assert.assertTrue("蓝牙开关默认不是打开状态",BTButtonObj.isChecked());
 
+    }
+
+    @Test
+    public void test004AddNetwork(){
+//        screenshotCap("after_enter");
+//        UiObject2 WlanObj = device.findObject(By.text("WLAN"));
+//        WlanObj.clickAndWait(Until.newWindow(),timeoutSeconds);
+//        UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+//        moreBtn.clickAndWait(Until.newWindow(),timeoutSeconds);
+//        UiObject2 addNetworkObj = device.findObject(By.text("添加网络"));
+//        addNetworkObj.clickAndWait(Until.newWindow(),timeoutSeconds);
+//        UiObject2 networkName = device.findObject(By.focused(true));
+//        networkName.setText(networkNameTest);
+//        UiObject2 securityOpt = device.findObject(By.res("com.android.settings:id/security"));
+//        securityOpt.clickAndWait(Until.newWindow(),timeoutSeconds);
+//        UiObject2 WPAWPA2PSK = device.findObject(By.text("WPA/WPA2 PSK"));
+//        WPAWPA2PSK.clickAndWait(Until.newWindow(),timeoutSeconds);
+//        UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
+//        pwdObj.setText(networkPwdTest);
+//        UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
+//        saveObj.clickAndWait(Until.newWindow(),timeoutSeconds);
     }
     
     @Test
