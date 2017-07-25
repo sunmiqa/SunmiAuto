@@ -41,6 +41,7 @@ public class SunmiSettings {
     final String NETWORKNAMETEST = "AutoTestNetwork";
     final String NETWORKPWDTEST = "autotest388";
     final String BT_NAME = "V1";
+    final String USER_CENTER_PKG = "com.sunmi.usercenter";
     final ArrayList<String> SETTINGSLIST = new ArrayList<String>(){
         {
             add("WLAN");
@@ -182,12 +183,15 @@ public class SunmiSettings {
             UiObject2 optObj = device.findObject(By.text(SETTINGSLIST.get(i)));
             optObj.clickAndWait(Until.newWindow(),5000);
             if(SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")){
-                UiObject2 userCenterObj = device.findObject(By.res("com.sunmi.usercenter:id/title"));
-                Assert.assertNotNull("未找到"+SETTINGSLIST.get(i),userCenterObj);
+                Assert.assertEquals("未找到"+SETTINGSLIST.get(i),USER_CENTER_PKG,device.getCurrentPackageName());
+                device.pressBack();
+                continue;
             }
             if(SETTINGSLIST.get(i).equalsIgnoreCase("音量键自定义")){
                 UiObject2 volumeKeyObj = device.findObject(By.pkg("com.sunmi.sidekey").text("音量键自定义"));
                 Assert.assertNotNull("未找到"+SETTINGSLIST.get(i),volumeKeyObj);
+                device.pressBack();
+                continue;
             }
             UiObject2 optEnterObj = device.findObject(By.clazz("android.widget.TextView").text(SETTINGSLIST.get(i)));
             Assert.assertNotNull("未找到"+SETTINGSLIST.get(i),optEnterObj);
