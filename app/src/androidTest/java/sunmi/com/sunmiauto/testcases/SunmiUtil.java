@@ -48,6 +48,7 @@ public class SunmiUtil {
     public static boolean findAppByText(String appName){
         device.pressHome();
         device.pressHome();
+        device.pressHome();
         UiObject2 appIcon = device.findObject(By.text(appName));
         if(null != appIcon){
             return true;
@@ -75,6 +76,7 @@ public class SunmiUtil {
 
     //传递一个应用名称，找到该名称的应用并打开，找到返回true，未找到返回false
     public static boolean findAppAndOpenByText(String appName){
+        device.pressHome();
         device.pressHome();
         device.pressHome();
         UiObject2 appIcon = device.findObject(By.text(appName));

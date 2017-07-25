@@ -23,6 +23,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
 
 import java.io.File;
@@ -30,6 +31,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.mail.MessagingException;
+
+import sunmi.com.sunmiauto.testcategory.CategoryAppStoreTest1;
+import sunmi.com.sunmiauto.testcategory.CategoryAppStoreTests_v3_3_15;
 
 
 /**
@@ -91,6 +95,7 @@ public class SunmiAppStore_v3_3_15 {
 
 
     //测试能够成功打开应用市场
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test001OpenAppStore() {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -99,6 +104,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试新品应用存在
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test002CheckNewArrive() {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -124,6 +130,7 @@ public class SunmiAppStore_v3_3_15 {
 //    }
 
     //测试热门中全部应用查看
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test003CheckHotApps() {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -135,6 +142,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试热门应用滑动查看
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test004HotScroll() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -208,6 +216,7 @@ public class SunmiAppStore_v3_3_15 {
 //    }
 
     //测试进入分类正确
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test005EnterCategory() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -275,6 +284,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试进入我的
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test006EnterMine() {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -286,6 +296,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试从应用商店跳转到登录商米账户界面
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test007EnterLoginPageFromAppStore() {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -300,6 +311,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试安装热门中一个应用
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test008InstallAppFromHot() throws UiObjectNotFoundException, IOException {
         device.registerWatcher("downLoadFail", new UiWatcher() {
@@ -342,6 +354,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试搜索“DUDU”，该应用显示在结果列表中第一位
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test009SearchByTitle() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -360,6 +373,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试热搜应用存在
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test010HotSearch(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -373,6 +387,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试热搜应用能够点击并且点击的应用与跳转到的应用详情是同一个应用
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test011ClickHotSearchApp(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -395,6 +410,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试清除搜索栏里的内容
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test012ClearSearchBarButton(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -415,6 +431,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试通过右上角返回按钮从搜索界面返回到应用市场Home界面
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test013BacktoHomeFromSearchButton(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -431,6 +448,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试通过应用市场入口登陆用户中心
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test014Login(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -467,6 +485,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试能够进入到购买记录界面
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test015BuiedApps(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -504,6 +523,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查能够进入到appUpdateInterface
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test016UpdatableApps(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -518,6 +538,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查能够进入到安装应用界面
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test017InstallingApps(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -532,6 +553,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查应用自动更新开关默认打开
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test018OpenAutoUpdateButton(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -543,6 +565,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查省流量开关默认打开
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test019OpenSaveDataButton(){
         SunmiUtil.screenshotCap("appStoreHome");
@@ -554,6 +577,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试从反馈入口进入到反馈中
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test020EnterFeedback() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -571,6 +595,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查当前的服务商
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test021CheckServiceProvider() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -585,6 +610,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查当前的appstore版本
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test022CheckRecentVersion() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -599,6 +625,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试从热门应用enterAppDetail，应用详情和点击进入的应用信息一致
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test023CheckAppDetail() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -615,6 +642,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试应用未安装应用无法评论
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test024CommentBeforeInstall() throws IOException, UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -636,6 +664,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试已安装应用可以发表评论
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test025CommentAfterInstall() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -658,6 +687,7 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试应用详情中点击顶部收起按钮退出应用详情界面
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test026FoldupAppDetail() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
@@ -729,6 +759,7 @@ public class SunmiAppStore_v3_3_15 {
 //    }
 
     //检查搜索历史记录正常，搜索一个应用，该应用名称和历史记录中第一个相同
+    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test027CheckSearchHistory() throws UiObjectNotFoundException {
         SunmiUtil.screenshotCap("appStoreHome");
