@@ -4,8 +4,6 @@ package sunmi.com.sunmiauto.testcases;
 
 import android.os.RemoteException;
 import android.support.test.uiautomator.By;
-import android.support.test.uiautomator.Configurator;
-import android.support.test.uiautomator.SearchCondition;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
@@ -22,14 +20,21 @@ import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import sunmi.com.sunmiauto.testcategory.CategorySettingsTests;
-import sunmi.com.sunmiauto.testcategory.CategorySettingsTests1;
+import sunmi.com.sunmiauto.testutils.TestUtils;
 
-import static sunmi.com.sunmiauto.testcases.SunmiUtil.device;
-import static sunmi.com.sunmiauto.testcases.SunmiUtil.screenshotCap;
-import static sunmi.com.sunmiauto.testcases.SunmiUtil.sleep;
+import static sunmi.com.sunmiauto.testutils.TestConstants.LOG_V;
+import static sunmi.com.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
+import static sunmi.com.sunmiauto.testutils.TestUtils.device;
+import static sunmi.com.sunmiauto.testutils.TestUtils.screenshotCap;
+import static sunmi.com.sunmiauto.testutils.TestUtils.sleep;
+import static sunmi.com.sunmiauto.testutils.TestConstants.BT_NAME;
+import static sunmi.com.sunmiauto.testutils.TestConstants.LONG_WAIT;
+import static sunmi.com.sunmiauto.testutils.TestConstants.NETWORKNAMETEST;
+import static sunmi.com.sunmiauto.testutils.TestConstants.NETWORKPWDTEST;
+import static sunmi.com.sunmiauto.testutils.TestConstants.SETTINGSLIST;
+import static sunmi.com.sunmiauto.testutils.TestConstants.USER_CENTER_PKG;
 
 /**
  * Created by fengy on 2017/7/8.
@@ -37,58 +42,21 @@ import static sunmi.com.sunmiauto.testcases.SunmiUtil.sleep;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
-    final int TIMESECONDS = 20000;
-    final String NETWORKNAMETEST = "AutoTestNetwork";
-    final String NETWORKPWDTEST = "autotest388";
-    final String BT_NAME = "V1";
-    final String USER_CENTER_PKG = "com.sunmi.usercenter";
-    final ArrayList<String> SETTINGSLIST = new ArrayList<String>(){
-        {
-            add("WLAN");
-            add("蓝牙");
-            add("流量使用情况");
-            add("更多");
-            add("用户中心");
-            add("显示");
-            add("音量键自定义");
-            add("安全");
-            add("日期和时间");
-            add("提示音和通知");
-            add("语言和输入法");
-            add("打印设置");
-            add("其他设置");
-            add("应用程序管理");
-            add("无障碍");
-            add("关于设备");
-        }
-    };
 
     @BeforeClass
     public static void beforeTestClass(){
-        Configurator configurator = Configurator.getInstance();
-        Long i1 = Configurator.getInstance().getActionAcknowledgmentTimeout();
-        Long i2 = Configurator.getInstance().getKeyInjectionDelay();
-        Long i3 = Configurator.getInstance().getScrollAcknowledgmentTimeout();
-        Long i4 = Configurator.getInstance().getWaitForIdleTimeout();
-        Long i5 = Configurator.getInstance().getWaitForSelectorTimeout();
-        Log.v("ActionTimeOut",i1.toString());
-        Log.v("ActionTimeOut",i2.toString());
-        Log.v("ActionTimeOut",i3.toString());
-        Log.v("ActionTimeOut",i4.toString());
-        Log.v("ActionTimeOut",i5.toString());
-        configurator.setKeyInjectionDelay(1000L);
-        Log.v("mmmmm",String.valueOf(configurator.getKeyInjectionDelay()));
+
     }
 
     @Before
     public void setup() throws IOException, RemoteException {
-        SunmiUtil.clearAllRecentApps();
-        SunmiUtil.findAppByText("设置");
+        TestUtils.clearAllRecentApps();
+        TestUtils.findAppByText("设置");
         long begin = System.currentTimeMillis();
         UiObject2 setObj = device.findObject(By.text("设置"));
         long end = System.currentTimeMillis();
-        Log.v("sleepTime", String.valueOf(end-begin));
-        setObj.clickAndWait(Until.newWindow(),TIMESECONDS);
+        Log.v(LOG_V, String.valueOf(end-begin));
+        setObj.clickAndWait(Until.newWindow(),LONG_WAIT);
     }
 
     @Category(CategorySettingsTests.class)
@@ -96,7 +64,7 @@ public class SunmiSettings {
     public void test001WiFi(){
         screenshotCap("setting_interface");
         UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(),TIMESECONDS);
+        wifiops.clickAndWait(Until.newWindow(),LONG_WAIT);
         screenshotCap("wifi_interface");
         UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertEquals("Wifi开关默认应该为打开状态",true,wifiButton.isChecked());
@@ -107,7 +75,7 @@ public class SunmiSettings {
     public void test002DataUsage(){
         screenshotCap("setting_interface");
         UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
-        ethOps.clickAndWait(Until.newWindow(),TIMESECONDS);
+        ethOps.clickAndWait(Until.newWindow(),LONG_WAIT);
         screenshotCap("dataUsage_interface");
         UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
         Assert.assertNotNull("未找到流量使用情况标识",dataUsageObj);
@@ -119,10 +87,10 @@ public class SunmiSettings {
         screenshotCap("after_enter");
         UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
         WlanObj.click();
-        sleep(2000);
+        sleep(SHORT_SLEEP);
         screenshotCap("after_click");
         UiObject2 BTButtonObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        sleep(2000);
+        sleep(SHORT_SLEEP);
         Assert.assertTrue("蓝牙开关默认不是打开状态",BTButtonObj.isChecked());
 
     }
@@ -134,39 +102,39 @@ public class SunmiSettings {
         screenshotCap("after_enter");
         UiObject2 WlanObj = device.findObject(By.text("WLAN"));
         WlanObj.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
         moreBtn.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 addNetworkObj = device.findObject(By.text("添加网络"));
         addNetworkObj.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 networkName = device.findObject(By.focused(true));
         networkName.setText(NETWORKNAMETEST);
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         device.pressBack();
         UiObject2 securityOpt = device.findObject(By.res("com.android.settings:id/security"));
         securityOpt.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 WPAWPA2PSK = device.findObject(By.text("WPA/WPA2 PSK"));
         WPAWPA2PSK.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
         pwdObj.setText(NETWORKPWDTEST);
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
-        saveObj.clickAndWait(Until.newWindow(),TIMESECONDS);
-        sleep(1000);
+        saveObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+        sleep(SHORT_SLEEP);
         UiObject2 moreBtn1 = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
         moreBtn1.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 savedNetworkObj = device.findObject(By.text("已保存的网络"));
         savedNetworkObj.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 addedNetwork = device.findObject(By.text(NETWORKNAMETEST));
         Assert.assertNotNull("未找到添加的"+NETWORKNAMETEST,addedNetwork);
         addedNetwork.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 canclObj = device.findObject(By.text("取消保存"));
         canclObj.click();
 
@@ -204,7 +172,7 @@ public class SunmiSettings {
     public void test006CheckWLANStatus(){
         screenshotCap("setting_interface");
         UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(),TIMESECONDS);
+        wifiops.clickAndWait(Until.newWindow(),LONG_WAIT);
         screenshotCap("wifi_interface");
         UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertEquals("Wifi开关默认应该为打开状态",true,wifiButton.isChecked());
@@ -216,15 +184,15 @@ public class SunmiSettings {
     public void test007CheckEnterAdvPass(){
         screenshotCap("setting_interface");
         UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(),TIMESECONDS);
+        wifiops.clickAndWait(Until.newWindow(),LONG_WAIT);
         screenshotCap("wifi_interface");
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
         moreBtn.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 addNetworkObj = device.findObject(By.text("高级"));
-        addNetworkObj.clickAndWait(Until.newWindow(),TIMESECONDS);
-        sleep(1000);
+        addNetworkObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+        sleep(SHORT_SLEEP);
         UiObject2 advWLANObj = device.findObject(By.text("高级WLAN"));
         Assert.assertNotNull("没有能够进入到高级WLAN页面",advWLANObj);
     }
@@ -235,14 +203,14 @@ public class SunmiSettings {
     public void test008CheckBTNamePASS() {
         screenshotCap("after_enter");
         UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
-        WlanObj.clickAndWait(Until.newWindow(),TIMESECONDS);
-        sleep(1000);
+        WlanObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+        sleep(SHORT_SLEEP);
         screenshotCap("after_click");
         UiObject2 moreOptBtn = device.findObject(By.desc("更多选项"));
         moreOptBtn.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 renameObj = device.findObject(By.text("重命名此设备"));
-        renameObj.clickAndWait(Until.newWindow(),TIMESECONDS);
+        renameObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         UiObject2 nameObj = device.findObject(By.focused(true));
         String BTName = nameObj.getText();
         Assert.assertEquals("蓝牙名称不正确",BT_NAME,BTName);
@@ -255,31 +223,31 @@ public class SunmiSettings {
     public void test009CheckBTRenamePASS() {
         screenshotCap("after_enter");
         UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
-        WlanObj.clickAndWait(Until.newWindow(),TIMESECONDS);
-        sleep(1000);
+        WlanObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+        sleep(SHORT_SLEEP);
         screenshotCap("after_click");
         UiObject2 moreOptBtn = device.findObject(By.desc("更多选项"));
         moreOptBtn.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 renameObj = device.findObject(By.text("重命名此设备"));
-        renameObj.clickAndWait(Until.newWindow(),TIMESECONDS);
+        renameObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         UiObject2 nameObj = device.findObject(By.focused(true));
         nameObj.clear();
         nameObj.setText("TESTV1");
         UiObject2 renameBtn = device.findObject(By.text("重命名"));
-        renameBtn.clickAndWait(Until.newWindow(),TIMESECONDS);
+        renameBtn.clickAndWait(Until.newWindow(),LONG_WAIT);
         UiObject2 moreOptBtn1 = device.findObject(By.desc("更多选项"));
         moreOptBtn1.click();
-        sleep(1000);
+        sleep(SHORT_SLEEP);
         UiObject2 renameObj1 = device.findObject(By.text("重命名此设备"));
-        renameObj1.clickAndWait(Until.newWindow(),TIMESECONDS);
+        renameObj1.clickAndWait(Until.newWindow(),LONG_WAIT);
         UiObject2 nameObj1 = device.findObject(By.focused(true));
         String BTName = nameObj1.getText();
         Assert.assertEquals("蓝牙改名失败","TESTV1",BTName);
         nameObj1.clear();
         nameObj1.setText(BT_NAME);
         UiObject2 renameBtn1 = device.findObject(By.text("重命名"));
-        renameBtn1.clickAndWait(Until.newWindow(),TIMESECONDS);
+        renameBtn1.clickAndWait(Until.newWindow(),LONG_WAIT);
     }
 
     //检查流量使用情况存在概览和WLAN选项
@@ -288,7 +256,7 @@ public class SunmiSettings {
     public void test010CheckDataUsage() {
         screenshotCap("after_enter");
         UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况"));
-        dataUsageObj.clickAndWait(Until.newWindow(),TIMESECONDS);
+        dataUsageObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         UiObject2 gernalObj = device.findObject(By.selected(true).text("概览"));
         Assert.assertNotNull("未找到概览tab",gernalObj);
         UiObject2 wlanObj = device.findObject(By.text("WLAN").res("android:id/title"));
@@ -301,7 +269,7 @@ public class SunmiSettings {
     public void test011CheckAirPlaneStatus() {
         screenshotCap("after_enter");
         UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(),TIMESECONDS);
+        moreObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         UiObject2 airplaneSwitch = device.findObject(By.text("飞行模式")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
         Boolean airplaneOpen = airplaneSwitch.isChecked();
         Assert.assertFalse("飞行模式不是关闭状态",airplaneOpen);
