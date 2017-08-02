@@ -1,6 +1,8 @@
-package sunmi.com.sunmiauto.testutils;
+package com.sunmi.sunmiauto.testutils;
 
 import android.app.Instrumentation;
+import android.graphics.Point;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Environment;
 import android.os.RemoteException;
@@ -8,15 +10,18 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
 import android.support.test.uiautomator.UiObject2;
+import android.support.test.uiautomator.UiObjectNotFoundException;
+import android.support.test.uiautomator.UiScrollable;
+import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
 
-import static sunmi.com.sunmiauto.testutils.TestConstants.LOG_V;
-import static sunmi.com.sunmiauto.testutils.TestConstants.LONG_WAIT;
-import static sunmi.com.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
+import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
+import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
+import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 
 /**
  * Created by fengy on 2017/7/8.
@@ -26,6 +31,7 @@ public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
 
+    //初始化存储截图的文件夹
     public static void initLiza() throws RemoteException, IOException {
         File dir = new File(Environment.getExternalStorageDirectory() + File.separator + "app_spoon-screenshots");
         Log.v(LOG_V, Environment.getExternalStorageDirectory() + File.separator + "app_spoon-screenshots");
@@ -50,6 +56,29 @@ public class TestUtils {
         dir.mkdir();
     }
 
+    //绘制图案锁屏（倒L形）
+    public static void drawLPattern(){
+        UiObject2 lockPatternObj = device.findObject(By.res("com.android.settings:id/lockPattern"));
+        Rect lockRect = lockPatternObj.getVisibleBounds();
+        int x1 = lockRect.left;
+        int y1 = lockRect.top;
+        int x2 = lockRect.right;
+        int y2 = lockRect.bottom;
+        Point pointOne = new Point((x1+(x2-x1)/6),(y1+(y2-y1)/6));
+        Point pointTwo = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6));
+        Point pointThree = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6*5));
+        Point[] points = new Point[]{pointOne,pointTwo,pointThree};
+        device.swipe(points,10);
+    }
+
+    //进入到设置中某一级菜单下
+    public static void enterSettingsFirstLevelByName(String name) throws UiObjectNotFoundException {
+        UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+        settingsScroll.scrollTextIntoView(name);
+        UiObject2 securityObj = device.findObject(By.text(name));
+        securityObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+    }
+
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {
         try{
@@ -72,13 +101,14 @@ public class TestUtils {
 
     }
 
-    //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false
+    //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false（为了适配不同版本桌面，增加了应用未打开前名称带●的判断）
     public static boolean findAppByText(String appName){
         device.pressHome();
         device.pressHome();
         device.pressHome();
         UiObject2 appIcon = device.findObject(By.text(appName));
-        if(null != appIcon){
+        UiObject2 appIcon1 = device.findObject(By.text("● "+appName+" "));
+        if(null != appIcon || null != appIcon1){
             return true;
         }
         device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),LONG_WAIT);
@@ -90,7 +120,8 @@ public class TestUtils {
         for(int i = 0;i < pages;i++){
             Log.v(LOG_V,Integer.toString(i));
             UiObject2 appObj = device.findObject(By.text(appName));
-            if(null != appObj){
+            UiObject2 appObj1 = device.findObject(By.text("● "+appName+" "));
+            if(null != appObj || null != appObj1){
                 return true;
             }
             else {
@@ -102,14 +133,18 @@ public class TestUtils {
         return false;
     }
 
-    //传递一个应用名称，找到该名称的应用并打开，找到返回true，未找到返回false
+    //传递一个应用名称，找到该名称的应用并打开，找到返回true，未找到返回false（为了适配不同版本桌面，增加了应用未打开前名称带●的判断）
     public static boolean findAppAndOpenByText(String appName){
         device.pressHome();
         device.pressHome();
         device.pressHome();
         UiObject2 appIcon = device.findObject(By.text(appName));
+        UiObject2 appIcon1 = device.findObject(By.text("● "+appName+" "));
         if(null != appIcon){
             appIcon.clickAndWait(Until.newWindow(),LONG_WAIT);
+            return true;
+        }else if (null != appIcon1){
+            appIcon1.clickAndWait(Until.newWindow(),LONG_WAIT);
             return true;
         }
         device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),LONG_WAIT);
@@ -120,8 +155,13 @@ public class TestUtils {
         int i = 0;
         while(i < pages){
             UiObject2 appObj = device.findObject(By.text(appName));
+            UiObject2 appObj1 = device.findObject(By.text("● "+appName+" "));
             if(null != appObj){
                 appObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+                device.waitForIdle();
+                return true;
+            }else if(null != appObj1){
+                appObj1.clickAndWait(Until.newWindow(),LONG_WAIT);
                 device.waitForIdle();
                 return true;
             }

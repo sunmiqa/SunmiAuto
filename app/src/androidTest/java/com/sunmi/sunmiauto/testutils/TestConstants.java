@@ -1,4 +1,4 @@
-package sunmi.com.sunmiauto.testutils;
+package com.sunmi.sunmiauto.testutils;
 
 import java.util.ArrayList;
 

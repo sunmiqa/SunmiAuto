@@ -1,4 +1,4 @@
-package sunmi.com.sunmiauto;
+package com.sunmi.sunmiauto;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;

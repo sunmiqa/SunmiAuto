@@ -1,4 +1,4 @@
-package sunmi.com.sunmiauto.testsuites;
+package com.sunmi.sunmiauto.testsuites;
 
 import android.os.RemoteException;
 
@@ -9,11 +9,11 @@ import org.junit.runners.Suite;
 
 import java.io.IOException;
 
-import sunmi.com.sunmiauto.testcases.SunmiAppStore_v3_3_15;
-import sunmi.com.sunmiauto.testcases.SunmiSettings;
-import sunmi.com.sunmiauto.testutils.TestUtils;
-import sunmi.com.sunmiauto.testcategory.CategoryAppStoreTests_v3_3_15;
-import sunmi.com.sunmiauto.testcategory.CategorySettingsTests;
+import com.sunmi.sunmiauto.testcases.SunmiAppStore_v3_3_15;
+import com.sunmi.sunmiauto.testcases.SunmiSettings;
+import com.sunmi.sunmiauto.testutils.TestUtils;
+import com.sunmi.sunmiauto.testcategory.CategoryAppStoreTests_v3_3_15;
+import com.sunmi.sunmiauto.testcategory.CategorySettingsTests;
 
 /**
  * Created by fengy on 2017/7/25.

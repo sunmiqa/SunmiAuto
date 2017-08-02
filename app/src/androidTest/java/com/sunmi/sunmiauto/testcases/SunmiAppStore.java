@@ -1,4 +1,4 @@
-package sunmi.com.sunmiauto.testcases;
+package com.sunmi.sunmiauto.testcases;
 
 import android.os.Build;
 import android.os.RemoteException;
@@ -19,21 +19,23 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.experimental.categories.Category;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import javax.mail.MessagingException;
-import sunmi.com.sunmiauto.testcategory.CategoryAppStoreTests_v3_3_15;
-import sunmi.com.sunmiauto.testutils.TestUtils;
 
-import static sunmi.com.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
-import static sunmi.com.sunmiauto.testutils.TestConstants.USERCENTER_ACCOUNT;
-import static sunmi.com.sunmiauto.testutils.TestConstants.USERCENTER_PWD;
-import static sunmi.com.sunmiauto.testutils.TestUtils.device;
-import static sunmi.com.sunmiauto.testutils.TestConstants.DOWNLOAD_WAIT;
-import static sunmi.com.sunmiauto.testutils.TestConstants.LONG_WAIT;
+import javax.mail.MessagingException;
+
+import com.sunmi.sunmiauto.testutils.TestUtils;
+
+import static com.sunmi.sunmiauto.testutils.TestConstants.SEARCH_APP;
+import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
+import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_ACCOUNT;
+import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_PWD;
+import static com.sunmi.sunmiauto.testutils.TestConstants.USER_CENTER_PKG;
+import static com.sunmi.sunmiauto.testutils.TestUtils.device;
+import static com.sunmi.sunmiauto.testutils.TestConstants.DOWNLOAD_WAIT;
+import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 
 
 /**
@@ -41,8 +43,7 @@ import static sunmi.com.sunmiauto.testutils.TestConstants.LONG_WAIT;
  */
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SunmiAppStore_v3_3_15 {
-
+public class SunmiAppStore {
     @Before
     //每条测试用例开始前执行操作
     public void setup() throws RemoteException, UiObjectNotFoundException, IOException {
@@ -70,7 +71,6 @@ public class SunmiAppStore_v3_3_15 {
 
 
     //测试能够成功打开应用市场
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test001OpenAppStore() {
         TestUtils.screenshotCap("appStoreHome");
@@ -79,33 +79,18 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试新品应用存在
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test002CheckNewArrive() {
         TestUtils.screenshotCap("appStoreHome");
-        UiObject2 newObj = device.findObject(By.res("woyou.market:id/tv_newset_all").text("全部"));
+        UiObject2 newObj = device.findObject(By.res("woyou.market:id/tv_newest_all").text("全部"));
         newObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("newAppsAll");
         UiObject2 newestAllObj = device.findObject(By.res("woyou.market:id/list_view"));
-        Assert.assertNotNull("不存在woyou.market:id/list_view res Id", newestAllObj);
+        Assert.assertNotNull("不存在woyou.market:id/list_view resId", newestAllObj);
     }
 
-//    //测试新品应用滑动查看
-//    @Test
-//    public void testNewScroll() throws UiObjectNotFoundException {
-//        TestUtils.screenshotCap("appStoreHome");
-//        UiScrollable newAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
-//        newAllScroll.setAsHorizontalList();
-//        newAllScroll.scrollToBeginning(10, 10);
-//        newAllScroll.scrollToEnd(10, 10);
-//        newAllScroll.scrollToBeginning(10, 10);
-//        TestUtils.screenshotCap("afterNewAppsScroll");
-//        UiScrollable newAllScroll1 = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view_newest"));
-//        Assert.assertNotNull("新品上架模块未能找到",newAllScroll1);
-//    }
 
     //测试热门中全部应用查看
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test003CheckHotApps() {
         TestUtils.screenshotCap("appStoreHome");
@@ -117,7 +102,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试热门应用滑动查看
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test004HotScroll() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -129,69 +113,8 @@ public class SunmiAppStore_v3_3_15 {
         Assert.assertNotNull("热门应用Title为能够找到",hotObj);
     }
 
-//    //测试分类信息正确
-//    @Test
-//    public void testCheckCategory() throws UiObjectNotFoundException {
-//        TestUtils.screenshotCap("appStoreHome");
-//        UiObject2 categoryObj = device.findObject(By.text("分类"));
-//        categoryObj.clickAndWait(Until.newWindow(), 10000);
-//        TestUtils.screenshotCap("categoryInterface");
-//        UiScrollable cateScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/recycler_view"));
-//        ArrayList<String> appCategory = new ArrayList<>();
-//        switch (Build.DEVICE) {
-//            case "V1-B18":
-//                Log.v("enterV1-B18", "V1-B18");
-//                appCategory.add("外卖");
-//                appCategory.add("支付");
-//                appCategory.add("餐饮");
-//                appCategory.add("电商");
-//                appCategory.add("酒店");
-//                appCategory.add("零售");
-//                appCategory.add("工具");
-//                appCategory.add("配送");
-//                appCategory.add("旅游");
-//                appCategory.add("理财");
-//                appCategory.add("EET");
-//                break;
-//            case "V1s-G":
-//                Log.v("enterV1s-G", "V1s-G");
-//                appCategory.add("外卖");
-//                appCategory.add("支付");
-//                appCategory.add("团购");
-//                appCategory.add("餐饮");
-//                appCategory.add("电商");
-//                appCategory.add("酒店");
-//                appCategory.add("零售");
-//                appCategory.add("工具");
-//                appCategory.add("配送");
-//                appCategory.add("旅游");
-//                appCategory.add("理财");
-//                appCategory.add("EET");
-//                break;
-//            default:
-//                Log.v("enterDefault", "default");
-//                appCategory.add("外卖");
-//                appCategory.add("支付");
-//                appCategory.add("团购");
-//                appCategory.add("餐饮");
-//                appCategory.add("电商");
-//                appCategory.add("酒店");
-//                appCategory.add("零售");
-//                appCategory.add("工具");
-//                appCategory.add("配送");
-//                appCategory.add("旅游");
-//                appCategory.add("理财");
-//                appCategory.add("EET");
-//        }
-//        for (String s : appCategory
-//                ) {
-//            boolean b = cateScroll.scrollTextIntoView(s);
-//            Assert.assertTrue(s + "--分类不存在", b);
-//        }
-//    }
 
     //测试进入分类正确
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test005EnterCategory() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -259,7 +182,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试进入我的
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test006EnterMine() {
         TestUtils.screenshotCap("appStoreHome");
@@ -271,7 +193,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试从应用商店跳转到登录商米账户界面
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test007EnterLoginPageFromAppStore() {
         TestUtils.screenshotCap("appStoreHome");
@@ -282,11 +203,10 @@ public class SunmiAppStore_v3_3_15 {
         userObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("loginInterface");
         String actulPkg = device.getCurrentPackageName();
-        Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是" + actulPkg, "com.sunmi.usercenter", actulPkg);
+        Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是" + actulPkg, USER_CENTER_PKG, actulPkg);
     }
 
     //测试安装热门中一个应用
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test008InstallAppFromHot() throws UiObjectNotFoundException, IOException {
         device.registerWatcher("downLoadFail", new UiWatcher() {
@@ -329,7 +249,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试搜索“DUDU”，该应用显示在结果列表中第一位
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test009SearchByTitle() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -339,16 +258,15 @@ public class SunmiAppStore_v3_3_15 {
         TestUtils.sleep(SHORT_SLEEP);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("DUDU");
+        searchObj1.setText(SEARCH_APP);
         TestUtils.screenshotCap("inputSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject appInfo = appList.getChildByInstance(new UiSelector().className("android.widget.FrameLayout"),0);
+        UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
         UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
-        Assert.assertEquals("DUDU",appNameObj.getText());
+        Assert.assertEquals("搜索结果列表第一个应用不是"+SEARCH_APP,SEARCH_APP,appNameObj.getText());
     }
 
     //测试热搜应用存在
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test010HotSearch(){
         TestUtils.screenshotCap("appStoreHome");
@@ -358,11 +276,10 @@ public class SunmiAppStore_v3_3_15 {
         TestUtils.sleep(SHORT_SLEEP);
         UiObject2 hotSearchObj = device.findObject(By.res("woyou.market:id/search_hot_text"));
         UiObject2 hotWordObj = hotSearchObj.findObject(By.clazz("android.widget.TextView"));
-        Assert.assertEquals("热搜应用",hotWordObj.getText());
+        Assert.assertEquals("不存在热搜应用","热搜应用",hotWordObj.getText());
     }
 
     //测试热搜应用能够点击并且点击的应用与跳转到的应用详情是同一个应用
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test011ClickHotSearchApp(){
         TestUtils.screenshotCap("appStoreHome");
@@ -385,7 +302,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试清除搜索栏里的内容
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test012ClearSearchBarButton(){
         TestUtils.screenshotCap("appStoreHome");
@@ -395,18 +311,17 @@ public class SunmiAppStore_v3_3_15 {
         TestUtils.sleep(SHORT_SLEEP);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("DUDU");
+        searchObj1.setText(SEARCH_APP);
         TestUtils.screenshotCap("inputSearchContentInterface");
         UiObject2 clearButton = device.findObject(By.res("woyou.market:id/iv_delete"));
         clearButton.click();
         TestUtils.screenshotCap("afterClickClearBtn");
         UiObject2 searchObj2 = device.findObject(By.res("woyou.market:id/et_search"));
         String textContent = searchObj2.getText();
-        Assert.assertEquals("搜索",textContent);
+        Assert.assertEquals("清除搜索框内容后，搜索框中不显示搜索","搜索",textContent);
     }
 
     //测试通过右上角返回按钮从搜索界面返回到应用市场Home界面
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test013BacktoHomeFromSearchButton(){
         TestUtils.screenshotCap("appStoreHome");
@@ -423,7 +338,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试通过应用市场入口登陆用户中心
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test014Login(){
         TestUtils.screenshotCap("appStoreHome");
@@ -460,7 +374,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试能够进入到购买记录界面
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test015BuiedApps(){
         TestUtils.screenshotCap("appStoreHome");
@@ -498,7 +411,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查能够进入到appUpdateInterface
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test016UpdatableApps(){
         TestUtils.screenshotCap("appStoreHome");
@@ -513,7 +425,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查能够进入到安装应用界面
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test017InstallingApps(){
         TestUtils.screenshotCap("appStoreHome");
@@ -528,7 +439,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查应用自动更新开关默认打开
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test018OpenAutoUpdateButton(){
         TestUtils.screenshotCap("appStoreHome");
@@ -540,7 +450,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查省流量开关默认打开
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test019OpenSaveDataButton(){
         TestUtils.screenshotCap("appStoreHome");
@@ -552,7 +461,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试从反馈入口进入到反馈中
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test020EnterFeedback() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -570,7 +478,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查当前的服务商
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test021CheckServiceProvider() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -585,7 +492,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试检查当前的appstore版本
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test022CheckRecentVersion() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -600,7 +506,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试从热门应用enterAppDetail，应用详情和点击进入的应用信息一致
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test023CheckAppDetail() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -608,7 +513,7 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().className("android.widget.FrameLayout"));
+        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
         String appName = fullAppObj.getChild(new UiSelector().resourceId("woyou.market:id/tv_name")).getText();
         fullAppObj.clickAndWaitForNewWindow(LONG_WAIT);
         TestUtils.screenshotCap("enterHotAppsFirstOne");
@@ -617,7 +522,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试应用未安装应用无法评论
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test024CommentBeforeInstall() throws IOException, UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -625,9 +529,9 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/id_tv_install_view").text("安装"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("安装"));
         TestUtils.screenshotCap("scrollInstallBtnInterface");
-        UiObject2 installObj = device.findObject(By.res("woyou.market:id/id_tv_install_view").text("安装"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("安装"));
         UiObject2 fullAppObj = installObj.getParent().getParent();
         fullAppObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         TestUtils.screenshotCap("uninstalledAppDetail");
@@ -639,7 +543,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试已安装应用可以发表评论
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test025CommentAfterInstall() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -647,8 +550,8 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/id_tv_install_view").text("打开"));
-        UiObject2 installObj = device.findObject(By.res("woyou.market:id/id_tv_install_view").text("打开"));
+        hotAllScroll.scrollIntoView(new UiSelector().resourceId("woyou.market:id/tv_install").text("打开"));
+        UiObject2 installObj = device.findObject(By.res("woyou.market:id/tv_install").text("打开"));
         UiObject2 fullAppObj = installObj.getParent().getParent();
         fullAppObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         TestUtils.screenshotCap("enterAppDetail");
@@ -662,7 +565,6 @@ public class SunmiAppStore_v3_3_15 {
     }
 
     //测试应用详情中点击顶部收起按钮退出应用详情界面
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test026FoldupAppDetail() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -670,7 +572,7 @@ public class SunmiAppStore_v3_3_15 {
         hotObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("hotAllInterface");
         UiScrollable hotAllScroll = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().className("android.widget.FrameLayout"));
+        UiObject fullAppObj = hotAllScroll.getChild(new UiSelector().resourceId("woyou.market:id/app_view"));
         fullAppObj.clickAndWaitForNewWindow(LONG_WAIT);
         TestUtils.screenshotCap("enterAppDetail");
         UiObject2 foldupButton = device.findObject(By.res("woyou.market:id/iv_arrow"));
@@ -734,7 +636,6 @@ public class SunmiAppStore_v3_3_15 {
 //    }
 
     //检查搜索历史记录正常，搜索一个应用，该应用名称和历史记录中第一个相同
-    @Category(CategoryAppStoreTests_v3_3_15.class)
     @Test
     public void test027CheckSearchHistory() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
@@ -747,7 +648,7 @@ public class SunmiAppStore_v3_3_15 {
         searchObj1.setText("cam");
         TestUtils.screenshotCap("enterSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
-        UiObject appInfo = appList.getChildByInstance(new UiSelector().className("android.widget.FrameLayout"),0);
+        UiObject appInfo = appList.getChildByInstance(new UiSelector().resourceId("woyou.market:id/app_view"),0);
         UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
         String appName = appNameObj.getText();
         appInfo.click();
