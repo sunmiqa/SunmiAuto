@@ -25,6 +25,7 @@ import java.util.List;
 import com.sunmi.sunmiauto.testcategory.CategorySettingsTests;
 import com.sunmi.sunmiauto.testutils.TestUtils;
 
+import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
@@ -50,13 +51,13 @@ public class SunmiSettings {
 
     @Before
     public void setup() throws IOException, RemoteException {
-//        TestUtils.clearAllRecentApps();
-//        TestUtils.findAppByText("设置");
-//        long begin = System.currentTimeMillis();
-//        UiObject2 setObj = device.findObject(By.text("设置"));
-//        long end = System.currentTimeMillis();
-//        Log.v(LOG_V, String.valueOf(end-begin));
-//        setObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+        TestUtils.clearAllRecentApps();
+        TestUtils.findAppByText("设置");
+        long begin = System.currentTimeMillis();
+        UiObject2 setObj = device.findObject(By.text("设置"));
+        long end = System.currentTimeMillis();
+        Log.v(LOG_V, String.valueOf(end-begin));
+        setObj.clickAndWait(Until.newWindow(),LONG_WAIT);
     }
 
     @Category(CategorySettingsTests.class)
