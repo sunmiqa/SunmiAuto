@@ -34,6 +34,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_PWD;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestConstants.DOWNLOAD_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
+import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
 
 
 /**
@@ -394,7 +395,7 @@ public class SunmiAppStore_v3_3_15 {
         TestUtils.screenshotCap("afterClickSearchBar");
         TestUtils.sleep(SHORT_SLEEP);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
-        searchObj1.click();
+//        searchObj1.click();
         searchObj1.setText("DUDU");
         TestUtils.screenshotCap("inputSearchContentInterface");
         UiObject2 clearButton = device.findObject(By.res("woyou.market:id/iv_delete"));
@@ -566,6 +567,10 @@ public class SunmiAppStore_v3_3_15 {
         feedbackObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         TestUtils.screenshotCap("enterFeedbackInterface");
         String currentPkgName = device.getCurrentPackageName();
+//        for (int i = 0; i <10 ; i++) {
+//            Log.v("myautotest1",device.getCurrentPackageName());
+//            sleep(500);
+//        }
         Assert.assertEquals("期望当前包名为com.sunmi.userfeedback，而实际为"+currentPkgName,"com.sunmi.userfeedback",currentPkgName);
     }
 

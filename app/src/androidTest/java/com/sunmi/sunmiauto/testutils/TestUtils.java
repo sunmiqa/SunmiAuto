@@ -13,11 +13,13 @@ import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
+import android.support.test.uiautomator.UiWatcher;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
@@ -30,6 +32,24 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
+
+    //注册监听器
+    public static void uiwatchSuite(){
+        device.registerWatcher("crash", new UiWatcher() {
+            @Override
+            public boolean checkForCondition() {
+                UiObject2 crashObj = device.findObject(By.textEndsWith("已停止运行。"));
+                Log.v("myautotest","enterWatch");
+                if(crashObj != null){
+                    sleep(SHORT_SLEEP);
+                    device.findObject(By.text("确定")).clickAndWait(Until.newWindow(),LONG_WAIT);
+                    return true;
+                }
+                return false;
+            }
+        });
+
+    }
 
     //初始化存储截图的文件夹
     public static void initLiza() throws RemoteException, IOException {
