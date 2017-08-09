@@ -19,6 +19,7 @@ import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.internal.runners.statements.Fail;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
@@ -564,7 +565,11 @@ public class SunmiSettings {
     //owner:wangshilin
     //【开关】无线网络
     @Test
-    public void test023CheckWifiStatus(){
+    public void test023CheckWifiStatus() throws UiObjectNotFoundException {
+        screenshotCap("after_enter");
+        device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(),5000);
+        UiObject2 WifiStatusObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+        Assert.assertTrue("测试失败，WIFI开关默认不是开启状态",WifiStatusObj.isChecked());
 
     }
 
@@ -593,6 +598,12 @@ public class SunmiSettings {
     //【开关】启用无线通知
     @Test
     public void test027CheckWifiNotificationStatus(){
+        device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(),5000);
+        device.findObject(By.desc("更多选项")).click();
+        sleep(1000);
+        device.findObject(By.text("高级")).clickAndWait(Until.newWindow(),5000);
+        UiObject2 NoticeObj = device.findObject(By.res("android:id/switchWidget"));
+        Assert.assertTrue("测试失败，网络通知默认为关闭",NoticeObj.isChecked());
 
     }
 
@@ -649,6 +660,8 @@ public class SunmiSettings {
     //修改已配对设备名称
     @Test
     public void test035ModifyPairedDeviceName(){
+
+
 
     }
 
