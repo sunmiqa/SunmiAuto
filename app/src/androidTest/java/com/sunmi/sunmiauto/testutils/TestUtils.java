@@ -91,6 +91,70 @@ public class TestUtils {
         device.swipe(points,10);
     }
 
+    //绘制图案锁屏(需要传入图案解锁最底层UiObject2对象，int一维数组，数组中的值为所要划过的点
+    // 划过的点从左到右，从上到下分别为1，2，3，4，5，6，7，8，9)
+    /***************************
+     *    1      2      3      *
+     *                         *
+     *                         *
+     *    4      5      6      *
+     *                         *
+     *                         *
+     *   7       8      9      *
+     * *************************/
+    public static void drawPattern(UiObject2 patternObj,int[] array){
+        Rect lockRect = patternObj.getVisibleBounds();
+        int x1 = lockRect.left;
+        int y1 = lockRect.top;
+        int x2 = lockRect.right;
+        int y2 = lockRect.bottom;
+        Point p1 = new Point((x1+(x2-x1)/6),(y1+(y2-y1)/6));
+        Point p2 = new Point((x1+(x2-x1)/6*3),(y1+(y2-y1)/6));
+        Point p3 = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6));
+        Point p4 = new Point((x1+(x2-x1)/6),(y1+(y2-y1)/6*3));
+        Point p5 = new Point((x1+(x2-x1)/6*3),(y1+(y2-y1)/6*3));
+        Point p6 = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6*3));
+        Point p7 = new Point((x1+(x2-x1)/6),(y1+(y2-y1)/6*5));
+        Point p8 = new Point((x1+(x2-x1)/6*3),(y1+(y2-y1)/6*5));
+        Point p9 = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6*5));
+        int length = array.length;
+        Point[] points = new Point[length];
+        for (int i = 0; i < length; i++) {
+            switch (array[i]){
+                case 1:
+                    points[i] = p1;
+                    break;
+                case 2:
+                    points[i] = p2;
+                    break;
+                case 3:
+                    points[i] = p3;
+                    break;
+                case 4:
+                    points[i] = p4;
+                    break;
+                case 5:
+                    points[i] = p5;
+                    break;
+                case 6:
+                    points[i] = p6;
+                    break;
+                case 7:
+                    points[i] = p7;
+                    break;
+                case 8:
+                    points[i] = p8;
+                    break;
+                case 9:
+                    points[i] = p9;
+                    break;
+                default:
+                    Log.v("myautotest","不要输入1-9以外的值");
+            }
+        }
+        device.swipe(points,20);
+    }
+
     //进入到设置中某一级菜单下
     public static void enterSettingsFirstLevelByName(String name) throws UiObjectNotFoundException {
         UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));

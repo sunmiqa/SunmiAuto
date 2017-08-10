@@ -10,7 +10,6 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.Until;
-import android.system.Os;
 import android.util.Log;
 
 import org.junit.Assert;
@@ -151,7 +150,8 @@ public class SunmiSettings {
         screenshotCap("after_enter");
         UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
         for (int i = 0; i < SETTINGSLIST.size(); i++) {
-            settingsScroll.scrollTextIntoView(SETTINGSLIST.get(i));
+            Boolean found = settingsScroll.scrollTextIntoView(SETTINGSLIST.get(i));
+            Assert.assertTrue("未找到"+SETTINGSLIST.get(i),found);
             UiObject2 optObj = device.findObject(By.text(SETTINGSLIST.get(i)));
             optObj.clickAndWait(Until.newWindow(), 5000);
             if (SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")) {
