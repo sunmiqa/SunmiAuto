@@ -566,10 +566,13 @@ public class SunmiSettings {
     //【开关】无线网络
     @Test
     public void test023CheckWifiStatus() throws UiObjectNotFoundException {
-        screenshotCap("after_enter");
-        device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(),5000);
-        UiObject2 WifiStatusObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        Assert.assertTrue("测试失败，WIFI开关默认不是开启状态",WifiStatusObj.isChecked());
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("after_enter");
+            UiObject2 WifiStatusObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            Assert.assertTrue("测试失败，WIFI开关默认不是开启状态", WifiStatusObj.isChecked());
+        }
 
     }
 
@@ -598,13 +601,15 @@ public class SunmiSettings {
     //【开关】启用无线通知
     @Test
     public void test027CheckWifiNotificationStatus(){
-        device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(),5000);
-        device.findObject(By.desc("更多选项")).click();
-        sleep(1000);
-        device.findObject(By.text("高级")).clickAndWait(Until.newWindow(),5000);
-        UiObject2 NoticeObj = device.findObject(By.res("android:id/switchWidget"));
-        Assert.assertTrue("测试失败，网络通知默认为关闭",NoticeObj.isChecked());
-
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(), 5000);
+            device.findObject(By.desc("更多选项")).click();
+            sleep(1000);
+            device.findObject(By.text("高级")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("after_enter");
+            UiObject2 NoticeObj = device.findObject(By.res("android:id/switchWidget"));
+            Assert.assertTrue("测试失败，网络通知默认为关闭", NoticeObj.isChecked());
+        }
     }
 
     //owner:liuyang
@@ -660,9 +665,34 @@ public class SunmiSettings {
     //修改已配对设备名称
     @Test
     public void test035ModifyPairedDeviceName(){
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
+            sleep(1000);
+            UiObject2 SwitchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            screenshotCap("after_enter");
+            if (SwitchObj.isChecked() == true) {//判断蓝牙开关状态
 
-
-
+            } else {
+                SwitchObj.click();
+                sleep(3000);
+            }
+            device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
+            sleep(1000);
+            device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
+            sleep(1000);
+            device.findObject(By.text("确定")).click();
+            sleep(1000);
+            screenshotCap("after_enter");
+            UiObject2 TestObj = device.findObject(By.text("测试重命名"));
+            Assert.assertNotNull("测试失败，未找到修改后的蓝牙名", TestObj);
+            sleep(1000);
+            device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
+            sleep(1000);
+            device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
+            sleep(1000);
+            device.findObject(By.text("确定")).click();
+        }
     }
 
     //owner:liuyang
@@ -718,7 +748,20 @@ public class SunmiSettings {
     //默认Wifi热点名称
     @Test
     public void test043CheckAPDefaultName(){
+        if("P1".equals(Build.MODEL)) {
+            device.findObject(By.text("更多")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("更多界面显示");
+            device.findObject(By.text("网络共享与便携式热点")).clickAndWait(Until.newWindow(), 5000);
+            device.findObject(By.text("WLAN 热点")).clickAndWait(Until.newWindow(), 5000);
+            device.findObject(By.text("设置WLAN热点")).clickAndWait(Until.newWindow(), 5000);
+            sleep(1000);
+            UiObject2 WlanNameObj = device.findObject(By.text("SunmiP1"));
+            screenshotCap("设置WLAN界面");
+            Assert.assertNotNull("测试失败,默认名称不是SunmiP1", WlanNameObj);
+        }
+        else if ("V1".equals(Build.MODEL)){
 
+        }
     }
 
     //owner:liuyang
@@ -746,6 +789,12 @@ public class SunmiSettings {
     //【开关】飞行模式
     @Test
     public void test047CheckAirplaneStatus(){
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            device.findObject(By.text("更多")).clickAndWait(Until.newWindow(), 5000);
+            UiObject2 SwitchObj = device.findObject(By.res("android:id/switchWidget"));
+            screenshotCap("更多界面显示");
+            Assert.assertFalse("测试失败，飞行模式开关默认不是关闭", SwitchObj.isChecked());
+        }
 
     }
 
