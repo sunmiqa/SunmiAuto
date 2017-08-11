@@ -4,6 +4,7 @@ package com.sunmi.sunmiauto.testcases;
 
 import android.os.Build;
 import android.os.RemoteException;
+import android.support.test.espresso.action.ScrollToAction;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
@@ -26,6 +27,8 @@ import java.util.List;
 
 import com.sunmi.sunmiauto.testcategory.CategorySettingsTests;
 import com.sunmi.sunmiauto.testutils.TestUtils;
+
+import javax.mail.internet.NewsAddress;
 
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
@@ -906,8 +909,17 @@ public class SunmiSettings {
     //owner:wangshilin
     //【开关】显示密码
     @Test
-    public void test063CheckShowPasswordStatus(){
+    public void test063CheckShowPasswordStatus() throws UiObjectNotFoundException {
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable SettingScoll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScoll.scrollTextIntoView("安全");
+            device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);
+            UiScrollable SwitchScoll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            SwitchScoll.scrollTextIntoView("显示密码");
+            UiObject2 SwitchObj = device.findObject(By.res("android:id/switchWidget"));
+            Assert.assertTrue("测试失败，显示密码默认不是打开", SwitchObj.isChecked());
 
+        }
     }
 
     //owner:liuyang
