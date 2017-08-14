@@ -916,7 +916,7 @@ public class SunmiSettings {
             device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);
             UiScrollable SwitchScoll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
             SwitchScoll.scrollTextIntoView("显示密码");
-            UiObject2 SwitchObj = device.findObject(By.res("android:id/switchWidget"));
+            UiObject2 SwitchObj = device.findObjects(By.res("android:id/switchWidget")).get(0);
             Assert.assertTrue("测试失败，显示密码默认不是打开", SwitchObj.isChecked());
 
         }
@@ -946,7 +946,16 @@ public class SunmiSettings {
     //owner:wangshilin
     //【开关】自动确定时区
     @Test
-    public void test067CheckAutoGetTimeZoneStatus(){
+    public void test067CheckAutoGetTimeZoneStatus() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL));
+        UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+        SettingScroll.scrollTextIntoView("日期和时间");
+        device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(),5000);
+        UiScrollable DateScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+        DateScroll.scrollTextIntoView("自动确定日期和时间");
+        UiObject2 DataObj = device.findObjects(By.res("android:id/switchWidget")).get(0);
+        Assert.assertTrue("测试失败，自动确定时区开关默认不是打开",DataObj.isChecked());
+
 
     }
 
@@ -974,8 +983,15 @@ public class SunmiSettings {
     //owner:wangshilin
     //【开关】使用24小时格式
     @Test
-    public void test071Check24HFormatStatus(){
-
+    public void test071Check24HFormatStatus() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL));
+        UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+        SettingScroll.scrollTextIntoView("日期和时间");
+        device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(),5000);
+        UiScrollable DataScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+        DataScroll.scrollTextIntoView("使用24小时制");
+        UiObject2 FormatObj = device.findObjects(By.res("android:id/switchWidget")).get(1);
+        Assert.assertTrue("测试失败，使用24小时制开关默认不是打开状态",FormatObj.isChecked());
     }
 
     //owner:liuyang
