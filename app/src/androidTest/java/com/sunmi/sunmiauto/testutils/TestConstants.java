@@ -18,7 +18,7 @@ public class TestConstants {
     public static final String USERCENTER_ACCOUNT = "zhangjiyang@sunmi.com";//用户中心账号
     public static final String USERCENTER_PWD = "sunmi2016";//用户中心密码
     public static final String LOG_V = "myautotest";
-    public static final ArrayList<String> SETTINGSLIST = new ArrayList<String>(){//设置列表所有菜单项
+    public static final ArrayList<String> V1_SETTINGSLIST = new ArrayList<String>(){//设置列表所有菜单项
         {
             add("WLAN");
             add("蓝牙");
@@ -35,6 +35,32 @@ public class TestConstants {
             add("其他设置");
             add("应用程序管理");
             add("无障碍");
+            add("关于设备");
+        }
+    };
+
+    public static final ArrayList<String> P1_SETTINGSLIST = new ArrayList<String>(){//设置列表所有菜单项
+        {
+            add("WLAN");
+            add("蓝牙");
+            add("流量使用情况");
+            add("更多");
+            add("显示");
+            add("音量键自定义");
+            add("提示音和通知");
+            add("应用");
+            add("存储设备和USB");
+            add("电池");
+            add("内存");
+            add("位置信息");
+            add("安全");
+            add("用户中心");
+            add("语言和输入法");
+            add("备份和重置");
+            add("日期和时间");
+            add("定时开关机");
+            add("无障碍");
+            add("打印");
             add("关于设备");
         }
     };
