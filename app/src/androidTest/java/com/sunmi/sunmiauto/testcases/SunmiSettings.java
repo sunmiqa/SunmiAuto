@@ -674,9 +674,7 @@ public class SunmiSettings {
             sleep(1000);
             UiObject2 SwitchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
             screenshotCap("after_enter");
-            if (SwitchObj.isChecked() == true) {//判断蓝牙开关状态
-
-            } else {
+            if (SwitchObj.isChecked() == false) {//判断蓝牙开关状态
                 SwitchObj.click();
                 sleep(3000);
             }
