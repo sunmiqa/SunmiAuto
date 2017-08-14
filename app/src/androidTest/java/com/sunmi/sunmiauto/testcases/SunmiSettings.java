@@ -36,7 +36,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.BT_NAME;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.NETWORKNAMETEST;
 import static com.sunmi.sunmiauto.testutils.TestConstants.NETWORKPWDTEST;
-import static com.sunmi.sunmiauto.testutils.TestConstants.SETTINGSLIST;
+import static com.sunmi.sunmiauto.testutils.TestConstants.V1_SETTINGSLIST;
 import static com.sunmi.sunmiauto.testutils.TestConstants.USER_CENTER_PKG;
 
 /**
@@ -149,24 +149,24 @@ public class SunmiSettings {
     public void test005CheckFirstLevel() throws UiObjectNotFoundException {
         screenshotCap("after_enter");
         UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
-        for (int i = 0; i < SETTINGSLIST.size(); i++) {
-            Boolean found = settingsScroll.scrollTextIntoView(SETTINGSLIST.get(i));
-            Assert.assertTrue("未找到"+SETTINGSLIST.get(i),found);
-            UiObject2 optObj = device.findObject(By.text(SETTINGSLIST.get(i)));
+        for (int i = 0; i < V1_SETTINGSLIST.size(); i++) {
+            Boolean found = settingsScroll.scrollTextIntoView(V1_SETTINGSLIST.get(i));
+            Assert.assertTrue("未找到"+V1_SETTINGSLIST.get(i),found);
+            UiObject2 optObj = device.findObject(By.text(V1_SETTINGSLIST.get(i)));
             optObj.clickAndWait(Until.newWindow(), 5000);
-            if (SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")) {
-                Assert.assertEquals("未找到" + SETTINGSLIST.get(i), USER_CENTER_PKG, device.getCurrentPackageName());
+            if (V1_SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")) {
+                Assert.assertEquals("未找到" + V1_SETTINGSLIST.get(i), USER_CENTER_PKG, device.getCurrentPackageName());
                 device.pressBack();
                 continue;
             }
-            if (SETTINGSLIST.get(i).equalsIgnoreCase("音量键自定义")) {
+            if (V1_SETTINGSLIST.get(i).equalsIgnoreCase("音量键自定义")) {
                 UiObject2 volumeKeyObj = device.findObject(By.pkg("com.sunmi.sidekey").text("音量键自定义"));
-                Assert.assertNotNull("未找到" + SETTINGSLIST.get(i), volumeKeyObj);
+                Assert.assertNotNull("未找到" + V1_SETTINGSLIST.get(i), volumeKeyObj);
                 device.pressBack();
                 continue;
             }
-            UiObject2 optEnterObj = device.findObject(By.clazz("android.widget.TextView").text(SETTINGSLIST.get(i)));
-            Assert.assertNotNull("未找到" + SETTINGSLIST.get(i), optEnterObj);
+            UiObject2 optEnterObj = device.findObject(By.clazz("android.widget.TextView").text(V1_SETTINGSLIST.get(i)));
+            Assert.assertNotNull("未找到" + V1_SETTINGSLIST.get(i), optEnterObj);
             device.pressBack();
         }
     }
