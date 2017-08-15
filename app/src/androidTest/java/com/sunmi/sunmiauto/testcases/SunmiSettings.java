@@ -299,6 +299,7 @@ public class SunmiSettings {
             nameObj.setText("TESTV1");
             UiObject2 renameBtn = device.findObject(By.text("重命名"));
             renameBtn.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
             UiObject2 moreOptBtn1 = device.findObject(By.desc("更多选项"));
             moreOptBtn1.click();
             sleep(SHORT_SLEEP);
