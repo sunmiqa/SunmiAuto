@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.RemoteException;
 import android.support.test.espresso.action.ScrollToAction;
 import android.support.test.uiautomator.By;
+import android.support.test.uiautomator.UiObject;
 import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
@@ -48,6 +49,8 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.USER_CENTER_PKG;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
+
+    private long timeoutSeconds;
 
     @BeforeClass
     public static void beforeTestClass() {
@@ -582,8 +585,47 @@ public class SunmiSettings {
     //owner:liuyang
     //连接指定无线网络
     @Test
-    public void test024ConnectSpecifyAP(){
+    public void test024ConnectSpecifyAP() throws UiObjectNotFoundException {
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("wifi_enter");
+            device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(), 5000);
+//            UiObject2 WLAN = device.findObject(By.text("WLAN"));
+//            WLAN.clickAndWait(Until.newWindow(),timeoutSeconds);
 
+
+            screenshotCap("wifi_open");
+            //如果WiFi为关闭则打开
+            UiObject2 openQuick = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            if (!openQuick.isChecked()){//感叹号表示如果为关闭就点击
+                openQuick.click();
+                Assert.assertEquals(true, openQuick.wait(Until.checked(true), 10000));
+            }
+            screenshotCap("wifi_enter");
+            UiObject2 Network = device.findObject(By.text("SUNMI"));
+            Network.clickAndWait(Until.newWindow(),timeoutSeconds);
+            sleep(2000);
+            UiObject2 showPwdObj = device.findObject(By.res("com.android.settings:id/show_password"));
+            UiObject2 canclSaveObj = device.findObject(By.text("取消保存"));
+            if(showPwdObj != null){//不为空，表示存在
+                UiObject2 passwordWIFI1 = device.findObject(By.res("com.android.settings:id/password"));
+                passwordWIFI1.setText("sunmi388");
+
+            }else if(canclSaveObj != null){
+
+                device.pressBack();
+
+
+
+            }
+
+
+
+
+
+
+
+
+        }
     }
 
     //owner:zhangruili
