@@ -32,11 +32,13 @@ import com.sunmi.sunmiauto.testutils.TestUtils;
 import javax.mail.internet.NewsAddress;
 
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
+import static com.sunmi.sunmiauto.testutils.TestConstants.P1_BT_NAME;
+import static com.sunmi.sunmiauto.testutils.TestConstants.P1_SETTINGSLIST;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
 import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
-import static com.sunmi.sunmiauto.testutils.TestConstants.BT_NAME;
+import static com.sunmi.sunmiauto.testutils.TestConstants.V1_BT_NAME;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.NETWORKNAMETEST;
 import static com.sunmi.sunmiauto.testutils.TestConstants.NETWORKPWDTEST;
@@ -71,393 +73,467 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     @Test
     public void test001WiFi() {
-        screenshotCap("setting_interface");
-        UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);
-        screenshotCap("wifi_interface");
-        UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        Assert.assertEquals("Wifi开关默认应该为打开状态", true, wifiButton.isChecked());
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("setting_interface");
+            UiObject2 wifiops = device.findObject(By.text("WLAN"));
+            wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);
+            screenshotCap("wifi_interface");
+            UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            Assert.assertEquals("Wifi开关默认应该为打开状态", true, wifiButton.isChecked());
+        }
     }
 
     @Category(CategorySettingsTests.class)
     @Test
     public void test002DataUsage() {
-        screenshotCap("setting_interface");
-        UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
-        ethOps.clickAndWait(Until.newWindow(), LONG_WAIT);
-        screenshotCap("dataUsage_interface");
-        UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
-        Assert.assertNotNull("未找到流量使用情况标识", dataUsageObj);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("setting_interface");
+            UiObject2 ethOps = device.findObject(By.text("流量使用情况"));
+            ethOps.clickAndWait(Until.newWindow(), LONG_WAIT);
+            screenshotCap("dataUsage_interface");
+            UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况").clazz("android.widget.TextView"));
+            Assert.assertNotNull("未找到流量使用情况标识", dataUsageObj);
+        }
     }
 
     @Category(CategorySettingsTests.class)
     @Test
     public void test003OpenBT() {
-        screenshotCap("after_enter");
-        UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
-        WlanObj.click();
-        sleep(SHORT_SLEEP);
-        screenshotCap("after_click");
-        UiObject2 BTButtonObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        sleep(SHORT_SLEEP);
-        Assert.assertTrue("蓝牙开关默认不是打开状态", BTButtonObj.isChecked());
-
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
+            WlanObj.click();
+            sleep(SHORT_SLEEP);
+            screenshotCap("after_click");
+            UiObject2 BTButtonObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            sleep(SHORT_SLEEP);
+            Assert.assertTrue("蓝牙开关默认不是打开状态", BTButtonObj.isChecked());
+        }
     }
 
     //检查WLAN中添加网络成功
     @Category(CategorySettingsTests.class)
     @Test
     public void test004AddNetwork() {
-        screenshotCap("after_enter");
-        UiObject2 WlanObj = device.findObject(By.text("WLAN"));
-        WlanObj.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
-        moreBtn.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 addNetworkObj = device.findObject(By.text("添加网络"));
-        addNetworkObj.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 networkName = device.findObject(By.focused(true));
-        networkName.setText(NETWORKNAMETEST);
-        sleep(SHORT_SLEEP);
-        device.pressBack();
-        UiObject2 securityOpt = device.findObject(By.res("com.android.settings:id/security"));
-        securityOpt.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 WPAWPA2PSK = device.findObject(By.text("WPA/WPA2 PSK"));
-        WPAWPA2PSK.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
-        pwdObj.setText(NETWORKPWDTEST);
-        sleep(SHORT_SLEEP);
-        UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
-        saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        UiObject2 moreBtn1 = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
-        moreBtn1.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 savedNetworkObj = device.findObject(By.text("已保存的网络"));
-        savedNetworkObj.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 addedNetwork = device.findObject(By.text(NETWORKNAMETEST));
-        Assert.assertNotNull("未找到添加的" + NETWORKNAMETEST, addedNetwork);
-        addedNetwork.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 canclObj = device.findObject(By.text("取消保存"));
-        canclObj.click();
-
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 WlanObj = device.findObject(By.text("WLAN"));
+            WlanObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addNetworkObj = device.findObject(By.text("添加网络"));
+            addNetworkObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 networkName = device.findObject(By.focused(true));
+            networkName.setText(NETWORKNAMETEST);
+            sleep(SHORT_SLEEP);
+            device.pressBack();
+            UiObject2 securityOpt = device.findObject(By.res("com.android.settings:id/security"));
+            securityOpt.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WPAWPA2PSK = device.findObject(By.text("WPA/WPA2 PSK"));
+            WPAWPA2PSK.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
+            pwdObj.setText(NETWORKPWDTEST);
+            sleep(SHORT_SLEEP);
+            UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
+            saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn1 = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 savedNetworkObj = device.findObject(By.text("已保存的网络"));
+            savedNetworkObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addedNetwork = device.findObject(By.text(NETWORKNAMETEST));
+            Assert.assertNotNull("未找到添加的" + NETWORKNAMETEST, addedNetwork);
+            addedNetwork.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 canclObj = device.findObject(By.text("取消保存"));
+            canclObj.click();
+        }
     }
 
     //检查设置中所有一级选项可以正常进入
     @Category(CategorySettingsTests.class)
     @Test
     public void test005CheckFirstLevel() throws UiObjectNotFoundException {
-        screenshotCap("after_enter");
-        UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
-        for (int i = 0; i < V1_SETTINGSLIST.size(); i++) {
-            Boolean found = settingsScroll.scrollTextIntoView(V1_SETTINGSLIST.get(i));
-            Assert.assertTrue("未找到"+V1_SETTINGSLIST.get(i),found);
-            UiObject2 optObj = device.findObject(By.text(V1_SETTINGSLIST.get(i)));
-            optObj.clickAndWait(Until.newWindow(), 5000);
-            if (V1_SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")) {
-                Assert.assertEquals("未找到" + V1_SETTINGSLIST.get(i), USER_CENTER_PKG, device.getCurrentPackageName());
+        if("V1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            for (int i = 0; i < V1_SETTINGSLIST.size(); i++) {
+                Boolean found = settingsScroll.scrollTextIntoView(V1_SETTINGSLIST.get(i));
+                Assert.assertTrue("未找到" + V1_SETTINGSLIST.get(i), found);
+                UiObject2 optObj = device.findObject(By.text(V1_SETTINGSLIST.get(i)));
+                optObj.clickAndWait(Until.newWindow(), 5000);
+                if (V1_SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")) {
+                    Assert.assertEquals("未找到" + V1_SETTINGSLIST.get(i), USER_CENTER_PKG, device.getCurrentPackageName());
+                    device.pressBack();
+                    continue;
+                }
+                if (V1_SETTINGSLIST.get(i).equalsIgnoreCase("音量键自定义")) {
+                    UiObject2 volumeKeyObj = device.findObject(By.pkg("com.sunmi.sidekey").text("音量键自定义"));
+                    Assert.assertNotNull("未找到" + V1_SETTINGSLIST.get(i), volumeKeyObj);
+                    device.pressBack();
+                    continue;
+                }
+                UiObject2 optEnterObj = device.findObject(By.clazz("android.widget.TextView").text(V1_SETTINGSLIST.get(i)));
+                Assert.assertNotNull("未找到" + V1_SETTINGSLIST.get(i), optEnterObj);
                 device.pressBack();
-                continue;
             }
-            if (V1_SETTINGSLIST.get(i).equalsIgnoreCase("音量键自定义")) {
-                UiObject2 volumeKeyObj = device.findObject(By.pkg("com.sunmi.sidekey").text("音量键自定义"));
-                Assert.assertNotNull("未找到" + V1_SETTINGSLIST.get(i), volumeKeyObj);
-                device.pressBack();
-                continue;
-            }
-            UiObject2 optEnterObj = device.findObject(By.clazz("android.widget.TextView").text(V1_SETTINGSLIST.get(i)));
-            Assert.assertNotNull("未找到" + V1_SETTINGSLIST.get(i), optEnterObj);
-            device.pressBack();
         }
+        else if("P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            for (int i = 0; i < P1_SETTINGSLIST.size(); i++) {
+                Boolean found = settingsScroll.scrollTextIntoView(P1_SETTINGSLIST.get(i));
+                Assert.assertTrue("未找到" + P1_SETTINGSLIST.get(i), found);
+                UiObject2 optObj = device.findObject(By.text(P1_SETTINGSLIST.get(i)));
+                optObj.clickAndWait(Until.newWindow(), 5000);
+                if (P1_SETTINGSLIST.get(i).equalsIgnoreCase("用户中心")) {
+                    Assert.assertEquals("未找到" + P1_SETTINGSLIST.get(i), USER_CENTER_PKG, device.getCurrentPackageName());
+                    device.pressBack();
+                    device.pressBack();
+                    continue;
+                }
+                if (P1_SETTINGSLIST.get(i).equalsIgnoreCase("音量键自定义")) {
+                    UiObject2 volumeKeyObj = device.findObject(By.pkg("com.sunmi.sidekey").text("音量键自定义"));
+                    Assert.assertNotNull("未找到" + P1_SETTINGSLIST.get(i), volumeKeyObj);
+                    device.pressBack();
+                    continue;
+                }
+                if (P1_SETTINGSLIST.get(i).equalsIgnoreCase("存储设备和 USB")) {
+                    UiObject2 storeObj = device.findObject(By.clazz("android.widget.TextView").text("内部存储设备"));
+                    Assert.assertNotNull("未找到" + P1_SETTINGSLIST.get(i), storeObj);
+                    device.pressBack();
+                    continue;
+                }
+
+                UiObject2 optEnterObj = device.findObject(By.clazz("android.widget.TextView").text(P1_SETTINGSLIST.get(i)));
+                Assert.assertNotNull("未找到" + P1_SETTINGSLIST.get(i), optEnterObj);
+                device.pressBack();
+            }
+        }
+
     }
 
     //检查WLAN为打开状态
     @Category(CategorySettingsTests.class)
     @Test
     public void test006CheckWLANStatus() {
-        screenshotCap("setting_interface");
-        UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);
-        screenshotCap("wifi_interface");
-        UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
-        Assert.assertEquals("Wifi开关默认应该为打开状态", true, wifiButton.isChecked());
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("setting_interface");
+            UiObject2 wifiops = device.findObject(By.text("WLAN"));
+            wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);
+            screenshotCap("wifi_interface");
+            UiObject2 wifiButton = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            Assert.assertEquals("Wifi开关默认应该为打开状态", true, wifiButton.isChecked());
+        }
     }
 
     //能够进入到WLAN高级菜单中
     @Category(CategorySettingsTests.class)
     @Test
     public void test007CheckEnterAdvPass() {
-        screenshotCap("setting_interface");
-        UiObject2 wifiops = device.findObject(By.text("WLAN"));
-        wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);
-        screenshotCap("wifi_interface");
-        sleep(SHORT_SLEEP);
-        UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
-        moreBtn.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 addNetworkObj = device.findObject(By.text("高级"));
-        addNetworkObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        UiObject2 advWLANObj = device.findObject(By.text("高级WLAN"));
-        Assert.assertNotNull("没有能够进入到高级WLAN页面", advWLANObj);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("setting_interface");
+            UiObject2 wifiops = device.findObject(By.text("WLAN"));
+            wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);
+            screenshotCap("wifi_interface");
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addNetworkObj = device.findObject(By.text("高级"));
+            addNetworkObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 advWLANObj = device.findObject(By.text("高级WLAN"));
+            Assert.assertNotNull("没有能够进入到高级WLAN页面", advWLANObj);
+        }
     }
 
     //检查蓝牙默认设备名称正确
     @Category(CategorySettingsTests.class)
     @Test
     public void test008CheckBTNamePASS() {
-        screenshotCap("after_enter");
-        UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
-        WlanObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        screenshotCap("after_click");
-        UiObject2 moreOptBtn = device.findObject(By.desc("更多选项"));
-        moreOptBtn.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 renameObj = device.findObject(By.text("重命名此设备"));
-        renameObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 nameObj = device.findObject(By.focused(true));
-        String BTName = nameObj.getText();
-        Assert.assertEquals("蓝牙名称不正确", BT_NAME, BTName);
-
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
+            WlanObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            screenshotCap("after_click");
+            UiObject2 moreOptBtn = device.findObject(By.desc("更多选项"));
+            moreOptBtn.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 renameObj = device.findObject(By.text("重命名此设备"));
+            renameObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 nameObj = device.findObject(By.focused(true));
+            String BTName = nameObj.getText();
+            if("V1".equals(Build.MODEL)){
+                Assert.assertEquals("蓝牙名称不正确", V1_BT_NAME, BTName);
+            }else if("P1".equals(Build.MODEL)){
+                Assert.assertEquals("蓝牙名称不正确", P1_BT_NAME, BTName);
+            }
+        }
     }
 
     //检查重命名蓝牙设备名称成功
     @Category(CategorySettingsTests.class)
     @Test
     public void test009CheckBTRenamePASS() {
-        screenshotCap("after_enter");
-        UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
-        WlanObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        screenshotCap("after_click");
-        UiObject2 moreOptBtn = device.findObject(By.desc("更多选项"));
-        moreOptBtn.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 renameObj = device.findObject(By.text("重命名此设备"));
-        renameObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 nameObj = device.findObject(By.focused(true));
-        nameObj.clear();
-        nameObj.setText("TESTV1");
-        UiObject2 renameBtn = device.findObject(By.text("重命名"));
-        renameBtn.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 moreOptBtn1 = device.findObject(By.desc("更多选项"));
-        moreOptBtn1.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 renameObj1 = device.findObject(By.text("重命名此设备"));
-        renameObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 nameObj1 = device.findObject(By.focused(true));
-        String BTName = nameObj1.getText();
-        Assert.assertEquals("蓝牙改名失败", "TESTV1", BTName);
-        nameObj1.clear();
-        nameObj1.setText(BT_NAME);
-        UiObject2 renameBtn1 = device.findObject(By.text("重命名"));
-        renameBtn1.clickAndWait(Until.newWindow(), LONG_WAIT);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 WlanObj = device.findObject(By.text("蓝牙"));
+            WlanObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            screenshotCap("after_click");
+            UiObject2 moreOptBtn = device.findObject(By.desc("更多选项"));
+            moreOptBtn.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 renameObj = device.findObject(By.text("重命名此设备"));
+            renameObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 nameObj = device.findObject(By.focused(true));
+            nameObj.clear();
+            nameObj.setText("TESTV1");
+            UiObject2 renameBtn = device.findObject(By.text("重命名"));
+            renameBtn.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 moreOptBtn1 = device.findObject(By.desc("更多选项"));
+            moreOptBtn1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 renameObj1 = device.findObject(By.text("重命名此设备"));
+            renameObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 nameObj1 = device.findObject(By.focused(true));
+            String BTName = nameObj1.getText();
+            Assert.assertEquals("蓝牙改名失败", "TESTV1", BTName);
+            nameObj1.clear();
+            if("V1".equals(Build.MODEL)){
+                nameObj1.setText(V1_BT_NAME);
+            }else if("P1".equals(Build.MODEL)){
+                nameObj1.setText(P1_BT_NAME);
+            }
+            UiObject2 renameBtn1 = device.findObject(By.text("重命名"));
+            renameBtn1.clickAndWait(Until.newWindow(), LONG_WAIT);
+        }
     }
 
     //检查流量使用情况存在概览和WLAN选项
     @Category(CategorySettingsTests.class)
     @Test
     public void test010CheckDataUsage() {
-        screenshotCap("after_enter");
-        UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况"));
-        dataUsageObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 gernalObj = device.findObject(By.selected(true).text("概览"));
-        Assert.assertNotNull("未找到概览tab", gernalObj);
-        UiObject2 wlanObj = device.findObject(By.text("WLAN").res("android:id/title"));
-        Assert.assertNotNull("未找到WLANtab", wlanObj);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 dataUsageObj = device.findObject(By.text("流量使用情况"));
+            dataUsageObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 gernalObj = device.findObject(By.selected(true).text("概览"));
+            Assert.assertNotNull("未找到概览tab", gernalObj);
+            UiObject2 wlanObj = device.findObject(By.text("WLAN").res("android:id/title"));
+            Assert.assertNotNull("未找到WLANtab", wlanObj);
+        }
     }
 
     //检查更多中飞行模式开关状态正确
     @Category(CategorySettingsTests.class)
     @Test
     public void test011CheckAirPlaneStatus() {
-        screenshotCap("after_enter");
-        UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 airplaneSwitch = device.findObject(By.text("飞行模式")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
-        Boolean airplaneOpen = airplaneSwitch.isChecked();
-        Assert.assertFalse("飞行模式不是关闭状态", airplaneOpen);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 moreObj = device.findObject(By.text("更多"));
+            moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 airplaneSwitch = device.findObject(By.text("飞行模式")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
+            Boolean airplaneOpen = airplaneSwitch.isChecked();
+            Assert.assertFalse("飞行模式不是关闭状态", airplaneOpen);
+        }
     }
 
     //检查设置Ibeacon内容及开关是否打开(T1)
     @Test
     public void test012CheckIbeacon() {
-        screenshotCap("after_enter");
-        UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 ibeaconObj = device.findObject(By.text("iBeacon"));
-        ibeaconObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 ibeaconTitle = device.findObject(By.res("com.sunmi.ibeacon:id/text").text("IBEACON"));
-        Assert.assertNotNull("未找到IBEANCON标题", ibeaconTitle);
-        UiObject2 ibeaconSwitch = device.findObject(By.res("com.sunmi.ibeacon:id/swi"));
-        Assert.assertTrue("iBeacon开关没有打开", ibeaconSwitch.isChecked());
-        //检查默认的ibeacon参数
-        UiObject2 defaultIbeaconUUIDObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_uuid").text("FDA50693-A4E2-4FB1-AFCF-C6EB07647825"));
-        UiObject2 defaultIbeaconMAJORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_major").text("10073"));
-        UiObject2 defaultIbeaconMINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_minor").text("61418"));
-        Assert.assertNotNull("默认UUID不正确", defaultIbeaconUUIDObj);
-        Assert.assertNotNull("默认MAJRO不正确", defaultIbeaconMAJORObj);
-        Assert.assertNotNull("默认MINOR不正确", defaultIbeaconMINORObj);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 moreObj = device.findObject(By.text("更多"));
+            moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 ibeaconObj = device.findObject(By.text("iBeacon"));
+            ibeaconObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 ibeaconTitle = device.findObject(By.res("com.sunmi.ibeacon:id/text").text("IBEACON"));
+            Assert.assertNotNull("未找到IBEANCON标题", ibeaconTitle);
+            UiObject2 ibeaconSwitch = device.findObject(By.res("com.sunmi.ibeacon:id/swi"));
+            Assert.assertTrue("iBeacon开关没有打开", ibeaconSwitch.isChecked());
+            //检查默认的ibeacon参数
+            UiObject2 defaultIbeaconUUIDObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_uuid").text("FDA50693-A4E2-4FB1-AFCF-C6EB07647825"));
+            UiObject2 defaultIbeaconMAJORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_major").text("10073"));
+            UiObject2 defaultIbeaconMINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_minor").text("61418"));
+            Assert.assertNotNull("默认UUID不正确", defaultIbeaconUUIDObj);
+            Assert.assertNotNull("默认MAJRO不正确", defaultIbeaconMAJORObj);
+            Assert.assertNotNull("默认MINOR不正确", defaultIbeaconMINORObj);
+        }
     }
 
     //检查设置Ibeacon功能正常(T1)
     @Test
     public void test013CheckIbeaconSetting() {
-        screenshotCap("after_enter");
-        UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 ibeaconObj = device.findObject(By.text("iBeacon"));
-        ibeaconObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 ibeaconSetObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_setting").text("设置iBeacon"));
-        ibeaconSetObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        device.pressBack();
-        UiObject2 othersUUIDObj = device.findObject(By.text("其他"));
-        othersUUIDObj.click();
-        UiObject2 setUUIDObj = device.findObject(By.focused(true));
-        setUUIDObj.setText("11111111-2222-3333-4444-012345678910");
-        UiObject2 setMAJORObj = device.findObject(By.res("com.sunmi.ibeacon:id/et_major"));
-        setMAJORObj.setText("12345");
-        UiObject2 setMINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/et_minor"));
-        setMINORObj.setText("54321");
-        UiObject2 confirmObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_confirm"));
-        confirmObj.click();
-        UiObject2 UUIDObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_uuid").text("11111111-2222-3333-4444-012345678910"));
-        Assert.assertNotNull("UUID未设置成功", UUIDObj);
-        UiObject2 MAJORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_major").text("12345"));
-        Assert.assertNotNull("MAJOR未设置成功", MAJORObj);
-        UiObject2 MINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_minor").text("54321"));
-        Assert.assertNotNull("MINOR未设置成功", MINORObj);
-        ibeaconSetObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        device.pressBack();
-        UiObject2 wechatUUIDObj = device.findObject(By.text("微信"));
-        wechatUUIDObj.click();
-        UiObject2 confirmObj1 = device.findObject(By.res("com.sunmi.ibeacon:id/tv_confirm"));
-        confirmObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 moreObj = device.findObject(By.text("更多"));
+            moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 ibeaconObj = device.findObject(By.text("iBeacon"));
+            ibeaconObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 ibeaconSetObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_setting").text("设置iBeacon"));
+            ibeaconSetObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            device.pressBack();
+            UiObject2 othersUUIDObj = device.findObject(By.text("其他"));
+            othersUUIDObj.click();
+            UiObject2 setUUIDObj = device.findObject(By.focused(true));
+            setUUIDObj.setText("11111111-2222-3333-4444-012345678910");
+            UiObject2 setMAJORObj = device.findObject(By.res("com.sunmi.ibeacon:id/et_major"));
+            setMAJORObj.setText("12345");
+            UiObject2 setMINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/et_minor"));
+            setMINORObj.setText("54321");
+            UiObject2 confirmObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_confirm"));
+            confirmObj.click();
+            UiObject2 UUIDObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_uuid").text("11111111-2222-3333-4444-012345678910"));
+            Assert.assertNotNull("UUID未设置成功", UUIDObj);
+            UiObject2 MAJORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_major").text("12345"));
+            Assert.assertNotNull("MAJOR未设置成功", MAJORObj);
+            UiObject2 MINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_minor").text("54321"));
+            Assert.assertNotNull("MINOR未设置成功", MINORObj);
+            ibeaconSetObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            device.pressBack();
+            UiObject2 wechatUUIDObj = device.findObject(By.text("微信"));
+            wechatUUIDObj.click();
+            UiObject2 confirmObj1 = device.findObject(By.res("com.sunmi.ibeacon:id/tv_confirm"));
+            confirmObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
+        }
     }
 
     //检查网络共享与便携热点界面下默认开关状态正确（T1）
     @Test
     public void test014CheckNetShareStatus() {
-        screenshotCap("after_enter");
-        UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 APObj = device.findObject(By.text("网络共享与便携式热点"));
-        APObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 USBObj = device.findObject(By.text("USB网络共享")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
-        UiObject2 WLANObj = device.findObject(By.text("便携式WLAN热点")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
-        UiObject2 BTObj = device.findObject(By.text("蓝牙网络共享")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
-        Assert.assertFalse("USB网络共享默认不是关闭", USBObj.isChecked());
-        Assert.assertFalse("便携式WLAN热点默认不是关闭", WLANObj.isChecked());
-        Assert.assertFalse("蓝牙网络共享默认不是关闭", BTObj.isChecked());
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 moreObj = device.findObject(By.text("更多"));
+            moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 APObj = device.findObject(By.text("网络共享与便携式热点"));
+            APObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 USBObj = device.findObject(By.text("USB网络共享")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
+            UiObject2 WLANObj = device.findObject(By.text("便携式WLAN热点")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
+            UiObject2 BTObj = device.findObject(By.text("蓝牙网络共享")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
+            Assert.assertFalse("USB网络共享默认不是关闭", USBObj.isChecked());
+            Assert.assertFalse("便携式WLAN热点默认不是关闭", WLANObj.isChecked());
+            Assert.assertFalse("蓝牙网络共享默认不是关闭", BTObj.isChecked());
+        }
     }
 
     //检查网络共享与便携热点可正常配置（T1）
     @Test
     public void test015CheckAP() {
-        screenshotCap("after_enter");
-        UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 APObj = device.findObject(By.text("网络共享与便携式热点"));
-        APObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 WLANObj = device.findObject(By.text("设置WLAN热点"));
-        WLANObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 ssidObj = device.findObject(By.res("com.android.settings:id/ssid"));
-        ssidObj.clear();
-        ssidObj.setText("SUNMITEST");
-        UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
-        pwdObj.clear();
-        pwdObj.setText("12345678");
-        UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
-        saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 APInfoObj = device.findObject(By.text("SUNMITEST WPA2 PSK便携式WLAN热点"));
-        Assert.assertNotNull("未找到设置的SUNMITEST便携式热点", APInfoObj);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 moreObj = device.findObject(By.text("更多"));
+            moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 APObj = device.findObject(By.text("网络共享与便携式热点"));
+            APObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 WLANObj = device.findObject(By.text("设置WLAN热点"));
+            WLANObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 ssidObj = device.findObject(By.res("com.android.settings:id/ssid"));
+            ssidObj.clear();
+            ssidObj.setText("SUNMITEST");
+            UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
+            pwdObj.clear();
+            pwdObj.setText("12345678");
+            UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
+            saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 APInfoObj = device.findObject(By.text("SUNMITEST WPA2 PSK便携式WLAN热点"));
+            Assert.assertNotNull("未找到设置的SUNMITEST便携式热点", APInfoObj);
+        }
     }
 
     //检查VPN可添加（T1）
     @Test
     public void test016CheckAddVPN() throws UiObjectNotFoundException {
-        screenshotCap("after_enter");
-        //进入到更多中找到VPN选项进入
-        UiObject2 moreObj = device.findObject(By.text("更多"));
-        moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 VPNObj = device.findObject(By.text("VPN"));
-        VPNObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        //判断VPN下为空
-        UiObject2 VPNListObj = device.findObject(By.res("android:id/list"));
-        Assert.assertEquals("VPN列表下不为空", 0, VPNListObj.getChildCount());
-        //点击新增VPN按钮
-        UiObject2 addObj = device.findObject(By.res("com.android.settings:id/vpn_create"));
-        addObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        UiObject2 confirmObj = device.findObject(By.res("android:id/button1"));
-        confirmObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        //选择图案加密项
-        UiObject2 picObj = device.findObject(By.text("图案"));
-        picObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        //确定所要绘制的图案为倒L形
-        TestUtils.drawLPattern();
-        sleep(SHORT_SLEEP);
-        UiObject2 goonObj = device.findObject(By.res("com.android.settings:id/footerRightButton"));
-        goonObj.click();
-        sleep(SHORT_SLEEP);
-        TestUtils.drawLPattern();
-        sleep(SHORT_SLEEP);
-        UiObject2 confirmObj1 = device.findObject(By.res("com.android.settings:id/footerRightButton"));
-        confirmObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 finishObj = device.findObject(By.res("com.android.settings:id/next_button"));
-        finishObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        //输入VPN名称和服务器地址
-        UiObject2 VPNNameObj = device.findObject(By.res("com.android.settings:id/name"));
-        UiObject2 serverObj = device.findObject(By.res("com.android.settings:id/server"));
-        VPNNameObj.clear();
-        VPNNameObj.setText("testVPN");
-        serverObj.clear();
-        serverObj.setText("p1.hk2.heyjump.com");
-        UiObject2 saveVPNObj = device.findObject(By.res("android:id/button1"));
-        saveVPNObj.click();
-        sleep(SHORT_SLEEP);
-        //检查添加的VPN存在
-        UiObject2 testVPNObj = device.findObject(By.text("testVPN"));
-        Assert.assertNotNull("添加的testVPN不存在", testVPNObj);
-        //添加账户密码
-        testVPNObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 userName = device.findObject(By.focused(true));
-        userName.setText("Jzorrof");
-        UiObject2 pwdObj = device.findObjects(By.clazz("android.widget.EditText")).get(1);
-        pwdObj.setText("qscvhi$$!_");
-        sleep(SHORT_SLEEP);
-        UiObject2 linkObj = device.findObject(By.res("android:id/button1"));
-        linkObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        device.findObject(By.res("android:id/list")).wait(Until.findObject(By.text("已连接")), LONG_WAIT);
-        UiObject2 linkedObj = device.findObject(By.res("android:id/summary").text("已连接"));
-        Assert.assertNotNull("没有找到已连接信息，判断连接失败", linkedObj);
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            //进入到更多中找到VPN选项进入
+            UiObject2 moreObj = device.findObject(By.text("更多"));
+            moreObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 VPNObj = device.findObject(By.text("VPN"));
+            VPNObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            //判断VPN下为空
+            UiObject2 VPNListObj = device.findObject(By.res("android:id/list"));
+            Assert.assertEquals("VPN列表下不为空", 0, VPNListObj.getChildCount());
+            //点击新增VPN按钮
+            UiObject2 addObj = device.findObject(By.res("com.android.settings:id/vpn_create"));
+            addObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 confirmObj = device.findObject(By.res("android:id/button1"));
+            confirmObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            //选择图案加密项
+            UiObject2 picObj = device.findObject(By.text("图案"));
+            picObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            //确定所要绘制的图案为倒L形
+            TestUtils.drawLPattern();
+            sleep(SHORT_SLEEP);
+            UiObject2 goonObj = device.findObject(By.res("com.android.settings:id/footerRightButton"));
+            goonObj.click();
+            sleep(SHORT_SLEEP);
+            TestUtils.drawLPattern();
+            sleep(SHORT_SLEEP);
+            UiObject2 confirmObj1 = device.findObject(By.res("com.android.settings:id/footerRightButton"));
+            confirmObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 finishObj = device.findObject(By.res("com.android.settings:id/next_button"));
+            finishObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            //输入VPN名称和服务器地址
+            UiObject2 VPNNameObj = device.findObject(By.res("com.android.settings:id/name"));
+            UiObject2 serverObj = device.findObject(By.res("com.android.settings:id/server"));
+            VPNNameObj.clear();
+            VPNNameObj.setText("testVPN");
+            serverObj.clear();
+            serverObj.setText("p1.hk2.heyjump.com");
+            UiObject2 saveVPNObj = device.findObject(By.res("android:id/button1"));
+            saveVPNObj.click();
+            sleep(SHORT_SLEEP);
+            //检查添加的VPN存在
+            UiObject2 testVPNObj = device.findObject(By.text("testVPN"));
+            Assert.assertNotNull("添加的testVPN不存在", testVPNObj);
+            //添加账户密码
+            testVPNObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 userName = device.findObject(By.focused(true));
+            userName.setText("Jzorrof");
+            UiObject2 pwdObj = device.findObjects(By.clazz("android.widget.EditText")).get(1);
+            pwdObj.setText("qscvhi$$!_");
+            sleep(SHORT_SLEEP);
+            UiObject2 linkObj = device.findObject(By.res("android:id/button1"));
+            linkObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            device.findObject(By.res("android:id/list")).wait(Until.findObject(By.text("已连接")), LONG_WAIT);
+            UiObject2 linkedObj = device.findObject(By.res("android:id/summary").text("已连接"));
+            Assert.assertNotNull("没有找到已连接信息，判断连接失败", linkedObj);
 //        device.executeShellCommand("ping www.google.com");
-        device.pressBack();
-        device.pressBack();
-        UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
-        settingsScroll.scrollTextIntoView("安全");
-        UiObject2 securityObj = device.findObject(By.text("安全"));
-        securityObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 lockStyleObj = device.findObject(By.text("屏幕锁定方式"));
-        lockStyleObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        sleep(SHORT_SLEEP);
-        TestUtils.drawLPattern();
-        sleep(SHORT_SLEEP);
-        UiObject2 swipeObj = device.findObject(By.text("滑动"));
-        swipeObj.clickAndWait(Until.newWindow(), LONG_WAIT);
-        UiObject2 moveObj = device.findObject(By.res("android:id/button1"));
-        moveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            device.pressBack();
+            device.pressBack();
+            UiScrollable settingsScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            settingsScroll.scrollTextIntoView("安全");
+            UiObject2 securityObj = device.findObject(By.text("安全"));
+            securityObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 lockStyleObj = device.findObject(By.text("屏幕锁定方式"));
+            lockStyleObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            TestUtils.drawLPattern();
+            sleep(SHORT_SLEEP);
+            UiObject2 swipeObj = device.findObject(By.text("滑动"));
+            swipeObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            UiObject2 moveObj = device.findObject(By.res("android:id/button1"));
+            moveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+        }
     }
 
     @Test
@@ -556,7 +632,7 @@ public class SunmiSettings {
     //搜索
     @Test
     public void test022Search() throws UiObjectNotFoundException {
-        if("V1-B18".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
             Log.v("myautotest1","233333333");
             UiObject2 searchBtnObj = device.findObject(By.res("com.android.settings:id/search"));
             searchBtnObj.clickAndWait(Until.newWindow(),LONG_WAIT);
