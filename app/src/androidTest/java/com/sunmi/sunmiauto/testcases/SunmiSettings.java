@@ -597,6 +597,46 @@ public class SunmiSettings {
     //手动添加无线网络
     @Test
     public void test026AddNetwork(){
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 WlanObj = device.findObject(By.text("WLAN"));
+            WlanObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addNetworkObj = device.findObject(By.text("添加网络"));
+            addNetworkObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 networkName = device.findObject(By.focused(true));
+            networkName.setText(NETWORKNAMETEST);
+            sleep(SHORT_SLEEP);
+            device.pressBack();
+            UiObject2 securityOpt = device.findObject(By.res("com.android.settings:id/security"));
+            securityOpt.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WPAWPA2PSK = device.findObject(By.text("WPA/WPA2 PSK"));
+            WPAWPA2PSK.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
+            pwdObj.setText(NETWORKPWDTEST);
+            sleep(SHORT_SLEEP);
+            UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
+            saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn1 = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 savedNetworkObj = device.findObject(By.text("已保存的网络"));
+            savedNetworkObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addedNetwork = device.findObject(By.text(NETWORKNAMETEST));
+            Assert.assertNotNull("未找到添加的" + NETWORKNAMETEST, addedNetwork);
+            addedNetwork.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 canclObj = device.findObject(By.text("取消保存"));
+            canclObj.click();
+        }
 
     }
 
@@ -660,8 +700,17 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //已配对的设备列表
     @Test
-    public void test034CheckPairedDevice(){
+    public void test034CheckPairedDevice() {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiObject2 bluetooth = device.findObject(By.text("蓝牙"));
+            sleep(SHORT_SLEEP);
+            bluetooth.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 dayin = device.findObject(By.text("InnerPrinter"));
+            Assert.assertNotNull("未找到打印机", dayin);
 
+
+        }
     }
 
     //owner:wangshilin
@@ -716,6 +765,21 @@ public class SunmiSettings {
     //刷新可用设备列表
     @Test
     public void test038RefreshBTDeviceList(){
+        UiObject2 lanya = device.findObject(By.text("蓝牙"));
+        //进入蓝牙页面
+        sleep(SHORT_SLEEP);
+        lanya.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 gengduo = device.findObject(By.desc("更多选项"));
+        //点击蓝牙上方的更多选项
+        sleep(SHORT_SLEEP);
+        gengduo.click();
+        sleep(150000);
+        UiObject2 shuaxin = device.findObject(By.text("刷新"));
+        //点击更多里面的刷新
+        sleep(SHORT_SLEEP);
+        shuaxin.click();
+
 
     }
 
@@ -744,6 +808,25 @@ public class SunmiSettings {
     //【开关】便携式WLAN热点
     @Test
     public void test042CheckAPStatus(){
+        UiObject2 options = device.findObject(By.text("更多"));
+        //点击设置中的更多
+        sleep(SHORT_SLEEP);
+        options.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 Portable = device.findObject(By.text("网络共享与便携式热点"));
+        //点击更多页面中的网络共享与便携式热点
+        sleep(SHORT_SLEEP);
+        Portable.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 WLANhot = device.findObject(By.text("WLAN 热点"));
+        //点击WLAN热点
+        sleep(SHORT_SLEEP);
+        WLANhot.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 WLANguanbi = device.findObject(By.res("com.android.settings:id/switch_widget"));
+        Assert.assertFalse("显示为开启", WLANguanbi.isChecked());
+
+
 
     }
 
