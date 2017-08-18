@@ -703,6 +703,7 @@ public class SunmiSettings {
     public void test034CheckPairedDevice() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
             UiObject2 bluetooth = device.findObject(By.text("蓝牙"));
+            //点击蓝牙
             sleep(SHORT_SLEEP);
             bluetooth.click();
             sleep(SHORT_SLEEP);
@@ -775,7 +776,7 @@ public class SunmiSettings {
             //点击蓝牙上方的更多选项
             sleep(SHORT_SLEEP);
             gengduo.click();
-            sleep(300000);
+            sleep(120000);
             UiObject2 shuaxin = device.findObject(By.text("刷新"));
             //点击更多里面的刷新
             sleep(SHORT_SLEEP);
@@ -810,6 +811,7 @@ public class SunmiSettings {
     //【开关】便携式WLAN热点
     @Test
     public void test042CheckAPStatus(){
+        if("P1".equals(Build.MODEL)) {
         UiObject2 options = device.findObject(By.text("更多"));
         //点击设置中的更多
         sleep(SHORT_SLEEP);
@@ -828,7 +830,10 @@ public class SunmiSettings {
         UiObject2 WLANguanbi = device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertFalse("显示为开启", WLANguanbi.isChecked());
 
+        }
+        else if ("V1".equals(Build.MODEL)){
 
+        }
 
     }
 
@@ -870,6 +875,16 @@ public class SunmiSettings {
     //流量使用概览
     @Test
     public void test046CheckNetUsedStatus(){
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiObject2 Anoverviewof = device.findObject(By.text("流量使用情况"));
+            //点击设置中流量使用情况功能
+            sleep(SHORT_SLEEP);
+            Anoverviewof.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 verviewof = device.findObject(By.text("概览"));
+            Assert.assertNotNull("无概览功能", verviewof);
+        }
+
 
     }
 
