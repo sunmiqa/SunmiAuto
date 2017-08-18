@@ -23,6 +23,7 @@ import org.junit.internal.runners.statements.Fail;
 import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.sunmi.sunmiauto.testcategory.CategorySettingsTests;
@@ -1016,7 +1017,13 @@ public class SunmiSettings {
     //owner:wangshilin
     //默认情景模式
     @Test
-    public void test075CheckDefaultSituation(){
+    public void test075CheckDefaultSituation() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL));
+        UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+        SettingScroll.scrollTextIntoView("提示音和通知");
+        device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(),5000);
+        UiObject2 ModeObj = device.findObjects(By.res("com.android.settings:id/radiobutton")).get(0);
+        Assert.assertTrue("测试失败，默认不是标准模式",ModeObj.isChecked());
 
     }
 
@@ -1043,9 +1050,20 @@ public class SunmiSettings {
 
     //owner:wangshilin
     //-【选项】媒体音量-【选项】闹钟音量-【选项】通知音量
-    @Test
-    public void test079CheckMediaClockNotifiStatus(){
 
+    @Test
+    public void test079CheckMediaClockNotifiStatus() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("提示音和通知");
+            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
+            device.findObjects(By.res("android:id/list")).get(0).findObject(By.clazz("android.widget.LinearLayout")).findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(),5000);
+
+
+        }
+        else if ("V1".equals(Build.MODEL)){
+
+        }
     }
 
     //owner:liuyang
@@ -1072,9 +1090,23 @@ public class SunmiSettings {
     //owner:wangshilin
     //-【开关】拨号键盘触摸音效
     @Test
-    public void test083CheckDialpadTouchSoundStatus(){
+    public void test083CheckDialpadTouchSoundStatus() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("提示音和通知");
+            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
+            device.findObjects(By.res("android:id/list")).get(0).findObject(By.clazz("android.widget.LinearLayout")).findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(),5000);
+            screenshotCap(",模式设置界面");
+            UiObject2 SoundObj = device.findObjects(By.res("android:id/switchWidget")).get(1);
+            Assert.assertTrue("测试失败，默认不是打开状态",SoundObj.isChecked());
 
+            }
+            else if ("P1".equals(Build.MODEL)){
+
+            }
     }
+
+
 
     //owner:liuyang
     //-【开关】触摸提示音
@@ -1100,7 +1132,18 @@ public class SunmiSettings {
     //owner:wangshilin
     //【选项】打印浓度
     @Test
-    public void test087CheckPrintLevelsValue(){
+    public void test087CheckPrintLevelsValue() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("打印");
+            device.findObject(By.text("打印")).clickAndWait(Until.newWindow(), 5000);
+            device.findObject(By.text("内置打印管理")).clickAndWait(Until.newWindow(),5000);
+            screenshotCap("内置打印管理界面");
+            UiObject2 ValueObj = device.findObject(By.text("1.10"));
+            Assert.assertNotNull("测试失败，打印浓度默认不是“1.10”",ValueObj);
+
+
+        }
 
     }
 
@@ -1128,8 +1171,19 @@ public class SunmiSettings {
     //owner:wangshilin
     //非系统应用列表视图
     @Test
-    public void test091CheckNonSystemAppsList(){
+    public void test091CheckNonSystemAppsList() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) ) {
 
+        }
+        else if ("P1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("应用");
+            device.findObject(By.text("应用")).clickAndWait(Until.newWindow(),5000);
+            sleep(2000);
+            screenshotCap("应用界面显示");
+            int size = device.findObject(By.res("android:id/list")).findObjects(By.clazz("android.widget.LinearLayout")).size();
+            Assert.assertNotEquals(0,size);
+        }
     }
 
     //owner:liuyang
@@ -1156,7 +1210,33 @@ public class SunmiSettings {
     //owner:wangshilin
     //存储使用概览
     @Test
-    public void test095CheckStorageInfo(){
+    public void test095CheckStorageInfo() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) ) {
+
+        }
+        else if ("P1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("存储设备和 USB");
+            device.findObject(By.text("存储设备和 USB")).clickAndWait(Until.newWindow(),5000);
+            screenshotCap("内部存储设备界面");
+            UiScrollable StorageScorll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            ArrayList<String> Stroagelist = new ArrayList();
+            Stroagelist.add("应用");
+            Stroagelist.add("图片");
+            Stroagelist.add("视频");
+            Stroagelist.add("音频");
+            Stroagelist.add("其他");
+            Stroagelist.add("缓存数据");
+            Stroagelist.add("浏览");
+            for (int i = 0; i < Stroagelist.size(); i++) {
+                StorageScorll.scrollTextIntoView(Stroagelist.get(i));
+                UiObject2 menuobj = device.findObject(By.text(Stroagelist.get(i)));
+                Assert.assertNotNull("未找到"+Stroagelist.get(i)+"测试失败",menuobj);
+            }
+
+
+        }
+
 
     }
 
