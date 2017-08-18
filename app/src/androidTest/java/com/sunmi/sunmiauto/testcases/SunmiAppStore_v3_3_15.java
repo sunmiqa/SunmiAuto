@@ -334,18 +334,20 @@ public class SunmiAppStore_v3_3_15 {
     @Test
     public void test009SearchByTitle() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
+        UiObject2 hotOne = device.findObject(By.res("woyou.market:id/linear_hot_view")).findObject(By.res("woyou.market:id/tv_name"));
+        String targetAppName = hotOne.getText();
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         TestUtils.screenshotCap("afterClickSearchBar");
         TestUtils.sleep(SHORT_SLEEP);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("DUDU");
+        searchObj1.setText(targetAppName);
         TestUtils.screenshotCap("inputSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         UiObject appInfo = appList.getChildByInstance(new UiSelector().className("android.widget.FrameLayout"),0);
         UiObject appNameObj = appInfo.getChild(new UiSelector().resourceId("woyou.market:id/tv_name"));
-        Assert.assertEquals("DUDU",appNameObj.getText());
+        Assert.assertEquals(targetAppName,appNameObj.getText());
     }
 
     //测试热搜应用存在
@@ -743,13 +745,15 @@ public class SunmiAppStore_v3_3_15 {
     @Test
     public void test027CheckSearchHistory() throws UiObjectNotFoundException {
         TestUtils.screenshotCap("appStoreHome");
+        UiObject2 hotOne = device.findObject(By.res("woyou.market:id/linear_hot_view")).findObject(By.res("woyou.market:id/tv_name"));
+        String targetAppName = hotOne.getText();
         UiObject2 searchObj = device.findObject(By.res("woyou.market:id/tv_search").text("搜索"));
         searchObj.click();
         TestUtils.screenshotCap("afterClickSearchBtn");
         TestUtils.sleep(SHORT_SLEEP);
         UiObject2 searchObj1 = device.findObject(By.res("woyou.market:id/et_search").text("搜索").focused(true));
         searchObj1.click();
-        searchObj1.setText("cam");
+        searchObj1.setText(targetAppName);
         TestUtils.screenshotCap("enterSearchContent");
         UiScrollable appList = new UiScrollable(new UiSelector().resourceId("woyou.market:id/list_view"));
         UiObject appInfo = appList.getChildByInstance(new UiSelector().className("android.widget.FrameLayout"),0);
