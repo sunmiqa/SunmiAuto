@@ -764,23 +764,25 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //刷新可用设备列表
     @Test
-    public void test038RefreshBTDeviceList(){
-        UiObject2 lanya = device.findObject(By.text("蓝牙"));
-        //进入蓝牙页面
-        sleep(SHORT_SLEEP);
-        lanya.click();
-        sleep(SHORT_SLEEP);
-        UiObject2 gengduo = device.findObject(By.desc("更多选项"));
-        //点击蓝牙上方的更多选项
-        sleep(SHORT_SLEEP);
-        gengduo.click();
-        sleep(150000);
-        UiObject2 shuaxin = device.findObject(By.text("刷新"));
-        //点击更多里面的刷新
-        sleep(SHORT_SLEEP);
-        shuaxin.click();
+    public void test038RefreshBTDeviceList() {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiObject2 lanya = device.findObject(By.text("蓝牙"));
+            //进入蓝牙页面
+            sleep(SHORT_SLEEP);
+            lanya.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 gengduo = device.findObject(By.desc("更多选项"));
+            //点击蓝牙上方的更多选项
+            sleep(SHORT_SLEEP);
+            gengduo.click();
+            sleep(300000);
+            UiObject2 shuaxin = device.findObject(By.text("刷新"));
+            //点击更多里面的刷新
+            sleep(SHORT_SLEEP);
+            shuaxin.click();
 
 
+        }
     }
 
     //owner:wangshilin
