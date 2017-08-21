@@ -31,6 +31,7 @@ import com.sunmi.sunmiauto.testutils.TestUtils;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_ACCOUNT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_PWD;
+import static com.sunmi.sunmiauto.testutils.TestConstants.USER_CENTER_PKG;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestConstants.DOWNLOAD_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
@@ -283,7 +284,7 @@ public class SunmiAppStore_v3_3_15 {
         userObj.clickAndWait(Until.newWindow(), LONG_WAIT);
         TestUtils.screenshotCap("loginInterface");
         String actulPkg = device.getCurrentPackageName();
-        Assert.assertEquals("本应该是com.sunmi.usercenter，而实际是" + actulPkg, "com.sunmi.usercenter", actulPkg);
+        Assert.assertEquals("本应该是"+USER_CENTER_PKG+"，而实际是" + actulPkg, USER_CENTER_PKG, actulPkg);
     }
 
     //测试安装热门中一个应用
