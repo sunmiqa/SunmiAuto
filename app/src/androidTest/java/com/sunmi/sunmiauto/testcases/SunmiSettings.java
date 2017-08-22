@@ -4,6 +4,7 @@ package com.sunmi.sunmiauto.testcases;
 
 import android.os.Build;
 import android.os.RemoteException;
+import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.ScrollToAction;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiObject2;
@@ -11,6 +12,7 @@ import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.Until;
+import android.telephony.CarrierConfigManager;
 import android.util.Log;
 
 import org.junit.Assert;
@@ -1340,7 +1342,17 @@ public class SunmiSettings {
     //owner:wangshilin
     //【开关】电量百分比
     @Test
-    public void test099CheckPowerPercentageStatus(){
+    public void test099CheckPowerPercentageStatus() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("电池");
+            device.findObject(By.text("电池")).clickAndWait(Until.newWindow(),5000);
+            UiObject2 SwitchObj = device.findObject(By.res("android:id/checkbox"));
+            Assert.assertTrue("测试失败，默认未打开电量百分比",SwitchObj.isChecked());
+        }
+        else if ("V1".equals(Build.MODEL)){
+
+        }
 
     }
 
@@ -1375,8 +1387,20 @@ public class SunmiSettings {
     //owner:liuyang
     //可优化电池使用的应用列表
     @Test
-    public void test104CheckOptimizableAppsList(){
+    public void test104CheckOptimizableAppsList() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("电池");
+            device.findObject(By.text("电池")).clickAndWait(Until.newWindow(),5000);
+            device.findObject(By.desc("更多选项")).click();
+            sleep(1000);
+            device.findObject(By.text("节电助手")).clickAndWait(Until.newWindow(),5000);
+            UiObject2 AutoObj = device.findObject(By.text("一律不"));
+            Assert.assertNotNull("测试失败，默认选项不是一律不",AutoObj);
+        }
+        else if ("V1".equals(Build.MODEL)){
 
+        }
     }
 
     //owner:zhangruili
@@ -1396,7 +1420,23 @@ public class SunmiSettings {
     //owner:wangshilin
     //【开关】不锁定屏幕（充电亮屏）
     @Test
-    public void test107CheckStayAwakeStatus(){
+    public void test107CheckStayAwakeStatus() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("关于设备");
+            device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(),5000);
+            UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            AboutScroll.scrollTextIntoView("版本号");
+            for (int i = 0; i < 8; i++) {
+                sleep(200);
+                device.findObject(By.text("版本号")).click();
+            }
+            device.pressBack();
+            device.findObject(By.text("开发者选项")).clickAndWait(Until.newWindow(),5000);
+            UiObject2 DeveloperObj = device.findObjects(By.res("android:id/switchWidget")).get(0);
+            Assert.assertFalse("测试失败，默认不是关闭状态",DeveloperObj.isChecked());
+
+        }
 
     }
 
@@ -1424,8 +1464,14 @@ public class SunmiSettings {
     //owner:wangshilin
     //自定义音量键
     @Test
-    public void test111CheckDefineVolumeKey(){
-
+    public void test111CheckDefineVolumeKey() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("音量键自定义");
+            device.findObject(By.text("音量键自定义")).clickAndWait(Until.newWindow(), 5000);
+            UiObject2 SwitchObj = device.findObject(By.res("com.sunmi.sidekey:id/set_switch"));
+            Assert.assertTrue("测试失败，默认不是打开状态", SwitchObj.isChecked());
+        }
     }
 
     //owner:liuyang
@@ -1452,9 +1498,17 @@ public class SunmiSettings {
     //owner:wangshilin
     //开发者指南
     @Test
-    public void test115CheckDevGuide(){
-
+    public void test115CheckDevGuide() throws UiObjectNotFoundException {
+//        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+//            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+//            SettingScroll.scrollTextIntoView("开发者选项");
+//            device.findObject(By.text("开发者指南")).clickAndWait(Until.newWindow(), 5000);
+//            UiScrollable DeveloperScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+//            DeveloperScroll.scrollTextIntoView("开发者指南");
+//            device.findObject(By.text("开发者指南")).clickAndWait(Until.newWindow(),5000);
+//        }
     }
+
 
     //owner:liuyang
     //硬件信息
@@ -1480,7 +1534,13 @@ public class SunmiSettings {
     //owner:wangshilin
     //型号
     @Test
-    public void test119CheckModel(){
+    public void test119CheckModel() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("关于设备");
+            device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), 5000);
+
+        }
 
     }
 
