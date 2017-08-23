@@ -17,8 +17,16 @@ import android.support.test.uiautomator.UiWatcher;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.regex.Pattern;
 
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
@@ -314,5 +322,46 @@ public class TestUtils {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void writeDeviceInfo() throws IOException {
+        BufferedReader br = null;
+        BufferedWriter bw = null;
+        String model = null;
+        String versionName = null;
+        String versionCode = null;
+        try{
+            br = new BufferedReader(new FileReader("/system/build.prop"));
+            bw = new BufferedWriter(new FileWriter("/sdcard/app_spoon-screenshots/info.txt"));
+            String find = null;
+            while((find = br.readLine())!= null){
+                if(find.contains("ro.version.sunmi_versionname")){
+                    versionName = find;
+                    bw.write(versionName);
+                    bw.newLine();
+                }
+                if(find.contains("ro.version.woyou_versioncode")){
+                    versionCode = find;
+                    bw.write(versionCode);
+                    bw.newLine();
+                }
+                if(find.contains("ro.product.model")){
+                    model = find;
+                    bw.write(model);
+                    bw.newLine();
+                }
+            }
+            bw.flush();
+            br.close();
+            bw.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally {
+            if(br != null || bw != null){
+                br.close();
+                bw.close();
+            }
+        }
+
     }
 }

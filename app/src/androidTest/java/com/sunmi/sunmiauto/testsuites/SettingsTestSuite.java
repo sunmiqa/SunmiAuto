@@ -24,5 +24,6 @@ public final class SettingsTestSuite {
     @BeforeClass
     public static void setUp() throws IOException, RemoteException {
         TestUtils.initLiza();
+        TestUtils.writeDeviceInfo();
     }
 }
