@@ -1703,14 +1703,7 @@ public class SunmiSettings {
     //owner:wangshilin
     //【选项】节电助手启动时机
     @Test
-    public void test103CheckSvaeAssistantStartValue(){
-
-    }
-
-    //owner:liuyang
-    //可优化电池使用的应用列表
-    @Test
-    public void test104CheckOptimizableAppsList() throws UiObjectNotFoundException {
+    public void test103CheckSvaeAssistantStartValue() throws UiObjectNotFoundException {
         if ("P1".equals(Build.MODEL)){
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("电池");
@@ -1724,6 +1717,14 @@ public class SunmiSettings {
         else if ("V1".equals(Build.MODEL)){
 
         }
+
+    }
+
+    //owner:liuyang
+    //可优化电池使用的应用列表
+    @Test
+    public void test104CheckOptimizableAppsList() throws UiObjectNotFoundException {
+
     }
 
     //owner:zhangruili
@@ -1862,7 +1863,10 @@ public class SunmiSettings {
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("关于设备");
             device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), 5000);
-
+            UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            AboutScroll.scrollTextIntoView("型号");
+            UiObject2 ModelObj = device.findObject(By.text("P1"));
+            Assert.assertNotNull("测试失败，型号不是P1",ModelObj);
         }
 
     }
