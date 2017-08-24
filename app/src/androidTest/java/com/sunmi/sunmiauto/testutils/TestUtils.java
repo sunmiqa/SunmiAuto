@@ -340,7 +340,7 @@ public class TestUtils {
                     bw.write(versionName);
                     bw.newLine();
                 }
-                if(find.contains("ro.version.woyou_versioncode")){
+                if(find.contains("ro.version.sunmi_versioncode")){
                     versionCode = find;
                     bw.write(versionCode);
                     bw.newLine();
