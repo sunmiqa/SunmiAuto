@@ -1416,17 +1416,17 @@ public class SunmiSettings {
 
     @Test
     public void test079CheckMediaClockNotifiStatus() throws UiObjectNotFoundException {
-        if ("P1".equals(Build.MODEL)) {
-            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
-            SettingScroll.scrollTextIntoView("提示音和通知");
-            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
-            device.findObjects(By.res("android:id/list")).get(0).findObject(By.clazz("android.widget.LinearLayout")).findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(),5000);
-
-
-        }
-        else if ("V1".equals(Build.MODEL)){
-
-        }
+//        if ("P1".equals(Build.MODEL)) {
+//            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+//            SettingScroll.scrollTextIntoView("提示音和通知");
+//            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
+//            device.findObjects(By.res("android:id/list")).get(0).findObject(By.clazz("android.widget.LinearLayout")).findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(),5000);
+//
+//
+//        }
+//        else if ("V1".equals(Build.MODEL)){
+//
+//        }
     }
 
     //owner:liuyang
