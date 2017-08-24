@@ -2028,6 +2028,16 @@ public class SunmiSettings {
             UiObject2 ModelObj = device.findObject(By.text("P1"));
             Assert.assertNotNull("测试失败，型号不是P1",ModelObj);
         }
+        else if ("V1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("关于设备");
+            device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), 5000);
+            UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            AboutScroll.scrollTextIntoView("型号");
+            UiObject2 ModelObj = device.findObject(By.text("V1"));
+            Assert.assertNotNull("测试失败，型号不是V1",ModelObj);
+
+        }
 
     }
 
