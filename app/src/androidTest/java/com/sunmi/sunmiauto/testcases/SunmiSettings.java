@@ -918,9 +918,41 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //默认亮度
     @Test
-    public void test050CheckDefaultBrightness(){
+    public void test050CheckDefaultBrightness() {
+        if ("P1".equals(Build.MODEL)) {
+            UiObject2 According = device.findObject(By.text("显示"));
+            //点击显示
+            sleep(SHORT_SLEEP);
+            According.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 brightness = device.findObject(By.text("亮度"));
+            //点击显示页面的亮度
+            sleep(SHORT_SLEEP);
+            brightness.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WlanNameObj = device.findObject(By.text("屏幕亮度"));
+            screenshotCap("设置显示页面");
+            Assert.assertNotNull("测试失败未弹出亮度显示", WlanNameObj);
 
+        }
+        else if ("V1".equals(Build.MODEL)){
+            UiObject2 According = device.findObject(By.text("显示"));
+            //点击显示
+            sleep(SHORT_SLEEP);
+            According.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 brightness = device.findObject(By.text("亮度"));
+            //点击显示页面的亮度
+            sleep(SHORT_SLEEP);
+            brightness.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WlanNameObj = device.findObject(By.desc("屏幕亮度"));
+            screenshotCap("设置显示页面");
+            Assert.assertNotNull("测试失败未弹出亮度显示", WlanNameObj);
+
+        }
     }
+
 
     //owner:wangshilin
     //【开关】自动调节屏幕亮度
@@ -947,6 +979,18 @@ public class SunmiSettings {
     //【选项】字体大小
     @Test
     public void test054CheckFontSizeValue(){
+        if ("P1".equals(Build.MODEL)) {
+            UiObject2 display1 = device.findObject(By.text("显示"));
+            //点击设置中的显示
+            sleep(SHORT_SLEEP);
+            display1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 Thefontsize = device.findObject(By.text("字体大小"));
+            screenshotCap("设置显示页面");
+            Assert.assertNotNull("无字体大小功能", Thefontsize);
+        }
+
+
 
     }
 
@@ -974,7 +1018,23 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //【选项】屏幕锁定方式
     @Test
-    public void test058CheckLockStylePass(){
+    public void test058CheckLockStylePass() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            SettingScroll.scrollTextIntoView("安全");
+            //找到安全
+            UiObject2 security = device.findObject(By.text("安全"));
+            sleep(SHORT_SLEEP);
+            security.click();
+            //点击安全
+            sleep(SHORT_SLEEP);
+            UiObject2 Lockscreenmode = device.findObject(By.text("滑动"));
+            screenshotCap("设置安全页面");
+            Assert.assertNotNull("默认方式不是滑动", Lockscreenmode);
+        }
+
+
+
 
     }
 
