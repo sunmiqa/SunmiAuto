@@ -6,6 +6,8 @@ import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiSelector;
 
+import org.junit.Assert;
+
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
 import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
@@ -54,7 +56,7 @@ public class CommonAction {
             uiObject = device.findObject(selector);
             if(i == 19){
                 screenshotCap("wrong UI");
-                return false;
+                Assert.fail("未找到包含"+str+"属性的控件");
             }
             i++;
         }
