@@ -715,7 +715,47 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //手动添加无线网络
     @Test
-    public void test026AddNetwork() {
+    public void test026AddNetwork(){
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");
+            UiObject2 WlanObj = device.findObject(By.text("WLAN"));
+            WlanObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addNetworkObj = device.findObject(By.text("添加网络"));
+            addNetworkObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 networkName = device.findObject(By.focused(true));
+            networkName.setText(NETWORKNAMETEST);
+            sleep(SHORT_SLEEP);
+            device.pressBack();
+            UiObject2 securityOpt = device.findObject(By.res("com.android.settings:id/security"));
+            securityOpt.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WPAWPA2PSK = device.findObject(By.text("WPA/WPA2 PSK"));
+            WPAWPA2PSK.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
+            pwdObj.setText(NETWORKPWDTEST);
+            sleep(SHORT_SLEEP);
+            UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
+            saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+            sleep(SHORT_SLEEP);
+            UiObject2 moreBtn1 = device.findObject(By.clazz("android.widget.ImageButton").desc("更多选项"));
+            moreBtn1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 savedNetworkObj = device.findObject(By.text("已保存的网络"));
+            savedNetworkObj.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 addedNetwork = device.findObject(By.text(NETWORKNAMETEST));
+            Assert.assertNotNull("未找到添加的" + NETWORKNAMETEST, addedNetwork);
+            addedNetwork.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 canclObj = device.findObject(By.text("取消保存"));
+            canclObj.click();
+        }
 
     }
 
@@ -758,6 +798,23 @@ public class SunmiSettings {
     //【选项】休眠状态wlan连接策略
     @Test
     public void test029CheckWlanConnStrategy() {
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+
+            UiObject2 wifiops = device.findObject(By.text("WLAN"));//找到WLAN
+            device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(),5000);//点击WLAN
+            device.waitForIdle(10000);
+            device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(),5000);//点击更多选项
+            device.waitForIdle();
+            screenshotCap("after_click");
+            device.findObject(By.text("高级")).clickAndWait(Until.newWindow(),5000);//点击高级
+            device.waitForIdle();
+            UiObject2 sleepObj = device.findObject(By.text("在休眠状态下保持WLAN网络连接"));//检查是否显示“在休眠状态下保持WLAN网络连接”功能
+            Assert.assertNotNull("未找到在休眠状态下保持WLAN网络连接标识",sleepObj);
+            UiObject2 alwaysObj = device.findObject(By.text("始终").clazz("android.widget.TextView"));//检查默认显示始终
+            Assert.assertNotNull("未找到始终标识",alwaysObj);
+            device.pressBack();//点击返回
+            device.waitForIdle();
+        }
 
     }
 
@@ -797,6 +854,20 @@ public class SunmiSettings {
     //默认蓝牙设备名称
     @Test
     public void test033CheckDefaultBTName() {
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("after_enter");//进入后截图
+            UiObject2 WlanObj = device.findObject(By.text("蓝牙"));//查找蓝牙
+            WlanObj.click();
+            device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);//点击蓝牙
+            sleep(2000);
+            UiObject2 pairObj = device.findObject(By.text("已配对的设备"));//检查是否显示已配对的设备
+            Assert.assertNotNull("未找到已配对的设备标识", pairObj);
+            UiObject2 innerObj = device.findObject(By.text("InnerPrinter").clazz("android.widget.TextView"));//检查是否显示InnerPrinter
+            Assert.assertNotNull("未找到InnerPrinter标识", innerObj);
+            device.pressBack();//点击返回
+            device.waitForIdle();
+        }
+
 
     }
 
@@ -804,7 +875,17 @@ public class SunmiSettings {
     //已配对的设备列表
     @Test
     public void test034CheckPairedDevice() {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiObject2 bluetooth = device.findObject(By.text("蓝牙"));
+            //点击蓝牙
+            sleep(SHORT_SLEEP);
+            bluetooth.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 dayin = device.findObject(By.text("InnerPrinter"));
+            Assert.assertNotNull("未找到打印机", dayin);
 
+
+        }
     }
 
     //owner:wangshilin
@@ -887,6 +968,26 @@ public class SunmiSettings {
     //重命名本设备蓝牙名称
     @Test
     public void test037RenameBTName() {
+        if("V1".equals(Build.MODEL)|| "P1".equals(Build.MODEL)){
+            UiObject2 BTObj = device.findObject(By.text("蓝牙"));//查找蓝牙
+            BTObj.click();//点击蓝牙
+            sleep(2000);
+            device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(),5000);//点击更多选项
+            sleep(2000);
+            device.findObject(By.text("重命名此设备")).clickAndWait(Until.newWindow(),5000);//点击重命名此设备
+            sleep(2000);
+            UiObject2 nameObj= device.findObject(By.res("com.android.settings:id/edittext").clazz("android.widget.EditText"));//找到输入的内容
+            nameObj.setText("hehe");//替换内容为hehe
+            sleep(2000);
+            device.findObject(By.text("重命名")).click();//点击重命名
+            sleep(2000);
+            device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(),5000);//点击更多选项
+            sleep(2000);
+            device.findObject(By.text("重命名此设备")).clickAndWait(Until.newWindow(),5000);//点击重命名此设备
+            sleep(2000);
+            UiObject2 name1Obj = device.findObject(By.text("hehe").clazz("android.widget.EditText"));//检查输入内容是否为hehe
+            Assert.assertNotNull("未找到hehe标识",name1Obj);//找不到hehe标识则报错
+        }
 
     }
 
@@ -894,7 +995,24 @@ public class SunmiSettings {
     //刷新可用设备列表
     @Test
     public void test038RefreshBTDeviceList() {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiObject2 lanya = device.findObject(By.text("蓝牙"));
+            //进入蓝牙页面
+            sleep(SHORT_SLEEP);
+            lanya.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 gengduo = device.findObject(By.desc("更多选项"));
+            //点击蓝牙上方的更多选项
+            sleep(SHORT_SLEEP);
+            gengduo.click();
+            sleep(120000);
+            UiObject2 shuaxin = device.findObject(By.text("刷新"));
+            //点击更多里面的刷新
+            sleep(SHORT_SLEEP);
+            shuaxin.click();
 
+
+        }
     }
 
     //owner:wangshilin
@@ -916,13 +1034,44 @@ public class SunmiSettings {
     //【开关】USB网络共享
     @Test
     public void test041CheckUSBNetworkSharedStatus() {
+        if("V1".equals(Build.MODEL)|| "P1".equals(Build.MODEL)){
+            device.findObject(By.text("更多")).clickAndWait(Until.newWindow(),5000);//点击更多
+            sleep(2000);
+            device.findObject(By.text("网络共享与便携式热点")).clickAndWait(Until.newWindow(),5000);//点击网络共享与便携式热点
+            sleep(2000);
+            UiObject2 shareButton = device.findObject(By.res("android:id/switchWidget"));//检查USB网络共享的开关
+            Assert.assertEquals("网络共享与便携式热点开关默认为打开",false,shareButton.isChecked());
+        }
 
     }
 
     //owner:zhaizhongjie
     //【开关】便携式WLAN热点
     @Test
-    public void test042CheckAPStatus() {
+    public void test042CheckAPStatus(){
+        if("P1".equals(Build.MODEL)) {
+        UiObject2 options = device.findObject(By.text("更多"));
+        //点击设置中的更多
+        sleep(SHORT_SLEEP);
+        options.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 Portable = device.findObject(By.text("网络共享与便携式热点"));
+        //点击更多页面中的网络共享与便携式热点
+        sleep(SHORT_SLEEP);
+        Portable.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 WLANhot = device.findObject(By.text("WLAN 热点"));
+        //点击WLAN热点
+        sleep(SHORT_SLEEP);
+        WLANhot.click();
+        sleep(SHORT_SLEEP);
+        UiObject2 WLANguanbi = device.findObject(By.res("com.android.settings:id/switch_widget"));
+        Assert.assertFalse("显示为开启", WLANguanbi.isChecked());
+
+        }
+        else if ("V1".equals(Build.MODEL)){
+
+        }
 
     }
 
@@ -964,13 +1113,32 @@ public class SunmiSettings {
     //【选项】网络共享与便携式热点设置
     @Test
     public void test045CheckAPSettings() {
+        if("V1".equals(Build.MODEL)|| "P1".equals(Build.MODEL)){
+            device.findObject(By.text("更多")).clickAndWait(Until.newWindow(),5000);//点击更多
+            device.findObject(By.text("网络共享与便携式热点")).clickAndWait(Until.newWindow(),5000);//点击网络共享与便携式热点
+            UiObject2 setObj = device.findObject(By.text("网络共享与便携式热点设置"));//查找网络共享与便携式热点设置
+            Assert.assertNotNull("未找到网络共享与便携式热点设置标识",setObj);
+            UiObject2 ipObj = device.findObject(By.text("IPv4").clazz("android.widget.TextView"));//检查默认值是否为IPv4
+            Assert.assertNotNull("未找到IPv4标识",ipObj);
+        }
+
 
     }
 
     //owner:zhaizhongjie
     //流量使用概览
     @Test
-    public void test046CheckNetUsedStatus() {
+    public void test046CheckNetUsedStatus(){
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiObject2 Anoverviewof = device.findObject(By.text("流量使用情况"));
+            //点击设置中流量使用情况功能
+            sleep(SHORT_SLEEP);
+            Anoverviewof.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 verviewof = device.findObject(By.text("概览"));
+            Assert.assertNotNull("无概览功能", verviewof);
+        }
+
 
     }
 
@@ -1024,6 +1192,12 @@ public class SunmiSettings {
     //【开关】移动网络
     @Test
     public void test049CheckMobileNetStatus() {
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            device.findObject(By.text("更多")).clickAndWait(Until.newWindow(),5000);//找到更多
+            UiObject2 netObj = device.findObject(By.text("移动网络"));//找到移动网络
+            boolean a = netObj.isEnabled();
+            Assert.assertFalse("移动网络没有被禁用",a);
+        }
 
     }
 
@@ -1031,8 +1205,40 @@ public class SunmiSettings {
     //默认亮度
     @Test
     public void test050CheckDefaultBrightness() {
+        if ("P1".equals(Build.MODEL)) {
+            UiObject2 According = device.findObject(By.text("显示"));
+            //点击显示
+            sleep(SHORT_SLEEP);
+            According.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 brightness = device.findObject(By.text("亮度"));
+            //点击显示页面的亮度
+            sleep(SHORT_SLEEP);
+            brightness.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WlanNameObj = device.findObject(By.text("屏幕亮度"));
+            screenshotCap("设置显示页面");
+            Assert.assertNotNull("测试失败未弹出亮度显示", WlanNameObj);
 
+        }
+        else if ("V1".equals(Build.MODEL)){
+            UiObject2 According = device.findObject(By.text("显示"));
+            //点击显示
+            sleep(SHORT_SLEEP);
+            According.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 brightness = device.findObject(By.text("亮度"));
+            //点击显示页面的亮度
+            sleep(SHORT_SLEEP);
+            brightness.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 WlanNameObj = device.findObject(By.desc("屏幕亮度"));
+            screenshotCap("设置显示页面");
+            Assert.assertNotNull("测试失败未弹出亮度显示", WlanNameObj);
+
+        }
     }
+
 
     //owner:wangshilin
     //【开关】自动调节屏幕亮度
@@ -1075,7 +1281,19 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //【选项】字体大小
     @Test
-    public void test054CheckFontSizeValue() {
+    public void test054CheckFontSizeValue(){
+        if ("P1".equals(Build.MODEL)) {
+            UiObject2 display1 = device.findObject(By.text("显示"));
+            //点击设置中的显示
+            sleep(SHORT_SLEEP);
+            display1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 Thefontsize = device.findObject(By.text("字体大小"));
+            screenshotCap("设置显示页面");
+            Assert.assertNotNull("无字体大小功能", Thefontsize);
+        }
+
+
 
     }
 
@@ -1105,14 +1323,43 @@ public class SunmiSettings {
     //owner:zhangruili
     //【选项】位置信息模式
     @Test
-    public void test057CheckLocationMode() {
+    public void test057CheckLocationMode() throws UiObjectNotFoundException {
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            //选择高级选项，往上滚动（在viewer上Scrollable必须为true才能有效)
+            sleep(2000);
+            UiSelector message1 = new UiSelector().text("位置信息");//查找音量键自定义
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("位置信息")).clickAndWait(Until.newWindow(),5000);
+            sleep(2000);
+            UiObject2 moObj = device.findObject(By.text("模式"));
+            Assert.assertNotNull("未找到模式标识",moObj);
+            UiObject2 hiObj = device.findObject(By.text("高精确度").clazz("android.widget.TextView"));
+            Assert.assertNotNull("未找到高精确度标识",hiObj);
+        }
 
     }
 
     //owner:zhaizhongjie
     //【选项】屏幕锁定方式
     @Test
-    public void test058CheckLockStylePass() {
+    public void test058CheckLockStylePass() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            SettingScroll.scrollTextIntoView("安全");
+            //找到安全
+            UiObject2 security = device.findObject(By.text("安全"));
+            sleep(SHORT_SLEEP);
+            security.click();
+            //点击安全
+            sleep(SHORT_SLEEP);
+            UiObject2 Lockscreenmode = device.findObject(By.text("滑动"));
+            screenshotCap("设置安全页面");
+            Assert.assertNotNull("默认方式不是滑动", Lockscreenmode);
+        }
+
+
+
 
     }
 
@@ -1867,6 +2114,16 @@ public class SunmiSettings {
             AboutScroll.scrollTextIntoView("型号");
             UiObject2 ModelObj = device.findObject(By.text("P1"));
             Assert.assertNotNull("测试失败，型号不是P1",ModelObj);
+        }
+        else if ("V1".equals(Build.MODEL)) {
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("关于设备");
+            device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), 5000);
+            UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            AboutScroll.scrollTextIntoView("型号");
+            UiObject2 ModelObj = device.findObject(By.text("V1"));
+            Assert.assertNotNull("测试失败，型号不是V1",ModelObj);
+
         }
 
     }
