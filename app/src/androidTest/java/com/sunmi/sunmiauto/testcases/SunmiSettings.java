@@ -1336,7 +1336,56 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //【开关】电源按钮即时锁定
     @Test
-    public void test062CheckPowerKeyLockImmediateStatus() {
+    public void test062CheckPowerKeyLockImmediateStatus() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("安全");
+            //找到安全
+            UiObject2 security1 = device.findObject(By.text("安全"));
+            //点击安全
+            sleep(SHORT_SLEEP);
+            security1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 Screenlockmode = device.findObject(By.text("屏幕锁定方式"));
+            sleep(SHORT_SLEEP);
+            Screenlockmode.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 pattern = device.findObject(By.text("图案"));
+            //点击图案
+            sleep(SHORT_SLEEP);
+            pattern.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 patternObj = device.findObject(By.res("com.android.settings:id/lockPattern"));
+            //定位图案框
+            int[] array = {1, 4, 7, 8, 9};
+            TestUtils.drawPattern(patternObj, array);
+            //输入图案
+            sleep(SHORT_SLEEP);
+            UiObject2 continu = device.findObject(By.text("继续"));
+            //点击图案下方的继续
+            sleep(SHORT_SLEEP);
+            continu.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 patternObj1 = device.findObject(By.res("com.android.settings:id/lockPattern"));
+            //定位图案
+            int[] user1 = {1, 4, 7, 8, 9};
+            TestUtils.drawPattern(patternObj, array);
+            //输入图案
+            sleep(SHORT_SLEEP);
+            UiObject2 confirm = device.findObject(By.text("确认"));
+            //点击确认
+            sleep(SHORT_SLEEP);
+            confirm.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 Tocomplete = device.findObject(By.text("完成"));
+            //点击完成
+            sleep(SHORT_SLEEP);
+            Tocomplete.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 Thepowerbutton = device.findObject(By.text("电源按钮即时锁定"));
+            //选择电源按钮即时锁定
+            Assert.assertFalse("测试失败，显示图案默认未开启", Thepowerbutton.isChecked());
+        }
 
     }
 
@@ -1398,7 +1447,21 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //【选项】自动确定日期和时间
     @Test
-    public void test066CheckAutoGetTimeValue() {
+    public void test066CheckAutoGetTimeValue() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable Datetime = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            Datetime.scrollTextIntoView("日期和时间");
+            sleep(SHORT_SLEEP);
+            UiObject2 time = device.findObject(By.text("日期和时间"));
+            //点击日期和时间
+            sleep(SHORT_SLEEP);
+            time.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 zidong = device.findObject(By.text("使用网络提供时间"));
+            //找到使用网络提供时间
+            Assert.assertNotNull("默认不是使用网络提供时间", zidong);
+        }
+
 
     }
 
@@ -1467,8 +1530,35 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //手动选择时区
     @Test
-    public void test070ModifyTimeZone() {
-
+    public void test070ModifyTimeZone() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("日期和时间");
+            //找到日期和时间
+            UiObject2 dates = device.findObject(By.text("日期和时间"));
+            //点击日期和时间
+            sleep(SHORT_SLEEP);
+            dates.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 guanbishqu1 = device.findObject(By.text("自动确定时区"));
+            //关闭自动确定时区
+            sleep(SHORT_SLEEP);
+            guanbishqu1.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 xiuanzeshqu = device.findObject(By.text("选择时区"));
+            //点击修改时区
+            sleep(SHORT_SLEEP);
+            xiuanzeshqu.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 xianggang = device.findObject(By.text("香港"));
+            //点击香港
+            sleep(SHORT_SLEEP);
+            xianggang.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 xianggangshjian = device.findObject(By.text("GMT+08:00 香港标准时间"));
+            //找到使用网络提供时间
+            Assert.assertNotNull("无法手动选择时区", xianggangshjian);
+        }
     }
 
     //owner:wangshilin
@@ -1521,8 +1611,20 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //【选项】当前输入法
     @Test
-    public void test074CheckDefaultInputMethod() {
-
+    public void test074CheckDefaultInputMethod() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("语言和输入法");
+            //找到语言和输入法
+            UiObject2 yuyan = device.findObject(By.text("语言和输入法"));
+            //点击语言和输入法
+            sleep(SHORT_SLEEP);
+            yuyan.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 baiduxiaomi = device.findObject(By.text("百度输入法小米版"));
+            //找到默认输入法
+            Assert.assertNotNull("默认不是百度输入法", baiduxiaomi);
+        }
     }
 
     //owner:wangshilin
