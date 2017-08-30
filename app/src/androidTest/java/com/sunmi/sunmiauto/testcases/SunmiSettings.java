@@ -1669,7 +1669,31 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //重置情景模式
     @Test
-    public void test078ResetSituation() {
+    public void test078ResetSituation() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("提示音和通知");
+            //找到提示音和通知
+            UiObject2 Prompt = device.findObject(By.text("提示音和通知"));
+            //点击提示音和通知
+            sleep(SHORT_SLEEP);
+            Prompt.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 inform = device.findObject(By.desc("更多选项"));
+            //点击提示音和通知上方的更多
+            sleep(SHORT_SLEEP);
+            inform.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 mode = device.findObject(By.text("模式重设"));
+            //点击重设模式
+            sleep(SHORT_SLEEP);
+            mode.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 determine = device.findObject(By.text("确定"));
+            //点击确定重设模式
+            sleep(SHORT_SLEEP);
+            determine.click();
+        }
 
     }
 
@@ -1818,7 +1842,25 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //正在运行应用列表视图
     @Test
-    public void test090CheckRunningAppsList(){
+    public void test090CheckRunningAppsList() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) ) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("应用程序管理");
+            //找到应用程序管理
+            UiObject2 management = device.findObject(By.text("应用程序管理"));
+            //点击应用程序管理
+            sleep(SHORT_SLEEP);
+            management.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 run = device.findObject(By.text("正在运行"));
+            //点击正在运行
+            sleep(SHORT_SLEEP);
+            run.click();
+            sleep(6000);
+            UiObject2 shyong = device.findObject(By.text("应用内存使用情况"));
+            //sleep(7000);
+            Assert.assertNotNull("正在运行页面无信息", shyong);
+        }
 
     }
 
@@ -1999,7 +2041,63 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //【开关】开发者选项
     @Test
-    public void test106CheckDeveloperOptionStatus(){
+    public void test106CheckDeveloperOptionStatus() throws UiObjectNotFoundException {
+        if ("P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("关于设备");
+          //找到关于设备
+            sleep(SHORT_SLEEP);
+            UiObject2 guanyu = device.findObject(By.text("关于设备"));
+            //点击关于设备
+            guanyu.click();
+            sleep(SHORT_SLEEP);
+            UiScrollable anquan1 = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            anquan1.scrollTextIntoView("版本号");//找到版本号
+            UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            AboutScroll.scrollTextIntoView("版本号");
+            for (int i = 0; i < 8; i++) {
+                sleep(200);
+                device.findObject(By.text("版本号")).click();
+            }
+            device.pressBack();
+            sleep(SHORT_SLEEP);
+            UiObject2 developers = device.findObject(By.text("开发者选项"));
+            //点击开发者选项
+            developers.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 kaiguan = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            Assert.assertTrue("默认不是为开", kaiguan.isChecked());
+        }
+        else if ("V1".equals(Build.MODEL)){
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("关于设备");
+            //找到关于设备
+            sleep(SHORT_SLEEP);
+            UiObject2 guanyushbei = device.findObject(By.text("关于设备"));
+            //点击关于设备
+            guanyushbei.click();
+            sleep(SHORT_SLEEP);
+            UiScrollable anquan1 = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            anquan1.scrollTextIntoView("版本号");//找到版本号
+            sleep(SHORT_SLEEP);
+            UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            AboutScroll.scrollTextIntoView("版本号");
+            for (int i = 0; i < 8; i++) {
+                sleep(200);
+                device.findObject(By.text("版本号")).click();
+            }
+            device.pressBack();
+            sleep(SHORT_SLEEP);
+            UiObject2 developers = device.findObject(By.text("开发者选项"));
+            //点击开发者选项
+            developers.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 kaiguan = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            Assert.assertTrue("默认不是为开", kaiguan.isChecked());
+
+
+        }
+
 
     }
 
@@ -2043,7 +2141,20 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //用户中心
     @Test
-    public void test110CheckEnterUsercenter(){
+    public void test110CheckEnterUsercenter() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("用户中心");
+            //找到用户中心
+            sleep(SHORT_SLEEP);
+            UiObject2 user = device.findObject(By.text("用户中心"));
+            //点击用户中心
+            user.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 username = device.findObject(By.text("登录商米账号"));
+            //找到商米账号
+            Assert.assertNotNull("无法进入用户中心", username);
+        }
 
     }
 
@@ -2077,7 +2188,24 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //系统更新
     @Test
-    public void test114CheckSystemUpdate(){
+    public void test114CheckSystemUpdate() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("关于设备");
+            sleep(SHORT_SLEEP);
+            UiObject2 shbei = device.findObject(By.text("关于设备"));
+            //点击关于设备
+            shbei.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 system = device.findObject(By.text("系统更新"));
+            //点击系统更新
+            system.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 dangqian = device.findObject(By.res("com.sunmi.ota:id/version_info_rl"));
+            //判断系统更新是否可以进入
+            Assert.assertNotNull("无法进入系统更新页面", dangqian);
+        }
+
 
     }
 
@@ -2113,7 +2241,25 @@ public class SunmiSettings {
     //owner:zhaizhongjie
     //法律信息
     @Test
-    public void test118ChekcLawInfo(){
+    public void test118ChekcLawInfo() throws UiObjectNotFoundException {
+
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
+            anquan.scrollTextIntoView("关于设备");
+            sleep(SHORT_SLEEP);
+            UiObject2 shbei = device.findObject(By.text("关于设备"));
+            //点击关于设备
+            shbei.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 falvxinxi = device.findObject(By.text("法律信息"));
+            //点击法律信息
+            falvxinxi.click();
+            sleep(SHORT_SLEEP);
+            UiObject2 Licensecode = device.findObject(By.text("开放源代码许可"));
+            //判断法律信息是否可用
+            Assert.assertNotNull("无法进入法律信息", Licensecode);
+        }
+
 
     }
 
