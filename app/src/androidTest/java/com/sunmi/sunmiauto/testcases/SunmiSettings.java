@@ -864,8 +864,6 @@ public class SunmiSettings {
             Assert.assertNotNull("未找到已配对的设备标识", pairObj);
             UiObject2 innerObj = device.findObject(By.text("InnerPrinter").clazz("android.widget.TextView"));//检查是否显示InnerPrinter
             Assert.assertNotNull("未找到InnerPrinter标识", innerObj);
-            device.pressBack();//点击返回
-            device.waitForIdle();
         }
 
 
@@ -1375,14 +1373,12 @@ public class SunmiSettings {
     @Test
     public void test060CheckShowPattenStatus() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
-
             UiScrollable SettingScoll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScoll.scrollTextIntoView("安全");
             device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);
             screenshotCap("安全");
             UiObject2 pattern = device.findObject(By.text("显示图案"));
             UiObject2 CancelSave = device.findObject(By.text("滑动"));
-
             if (pattern != null) {//不为空，表示存在
 
                 UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
@@ -1416,8 +1412,42 @@ public class SunmiSettings {
     //owner:zhangruili
     //【选项】自动锁定
     @Test
-    public void test061CheckLockAutoStatus() {
+    public void test061CheckLockAutoStatus() throws UiObjectNotFoundException{
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable SettingScoll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScoll.scrollTextIntoView("安全");//滚动查找到安全
+            device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);//点击安全
+            screenshotCap("安全");//截图
+            UiObject2 pattern = device.findObject(By.text("显示图案"));//查找显示图案
+            UiObject2 CancelSave = device.findObject(By.text("滑动"));//查找滑动
+            if (pattern != null) {//不为空，表示存在
+                UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
+                Assert.assertTrue("测试失败，显示图案默认未开启", information.isChecked());//显示图案不是未开启则测试失败
+            } else if (CancelSave != null) {          //显示图案未开启则：
+                device.findObject(By.text("屏幕锁定方式")).clickAndWait(Until.newWindow(), 5000);//找到屏幕锁定方式并点击直到新的窗口打开
+                device.findObject(By.text("图案")).clickAndWait(Until.newWindow(), 5000);//找到图案并点击直到新的窗口打开
 
+                UiObject2 uu = device.findObject(By.res("com.android.settings:id/lockPattern"));//找到绘制图案
+                int[] array = {1, 4, 7, 8, 9};
+                drawPattern(uu, array);//绘制图案
+                sleep(5000);
+                device.findObject(By.res("com.android.settings:id/footerRightButton")).clickAndWait(Until.newWindow(), 5000);//点击继续
+                sleep(2000);
+                UiObject2 ii = device.findObject(By.res("com.android.settings:id/lockPattern"));//找到绘制图案
+                int[] array2 = {1, 4, 7, 8, 9};
+                drawPattern(ii, array);
+                sleep(5000);
+                device.findObject(By.res("com.android.settings:id/footerRightButton")).clickAndWait(Until.newWindow(), 5000);//点击
+                device.findObject(By.res("com.android.settings:id/next_button")).clickAndWait(Until.newWindow(), 5000);//点击确认
+                UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
+                Assert.assertTrue("测试失败，显示图案默认未开启", information.isChecked());//如果显示图案未开启则测试失败
+
+                UiObject2 autolockObj = device.findObject(By.text("自动锁定"));//找到自动锁定
+                Assert.assertNotNull("未找到自动锁定标识", autolockObj);//未找到自动锁定标识则报错
+                UiObject2 sleepObj = device.findObject(By.text("休眠5秒后").clazz("android.widget.TextView"));
+                Assert.assertNotNull("未找到休眠5秒后标识", sleepObj);//未找到休眠5秒后标识则报错
+            }
+        }
     }
 
     //owner:zhaizhongjie
@@ -1527,8 +1557,17 @@ public class SunmiSettings {
     //owner:zhangruili
     //【开关】应用权限
     @Test
-    public void test065CheckAppPermissionStatus() {
-
+    public void test065CheckAppPermissionStatus() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            //选择高级选项,往上滚动（在viewer上Scrollable必须为true才能有效）
+            UiSelector message1 = new UiSelector().text("安全");
+            scroll1.scrollIntoView(message1);//向上滚动查找到安全
+            device.findObject(By.text("安全")).clickAndWait(Until.newWindow(),5000);//点击安全
+            sleep(2000);
+            UiObject2 authorityButton = device.findObject(By.res("android:id/switchWidget"));
+            Assert.assertEquals("应用权限默认是关闭状态",true,authorityButton.isChecked());//应用权限开关默认是关闭状态
+        }
     }
 
     //owner:zhaizhongjie
@@ -1601,8 +1640,6 @@ public class SunmiSettings {
                 sleep(SHORT_SLEEP);
                 UiObject2 date2 = device.findObject(By.text("关闭"));
                 Assert.assertNull("测试失败，可以关闭自动确认日期和时间", date2);
-
-
             }
         }
     }
@@ -1610,8 +1647,22 @@ public class SunmiSettings {
     //owner:zhangruili
     //手动选择时间
     @Test
-    public void test069ModifyTime() {
+    public void test069ModifyTime() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            //选择高级选项,往上滚动（在viewer上Scrollable必须为true才能有效）
+            UiSelector message1 = new UiSelector().text("日期和时间");//查找日期和时间
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);//点击日期和时间
+            UiObject2 timeObj = device.findObject(By.text("设置时间"));
+            boolean a = timeObj.isEnabled();
+            Assert.assertFalse("设置时间没有被禁用", a);//检查设置时间没有被禁用则报错
 
+            device.findObject(By.text("自动确定日期和时间")).clickAndWait(Until.newWindow(), 5000);
+            sleep(2000);
+            UiObject2 time2 = device.findObject(By.text("关闭"));
+            Assert.assertNull("测试失败，可以关闭自动确认日期和时间", time2);//检查自动确认日期和时间页面显示了关闭选项，则测试失败
+        }
     }
 
     //owner:zhaizhongjie
@@ -1667,30 +1718,42 @@ public class SunmiSettings {
     @Test
     public void test072CheckDateFormatValue() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) ;
-        UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
-        SettingScroll.scrollTextIntoView("日期和时间");
-        device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("日期和时间");
+            device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);
 
-        if ("V1".equals(Build.MODEL)) {
+            if ("V1".equals(Build.MODEL)) {
 
-            UiObject2 format = device.findObject(By.text("选择日期格式"));
-            Assert.assertNull("测试失败，找到了选择日期格式选项", format);
+                UiObject2 format = device.findObject(By.text("选择日期格式"));
+                Assert.assertNull("测试失败，找到了选择日期格式选项", format);
 
 
-        } else if ("P1".equals(Build.MODEL)) {
+            } else if ("P1".equals(Build.MODEL)) {
 
-            device.findObject(By.text("选择日期格式")).clickAndWait(Until.newWindow(), 5000);
+                device.findObject(By.text("选择日期格式")).clickAndWait(Until.newWindow(), 5000);
 
-            UiObject2 FormatObj = device.findObjects(By.res("android:id/text1")).get(3);
-            Assert.assertTrue("测试失败，默认日期格式不是年月日", FormatObj.isChecked());
+                UiObject2 FormatObj = device.findObjects(By.res("android:id/text1")).get(3);
+                Assert.assertTrue("测试失败，默认日期格式不是年月日", FormatObj.isChecked());
 
-        }
+            }
+
     }
 
     //owner:zhangruili
     //【选项】语言
     @Test
-    public void test073CheckDefaultLanguage() {
+    public void test073CheckDefaultLanguage() throws UiObjectNotFoundException{
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            //选择高级选项，往上滚动（在viewer上Scrollable必须为true才能有效)
+            sleep(2000);
+            UiSelector message1 = new UiSelector().text("语言和输入法");//查找语言和输入法
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("语言和输入法")).clickAndWait(Until.newWindow(),5000);//点击语言和输入法
+            UiObject2 language = device.findObject(By.text("语言"));
+            Assert.assertNull("测试失败，显示了语言选项",language);//显示语言选项则用例失败
+
+        }
 
 
     }
@@ -1749,7 +1812,25 @@ public class SunmiSettings {
     //owner:zhangruili
     //增加情景模式
     @Test
-    public void test077AddSituation() {
+    public void test077AddSituation() throws UiObjectNotFoundException{
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            //选择高级选项，往上滚动（在viewer上Scrollable必须为true才能有效)
+            UiSelector message1 = new UiSelector().text("提示音和通知");//查找提示音和通知
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(),5000);//点击提示音和通知
+            sleep(2000);
+            device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(),5000);//点击更多选项
+            sleep(2000);
+            device.findObject(By.text("添加情景模式")).clickAndWait(Until.newWindow(),50000);//点击添加情景设置
+            sleep(2000);
+            UiObject2 sceneObj = device.findObject(By.res("com.android.settings:id/edittext"));//查找输入栏
+            sceneObj.setText("工作模式");//输入工作模式
+            sleep(2000);
+            device.findObject(By.text("确定")).click();//点击确定
+            UiObject2 workObj = device.findObject(By.text("工作模式"));
+            Assert.assertNotNull("未找到工作模式标识",workObj);//未找到工作模式则报错
+        }
 
     }
 
@@ -1823,8 +1904,17 @@ public class SunmiSettings {
     //owner:zhangruili
     //-【选项】通知提示音铃声
     @Test
-    public void test081CheckDeviceNotificationSoundValue(){
-
+    public void test081CheckDeviceNotificationSoundValue() throws UiObjectNotFoundException {
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            UiSelector message1 = new UiSelector().text("提示音和通知");//滚动查找提示音和通知
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);//点击提示音和通知
+            device.findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(), 5000);//点击设置
+            device.findObject(By.text("默认通知提示音")).clickAndWait(Until.newWindow(), 5000);//点击默认通知提示音
+            UiObject2 cuetoneObj = device.findObject(By.checked(true).text("Pixie Dust"));
+            Assert.assertEquals("默认铃声是Pixie Dust", true, cuetoneObj.isChecked());//检查默认铃声是Pixie Dust则通过
+        }
     }
 
     //owner:zhaizhongjie
@@ -1874,7 +1964,20 @@ public class SunmiSettings {
     //owner:zhangruili
     //-【开关】锁屏提示音
     @Test
-    public void test085CheckScreenLockSoundStatus(){
+    public void test085CheckScreenLockSoundStatus() throws UiObjectNotFoundException{
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            //选择高级选项，往上滚动（在viewer上Scrollable必须为true才能有效)
+            sleep(2000);
+            UiSelector message1 = new UiSelector().text("提示音和通知");//查找提示音和通知
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(),5000);//点击提示音和通知
+
+            device.findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(),5000);
+            UiObject2 lockObj = device.findObject(By.text("锁屏提示音"));
+            UiObject2 lockButton = lockObj.getParent().getParent().findObject(By.res("android:id/switchWidget"));
+            Assert.assertEquals("锁屏提示音默认为打开状态",true,lockButton.isChecked());
+        }
 
     }
 
@@ -1897,8 +2000,6 @@ public class SunmiSettings {
             screenshotCap("内置打印管理界面");
             UiObject2 ValueObj = device.findObject(By.text("1.10"));
             Assert.assertNotNull("测试失败，打印浓度默认不是“1.10”",ValueObj);
-
-
         }
 
     }
@@ -1915,14 +2016,13 @@ public class SunmiSettings {
 
         UiObject2 print = device.findObject(By.res("com.android.settings:id/icon"));
         Assert.assertNotNull("测试失败，不显示打印", print);
-
-
     }
 
     //owner:zhangruili
     //已下载应用列表视图
     @Test
-    public void test089CheckAlreadyDownloadedList(){
+    public void test089CheckAlreadyDownloadedList() throws UiObjectNotFoundException{
+
 
     }
 
@@ -1979,7 +2079,28 @@ public class SunmiSettings {
     //owner:zhangruili
     //已停用应用列表视图
     @Test
-    public void test093CheckDisabledAppsList(){
+    public void test093CheckDisabledAppsList() throws UiObjectNotFoundException{
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
+            UiSelector message1=new UiSelector().text("应用");//查找音量键自定义
+            scroll1.scrollIntoView(message1);
+            device.findObject(By.text("应用")).clickAndWait(Until.newWindow(),5000);
+            sleep(2000);
+            device.findObject(By.text("计算器")).clickAndWait(Until.newWindow(),5000);
+            sleep(2000);
+            device.findObject(By.text("停用")).clickAndWait(Until.newWindow(),5000);
+            device.findObject(By.text("停用应用")).click();
+            device.pressBack();
+            device.waitForIdle(1000);
+            device.findObject(By.res("com.android.settings:id/filter_spinner")).clickAndWait(Until.newWindow(),5000);
+            sleep(2000);
+            device.findObject(By.text("已停用")).click();
+            sleep(2000);
+            UiObject2 stopObj = device.findObject(By.text("计算器"));
+            Assert.assertNotNull("未找到计算器标识",stopObj);
+            device.findObject(By.text("计算器")).clickAndWait(Until.newWindow(),5000);
+            device.findObject(By.text("启用")).click();
+        }
 
     }
 
