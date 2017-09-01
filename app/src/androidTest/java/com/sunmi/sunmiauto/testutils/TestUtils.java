@@ -40,6 +40,8 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
+    public static int deviceHeight = device.getDisplayHeight();
+    public static int deviceWidth = device.getDisplayWidth();
 
     //注册监听器
     public static void uiwatchSuite(){
@@ -363,5 +365,15 @@ public class TestUtils {
             }
         }
 
+    }
+
+    //向左滑动屏幕（从屏幕最右中心位置滑动到屏幕最左中心位置）
+    public static void swipeToLeft(){
+        device.swipe(deviceWidth-5,deviceHeight/2,5,deviceHeight/2,30);
+    }
+
+    //向右滑动屏幕（从屏幕最左中心位置滑动到屏幕最右中心位置）
+    public static void swipeToRight(){
+        device.swipe(5,deviceHeight/2,deviceWidth-5,deviceHeight/2,30);
     }
 }
