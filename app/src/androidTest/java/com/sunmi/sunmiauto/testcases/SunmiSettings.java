@@ -913,7 +913,7 @@ public class SunmiSettings {
             device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
             sleep(3000);
             UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
-            screenshotCap("after_enter");
+            screenshotCap("进入蓝牙界面");
             if (switchObj.isChecked() == false) {//判断蓝牙开关状态
                 switchObj.click();
                 sleep(3000);
@@ -1823,15 +1823,27 @@ public class SunmiSettings {
     @Test
     @Category(CategorySettingsTests.class)
     public void test071Check24HFormatStatus() throws UiObjectNotFoundException {
-        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+        if ("P1".equals(Build.MODEL)) {
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("日期和时间");
             device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("日期和时间界面截图");
             UiScrollable DataScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
             DataScroll.scrollTextIntoView("使用24小时制");
             UiObject2 FormatObj = device.findObjects(By.res("android:id/switchWidget")).get(1);
             Assert.assertTrue("测试失败，使用24小时制开关默认不是打开状态", FormatObj.isChecked());
         }
+        else if ("V1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("日期和时间");
+            device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("日期和时间界面截图");
+            UiScrollable DataScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            DataScroll.scrollTextIntoView("使用24小时制");
+            UiObject2 FormatObj = device.findObjects(By.res("android:id/switchWidget")).get(1);
+            Assert.assertFalse("测试失败，使用24小时制开关默认不是关闭状态", FormatObj.isChecked());
+        }
+
     }
     //owner:liuyang
     //选择日期格式
@@ -2128,14 +2140,26 @@ public class SunmiSettings {
     @Test
     @Category(CategorySettingsTests.class)
     public void test087CheckPrintLevelsValue() throws UiObjectNotFoundException {
-        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+        if ("P1".equals(Build.MODEL)){
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("打印");
             device.findObject(By.text("打印")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("打印界面截图");
             device.findObject(By.text("内置打印管理")).clickAndWait(Until.newWindow(),5000);
             screenshotCap("内置打印管理界面");
             UiObject2 ValueObj = device.findObject(By.text("1.10"));
             Assert.assertNotNull("测试失败，打印浓度默认不是“1.10”",ValueObj);
+        }
+        else if ("V1".equals(Build.MODEL)){
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("打印");
+            device.findObject(By.text("打印")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("打印界面截图");
+            device.findObject(By.text("内置打印管理")).clickAndWait(Until.newWindow(),5000);
+            screenshotCap("内置打印管理界面");
+            UiObject2 ValueObj = device.findObject(By.text("110%"));
+            Assert.assertNotNull("测试失败，打印浓度默认不是“110%”",ValueObj);
+
         }
 
     }
@@ -2597,6 +2621,7 @@ public class SunmiSettings {
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("关于设备");
             device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(),5000);
+            screenshotCap("关于设备界面截图");
             UiScrollable AboutScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
             AboutScroll.scrollTextIntoView("版本号");
             for (int i = 0; i < 8; i++) {
@@ -2605,7 +2630,9 @@ public class SunmiSettings {
             }
             device.pressBack();
             sleep(1000);
+            screenshotCap("打开开发者选项后截图");
             device.findObject(By.text("开发者选项")).clickAndWait(Until.newWindow(),5000);
+            screenshotCap("开发者选项界面截图");
             UiObject2 DeveloperObj = device.findObjects(By.res("android:id/switchWidget")).get(0);
             Assert.assertFalse("测试失败，默认不是关闭状态",DeveloperObj.isChecked());
 
