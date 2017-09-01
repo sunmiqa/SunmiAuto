@@ -893,29 +893,30 @@ public class SunmiSettings {
     @Test
     public void test035ModifyPairedDeviceName() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
-            screenshotCap("after_enter");
             device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
-            sleep(1000);
-            UiObject2 SwitchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            sleep(3000);
+            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
             screenshotCap("after_enter");
-            if (SwitchObj.isChecked() == false) {//判断蓝牙开关状态
-                SwitchObj.click();
+            if (switchObj.isChecked() == false) {//判断蓝牙开关状态
+                switchObj.click();
                 sleep(3000);
             }
-            device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
+            device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(1000);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
             sleep(1000);
+            screenshotCap("修改蓝牙名称后");
             device.findObject(By.text("确定")).click();
             sleep(1000);
             screenshotCap("after_enter");
             UiObject2 TestObj = device.findObject(By.text("测试重命名"));
             Assert.assertNotNull("测试失败，未找到修改后的蓝牙名", TestObj);
             sleep(1000);
-            device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
+            device.findObject(By.text("测试重命名")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(1000);
             device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
             sleep(1000);
+            screenshotCap("重置蓝牙名称");
             device.findObject(By.text("确定")).click();
         }
     }
@@ -2203,6 +2204,7 @@ public class SunmiSettings {
                 device.findObject(By.text("版本号")).click();
             }
             device.pressBack();
+            sleep(1000);
             device.findObject(By.text("开发者选项")).clickAndWait(Until.newWindow(),5000);
             UiObject2 DeveloperObj = device.findObjects(By.res("android:id/switchWidget")).get(0);
             Assert.assertFalse("测试失败，默认不是关闭状态",DeveloperObj.isChecked());
