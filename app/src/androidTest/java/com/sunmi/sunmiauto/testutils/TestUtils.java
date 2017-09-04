@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Pattern;
 
+import static com.sunmi.sunmiauto.testutils.CommonAction.deviceHeight;
+import static com.sunmi.sunmiauto.testutils.CommonAction.deviceWidth;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
@@ -40,6 +42,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
+
 
     //注册监听器
     public static void uiwatchSuite(){
@@ -363,5 +366,13 @@ public class TestUtils {
             }
         }
 
+    }
+
+    public static void checkScreenStatus() throws RemoteException {
+        if(!device.isScreenOn()){
+            device.wakeUp();
+            sleep(2000);
+            device.swipe(deviceWidth/2,deviceHeight-5,deviceWidth/2,deviceHeight/2,20);
+        }
     }
 }

@@ -4,6 +4,8 @@ import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.BySelector;
 import android.support.test.uiautomator.UiObject2;
 
+import org.junit.Assert;
+
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
 import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
@@ -51,7 +53,7 @@ public class UiobjectFinder {
             uiObject2 = device.findObject(selector);
             if(i == 19){
                 screenshotCap("wrong UI");
-                return null;
+                Assert.fail("未找到想要找的控件");
             }
             i++;
         }
