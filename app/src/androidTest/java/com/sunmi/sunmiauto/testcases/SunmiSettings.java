@@ -67,12 +67,7 @@ public class SunmiSettings {
     @Before
     public void setup() throws IOException, RemoteException {
         TestUtils.clearAllRecentApps();
-        TestUtils.findAppByText("设置");
-        long begin = System.currentTimeMillis();
-        UiObject2 setObj = device.findObject(By.text("设置"));
-        long end = System.currentTimeMillis();
-        Log.v(LOG_V, String.valueOf(end - begin));
-        setObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+        TestUtils.findAppAndOpenByText("设置");
     }
 
     @Test
@@ -910,13 +905,12 @@ public class SunmiSettings {
     public void test035ModifyPairedDeviceName() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
             device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
-            sleep(3000);
-            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
             screenshotCap("进入蓝牙界面");
-            if (switchObj.isChecked() == false) {//判断蓝牙开关状态
+            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            if ("P1".equals(Build.MODEL)) {
                 switchObj.click();
-                sleep(3000);
             }
+            sleep(4000);
             device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(1000);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
@@ -934,6 +928,11 @@ public class SunmiSettings {
             sleep(1000);
             screenshotCap("重置蓝牙名称");
             device.findObject(By.text("确定")).click();
+        }
+        sleep(1000);
+        if ("P1".equals(Build.MODEL)){
+            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            switchObj.click();
         }
     }
 
