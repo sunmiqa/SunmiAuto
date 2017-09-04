@@ -810,7 +810,6 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test029CheckWlanConnStrategy() {
         if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
-
             UiObject2 wifiops = device.findObject(By.text("WLAN"));//找到WLAN
             device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(),5000);//点击WLAN
             device.waitForIdle(10000);
@@ -820,12 +819,11 @@ public class SunmiSettings {
             device.findObject(By.text("高级")).clickAndWait(Until.newWindow(),5000);//点击高级
             screenshotCap("wifi_sleep");//截图
             device.waitForIdle();
-            UiObject2 sleepObj = device.findObject(By.text("在休眠状态下保持WLAN网络连接"));//检查是否显示“在休眠状态下保持WLAN网络连接”功能
-            Assert.assertNotNull("未找到在休眠状态下保持WLAN网络连接标识",sleepObj);
-            UiObject2 alwaysObj = device.findObject(By.text("始终").clazz("android.widget.TextView"));//检查默认显示始终
-            Assert.assertNotNull("未找到始终标识",alwaysObj);
-            device.pressBack();//点击返回
-            device.waitForIdle();
+            device.findObject(By.text("在休眠状态下保持WLAN网络连接")).clickAndWait(Until.newWindow(),5000);
+            sleep(2000);
+            UiObject2 sleepObj = device.findObject(By.text("始终").checked(true));//检查选中的为始终
+            Assert.assertEquals("始终默认是被选中的状态",true,sleepObj.isChecked());
+            device.findObject(By.text("取消"));
         }
 
     }
@@ -875,6 +873,7 @@ public class SunmiSettings {
             sleep(2000);
             screenshotCap("after_enter");//进入后截图
             device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(),5000);//点击更多选项
+            sleep(1000);
             device.findObject(By.text("重命名此设备")).clickAndWait(Until.newWindow(),5000);//点击重命名
             sleep(2000);
             if("V1".equals(Build.MODEL)) {
@@ -1046,8 +1045,6 @@ public class SunmiSettings {
             //点击更多里面的刷新
             sleep(SHORT_SLEEP);
             shuaxin.click();
-
-
         }
     }
 
@@ -1638,7 +1635,7 @@ public class SunmiSettings {
                 sleep(2000);
                 UiObject2 ii = device.findObject(By.res("com.android.settings:id/lockPattern"));//找到绘制图案
                 int[] array2 = {1, 4, 7, 8, 9};
-                drawPattern(ii, array);
+                drawPattern(ii, array2);
                 sleep(5000);
                 device.findObject(By.res("com.android.settings:id/footerRightButton")).clickAndWait(Until.newWindow(), 5000);//点击
                 device.findObject(By.res("com.android.settings:id/next_button")).clickAndWait(Until.newWindow(), 5000);//点击确认
@@ -1649,6 +1646,14 @@ public class SunmiSettings {
                 Assert.assertNotNull("未找到自动锁定标识", autolockObj);//未找到自动锁定标识则报错
                 UiObject2 sleepObj = device.findObject(By.text("休眠5秒后").clazz("android.widget.TextView"));
                 Assert.assertNotNull("未找到休眠5秒后标识", sleepObj);//未找到休眠5秒后标识则报错
+                device.findObject(By.text("屏幕锁定方式")).clickAndWait(Until.newWindow(),5000);//点击屏幕锁定方式
+                UiObject2 nn = device.findObject(By.res("com.android.settings:id/lockPattern"));//找到绘制图案
+                int[] array6 = {1, 4, 7, 8, 9};
+                drawPattern(nn, array6);//绘制图案
+                sleep(5000);
+                device.findObject(By.text("滑动")).clickAndWait(Until.newWindow(),5000);
+                sleep(1000);
+                device.findObject(By.text("确定")).clickAndWait(Until.newWindow(),5000);
             }
         }
     }
@@ -2066,6 +2071,11 @@ public class SunmiSettings {
             UiObject2 workObj = device.findObject(By.text("工作模式"));
             Assert.assertNotNull("未找到工作模式标识",workObj);//未找到工作模式则报错
             screenshotCap("ring");//截图
+            UiObject2 work = device.findObject(By.text("工作模式"));
+            device.swipe(work.getVisibleBounds().centerX(),work.getVisibleBounds().centerY(),
+                    work.getVisibleBounds().centerX(),work.getVisibleBounds().centerY(),300);
+            device.findObject(By.text("删除")).clickAndWait(Until.newWindow(),5000);
+            device.findObject(By.text("确定")).click();
         }
 
     }
@@ -2417,10 +2427,22 @@ public class SunmiSettings {
                 application.setAsHorizontalList();//设置为水平列表
                 application.scrollTextIntoView("全部");//查找全部
                 application.scrollForward();//向←滑动
+                UiScrollable scroll2 = new UiScrollable(new UiSelector().className("android.widget.ListView"));
+                UiSelector message2 = new UiSelector().text("计算器");//查找应用
+                scroll2.scrollIntoView(message2);
+                device.findObject(By.text("计算器")).clickAndWait(Until.newWindow(), 5000);//点击计算器
+                sleep(2000);
+                device.findObject(By.text("停用")).clickAndWait(Until.newWindow(), 5000);//点击停用
+                device.findObject(By.text("确定")).click();//点击停用应用
+                device.pressBack();//返回
                 application.scrollForward();//向←滑动
                 sleep(2000);
                 UiObject2 stopObj = device.findObject(By.text("已停用"));
                 Assert.assertNotNull("未找到已停用标识",stopObj);//检查是否显示已停用页面
+                device.findObject(By.text("计算器")).clickAndWait(Until.newWindow(), 5000);//点击计算器
+                device.findObject(By.text("启用")).click();
+                screenshotCap("stop");//截图
+                device.pressBack();//返回
             }
             else {
                 UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
@@ -2443,6 +2465,7 @@ public class SunmiSettings {
                 device.findObject(By.text("计算器")).clickAndWait(Until.newWindow(), 5000);//点击计算器
                 device.findObject(By.text("启用")).click();
                 screenshotCap("stop");//截图
+                device.pressBack();//返回
             }
         }
 
