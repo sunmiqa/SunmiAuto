@@ -691,7 +691,8 @@ public class SunmiSettings {
             screenshotCap("wifi_enter");
             UiObject2 wlan = device.findObject(By.text("SUNMI"));
             Assert.assertNotNull("测试失败，未连接到指定的无线网络",wlan);
-
+            sleep(2000);
+            device.pressBack();
             UiObject2 openQuick1 = device.findObject(By.res("com.android.settings:id/switch_widget"));
             if(openQuick1.isChecked() != wifiSwitchStatus){
                 openQuick1.click();
@@ -1287,10 +1288,10 @@ public class SunmiSettings {
             serverAddress.setText("p1.hk2.heyjump.com");
 
             device.findObject(By.text("保存")).clickAndWait(Until.newWindow(), 5000);
-            sleep(2000);
+            sleep(3000);
 
             device.findObject(By.text("SUNMI")).clickAndWait(Until.newWindow(), 5000);
-
+            sleep(2000);
             UiObject username = new UiObject(new UiSelector().resourceId("com.android.settings:id/username"));
             //输入用户名
             username.click();
