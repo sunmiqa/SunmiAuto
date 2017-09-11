@@ -29,6 +29,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.regex.Pattern;
 
+import static com.sunmi.sunmiauto.testutils.CommonAction.deviceHeight;
+import static com.sunmi.sunmiauto.testutils.CommonAction.deviceWidth;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
@@ -40,6 +42,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
+
 
     //注册监听器
     public static void uiwatchSuite(){
@@ -84,16 +87,16 @@ public class TestUtils {
         dir.mkdir();
     }
 
-    //绘制图案锁屏（倒L形）
-    public static void drawLPattern(){
-        UiObject2 lockPatternObj = device.findObject(By.res("com.android.settings:id/lockPattern"));
-        Rect lockRect = lockPatternObj.getVisibleBounds();
+    //绘制图案锁屏（L形）
+    public static void drawLPattern(UiObject2 uiObject2){
+//        UiObject2 lockPatternObj = device.findObject(By.res("com.android.settings:id/lockPattern"));
+        Rect lockRect = uiObject2.getVisibleBounds();
         int x1 = lockRect.left;
         int y1 = lockRect.top;
         int x2 = lockRect.right;
         int y2 = lockRect.bottom;
         Point pointOne = new Point((x1+(x2-x1)/6),(y1+(y2-y1)/6));
-        Point pointTwo = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6));
+        Point pointTwo = new Point((x1+(x2-x1)/6),(y1+(y2-y1)));
         Point pointThree = new Point((x1+(x2-x1)/6*5),(y1+(y2-y1)/6*5));
         Point[] points = new Point[]{pointOne,pointTwo,pointThree};
         device.swipe(points,10);
@@ -363,5 +366,13 @@ public class TestUtils {
             }
         }
 
+    }
+
+    public static void checkScreenStatus() throws RemoteException {
+        if(!device.isScreenOn()){
+            device.wakeUp();
+            sleep(2000);
+            device.swipe(deviceWidth/2,deviceHeight-5,deviceWidth/2,deviceHeight/2,20);
+        }
     }
 }
