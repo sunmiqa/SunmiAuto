@@ -69,12 +69,7 @@ public class SunmiSettings {
     @Before
     public void setup() throws IOException, RemoteException {
         TestUtils.clearAllRecentApps();
-        TestUtils.findAppByText("设置");
-        long begin = System.currentTimeMillis();
-        UiObject2 setObj = device.findObject(By.text("设置"));
-        long end = System.currentTimeMillis();
-        Log.v(LOG_V, String.valueOf(end - begin));
-        setObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+        TestUtils.findAppAndOpenByText("设置");
     }
 
     @Test
@@ -665,8 +660,10 @@ public class SunmiSettings {
 
             screenshotCap("wifi_open");
             //如果WiFi为关闭则打开
+
             UiObject2 openQuick = device.findObject(By.res("com.android.settings:id/switch_widget"));
-            if (!openQuick.isChecked()) {//感叹号表示如果为关闭就点击
+            Boolean wifiSwitchStatus = openQuick.isChecked();
+            if (!wifiSwitchStatus) {//感叹号表示如果为关闭就点击
                 openQuick.click();
                 Assert.assertEquals(true, openQuick.wait(Until.checked(true), 10000));
             }
@@ -691,8 +688,15 @@ public class SunmiSettings {
             }
             sleep(5000);
             CommonAction.clickByText("已连接");//调用节时点击
+            screenshotCap("wifi_enter");
             UiObject2 wlan = device.findObject(By.text("SUNMI"));
             Assert.assertNotNull("测试失败，未连接到指定的无线网络",wlan);
+            sleep(2000);
+            device.pressBack();
+            UiObject2 openQuick1 = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            if(openQuick1.isChecked() != wifiSwitchStatus){
+                openQuick1.click();
+            }
 
         }
     }
@@ -789,7 +793,7 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test028CheckScanAlwaysStatus() {
         if ("V1".equals(Build.MODEL)) {
-            screenshotCap("wifi_enter");
+            screenshotCap("wifi_advanced");
             device.findObject(By.text("WLAN")).clickAndWait(Until.newWindow(), 5000);
             sleep(2000);
             device.findObject(By.desc("更多选项")).click();
@@ -797,6 +801,7 @@ public class SunmiSettings {
             device.findObject(By.text("高级")).clickAndWait(Until.newWindow(), 5000);
 
             sleep(2000);
+            screenshotCap("wifi_advanced_1");
             UiObject2 openQuick = device.findObjects(By.res("android:id/switchWidget")).get(1);
             Assert.assertEquals("随时都可扫描开关默认为关闭", false, openQuick.isChecked());
 
@@ -850,13 +855,19 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test032CheckBTStatus() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
-            screenshotCap("wifi_BT");
+            screenshotCap("BT_status");
             device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
             sleep(5000);
 
-            UiObject2 BT = device.findObject(By.res("com.android.settings:id/switch_widget"));
-            Assert.assertTrue("测试失败，蓝牙开关默认是关闭状态", BT.isChecked());
+            if ("V1".equals(Build.MODEL)){
 
+                UiObject2 BT = device.findObject(By.res("com.android.settings:id/switch_widget"));
+                Assert.assertTrue("测试失败，蓝牙开关默认是关闭状态", BT.isChecked());
+            }else if("P1".equals(Build.MODEL)) {
+                screenshotCap("BT_status_1");
+                UiObject2 BT = device.findObject(By.res("com.android.settings:id/switch_widget"));
+                Assert.assertFalse("测试失败，蓝牙开关默认是开启状态", BT.isChecked());
+            }
 
         }
 
@@ -913,13 +924,12 @@ public class SunmiSettings {
     public void test035ModifyPairedDeviceName() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
             device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
-            sleep(3000);
-            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
             screenshotCap("进入蓝牙界面");
-            if (switchObj.isChecked() == false) {//判断蓝牙开关状态
+            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            if ("P1".equals(Build.MODEL)) {
                 switchObj.click();
-                sleep(3000);
             }
+            sleep(4000);
             device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(1000);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
@@ -938,6 +948,11 @@ public class SunmiSettings {
             screenshotCap("重置蓝牙名称");
             device.findObject(By.text("确定")).click();
         }
+        sleep(1000);
+        if ("P1".equals(Build.MODEL)){
+            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            switchObj.click();
+        }
     }
 
     //owner:liuyang
@@ -946,11 +961,14 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test036CancelPairedDevice() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
-            screenshotCap("wifi_BT");
+            screenshotCap("BT_Cancel match");
             device.findObject(By.text("蓝牙")).clickAndWait(Until.newWindow(), 5000);
             sleep(5000);
+
             UiObject2 openQuick = device.findObject(By.res("com.android.settings:id/switch_widget"));
-            if (!openQuick.isChecked()) {
+            Boolean btSwitchStatus = openQuick.isChecked();
+            screenshotCap("BT_Cancel match_1");
+            if (!btSwitchStatus) {//感叹号表示如果为关闭就点击
                 openQuick.click();
                 Assert.assertEquals(true, openQuick.wait(Until.checked(true), 10000));
             }
@@ -964,23 +982,28 @@ public class SunmiSettings {
             UiObject2 cancel = device.findObject(By.text("取消保存"));
             cancel.clickAndWait(Until.newWindow(), timeoutSeconds);
 
-
-            sleep(2000);
+            sleep(4000);
             UiScrollable Sliding = new UiScrollable(new UiSelector().resourceId("android:id/list"));//取主屏幕
             UiSelector selector = new UiSelector().text("InnerPrinter");//查找APP名称
             Sliding.scrollIntoView(selector);
-            UiObject2 Network = device.findObject(By.text("InnerPrinter"));
-            Network.clickAndWait(Until.newWindow(), timeoutSeconds);
+            device.findObject(By.text("InnerPrinter")).clickAndWait(Until.newWindow(), 5000);
 
             UiScrollable Sliding1 = new UiScrollable(new UiSelector().resourceId("android:id/list"));//取主屏幕
             UiSelector selector1 = new UiSelector().text("InnerPrinter");//查找APP名称
+            Sliding1.scrollIntoView(selector1);
             Sliding1.flingToBeginning(20);
 
+            screenshotCap("BT_Cancel match_2");
             sleep(40000);
             UiObject2 pairedSetBtn = device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails"));
             Assert.assertNotNull(pairedSetBtn);//
+            sleep(2000);
+            device.findObject(By.res("com.android.settings:id/switch_widget")).clickAndWait(Until.newWindow(), 5000);
 
-
+            UiObject2 openQuick1 = device.findObject(By.res("com.android.settings:id/switch_widget"));
+            if(openQuick1.isChecked() != btSwitchStatus){
+                openQuick1.click();
+            }
         }
     }
 
@@ -1146,9 +1169,9 @@ public class SunmiSettings {
     public void test044CheckBTNetworkSharedStatus() {
         if ("P1".equals(Build.MODEL)) {
             device.findObject(By.text("更多")).clickAndWait(Until.newWindow(), 5000);
-            screenshotCap("更多界面显示");
+            screenshotCap("More_interfacedisplay");
             device.findObject(By.text("网络共享与便携式热点")).clickAndWait(Until.newWindow(), 5000);
-            screenshotCap("蓝牙网络共享");
+            screenshotCap("More_Bluetooth");
             UiObject2 openQuick = device.findObjects(By.res("android:id/switchWidget")).get(1);
             Assert.assertFalse("测试失败，蓝牙网络共享默认为开启", openQuick.isChecked());
 
@@ -1222,15 +1245,13 @@ public class SunmiSettings {
             sleep(2000);
             device.findObject(By.text("VPN")).clickAndWait(Until.newWindow(), 5000);
             sleep(2000);
-
-
+            screenshotCap("More_VPN");
             if ("P1".equals(Build.MODEL)) {
                 device.findObject(By.res("com.android.settings:id/vpn_create")).clickAndWait(Until.newWindow(), 5000);
                 sleep(2000);
                 UiObject2 Condensation = device.findObject(By.res("android:id/message"));
                 sleep(2000);
             }
-
             device.findObject(By.text("确定")).clickAndWait(Until.newWindow(), 5000);
             sleep(2000);
             device.findObject(By.text("密码")).clickAndWait(Until.newWindow(), 5000);
@@ -1267,10 +1288,10 @@ public class SunmiSettings {
             serverAddress.setText("p1.hk2.heyjump.com");
 
             device.findObject(By.text("保存")).clickAndWait(Until.newWindow(), 5000);
-            sleep(2000);
+            sleep(3000);
 
             device.findObject(By.text("SUNMI")).clickAndWait(Until.newWindow(), 5000);
-
+            sleep(2000);
             UiObject username = new UiObject(new UiSelector().resourceId("com.android.settings:id/username"));
             //输入用户名
             username.click();
@@ -1286,12 +1307,9 @@ public class SunmiSettings {
             device.findObject(By.text("连接")).clickAndWait(Until.newWindow(), 5000);
             sleep(2000);
 
+            screenshotCap("More_VPN_1");
             UiObject2 configurationFile = device.findObject(By.text("SUNMI"));
-            screenshotCap("VPN配置文件");
-
             Assert.assertNotNull("测试失败,未找到配置文件", configurationFile);
-
-
 
             if ("P1".equals(Build.MODEL)) {
                 device.findObject( By.desc("设置")).clickAndWait( Until.newWindow(), 5000);
@@ -1304,45 +1322,42 @@ public class SunmiSettings {
                 sleep(2000);
             }
             else if ("V1".equals(Build.MODEL)){
-
-//                UiObject delete = new UiObject(new UiSelector().text("SUNMI"));
-//                delete.longClick();
-
                 UiObject2 setting = device.findObject(By.text("SUNMI"));
                 device.swipe(setting.getVisibleBounds().centerX(),setting.getVisibleBounds().centerY(),setting.getVisibleBounds().centerX(),setting.getVisibleBounds().centerY(),300);
-//                setting.clickAndWait(Until.newWindow(), timeoutSeconds);
-
-//                device.findObject( By.text("删除配置文件")).clickAndWait( Until.newWindow(), 5000);
                 sleep(2000);
-                CommonAction.clickByText("删除配置文件");//调用节时点击
+                device.findObject( By.text("删除配置文件")).clickAndWait( Until.newWindow(), 5000);
+                sleep(2000);
+//                CommonAction.clickByText("删除配置文件");//调用节时点击
                 device.pressBack ();
-                sleep(2000);
+                sleep(3000);
                 device.pressBack ();
-                sleep(2000);
+                sleep(3000);
 
             }
 
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("安全");
             device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);
-
             device.findObject( By.text("屏幕锁定方式")).clickAndWait( Until.newWindow(), 5000);
-
             UiObject confirmPassword = new UiObject(new UiSelector().resourceId("com.android.settings:id/password_entry"));
             //输入用户名
             confirmPassword.click();
             confirmPassword.setText("L111111");
             device.pressEnter();
             sleep(2000);
-
             device.findObject( By.text("滑动")).clickAndWait( Until.newWindow(), 5000);
             sleep(2000);
 
-            device.findObject( By.text("是，移除")).clickAndWait( Until.newWindow(), 5000);
-            sleep(2000);
+            if ("V1".equals(Build.MODEL)){
+                device.findObject( By.text("确定")).clickAndWait( Until.newWindow(), 5000);
+                sleep(2000);
+            }else if("P1".equals(Build.MODEL)) {
 
+                device.findObject( By.text("是，移除")).clickAndWait( Until.newWindow(), 5000);
+                sleep(2000);
+            }
+            screenshotCap("More_VPN_1");
             UiObject2 lockScreenMode = device.findObject(By.text("滑动"));
-            screenshotCap("锁屏方式");
             Assert.assertNotNull("测试失败,未找到滑动", lockScreenMode);
         }
     }
@@ -1421,12 +1436,13 @@ public class SunmiSettings {
             device.findObject(By.text("休眠")).clickAndWait(Until.newWindow(), 5000);
 
             if ("V1".equals(Build.MODEL)) {
+                screenshotCap("Sleep_V1");
                 UiObject2 Sleep = device.findObject(By.text("1分钟"));
                 Assert.assertTrue("测试失败，默认显示不为1分钟", Sleep.isChecked());
                 sleep(2000);
             } else if ("P1".equals(Build.MODEL)) {
                 sleep(2000);
-
+                screenshotCap("Sleep_P1");
                 UiObject2 Sleep = device.findObject(By.text("永不"));
                 Assert.assertTrue("测试失败，默认显示不为永不", Sleep.isChecked());
 
@@ -1478,10 +1494,11 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test056CheckLocationStatus() throws UiObjectNotFoundException {
         if ("P1".equals(Build.MODEL)) {
+            screenshotCap("location_information");
             UiScrollable SettingScoll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScoll.scrollTextIntoView("位置信息");
             device.findObject(By.text("位置信息")).clickAndWait(Until.newWindow(), 5000);
-            screenshotCap("位置信息");
+            screenshotCap("location_information_1");
             sleep(2000);
             UiObject2 information = device.findObject(By.res("com.android.settings:id/switch_widget"));
             Assert.assertTrue("测试失败，位置信息默认为开启状态", information.isChecked());
@@ -1559,15 +1576,16 @@ public class SunmiSettings {
             UiScrollable SettingScoll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScoll.scrollTextIntoView("安全");
             device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);
-            screenshotCap("安全");
+            screenshotCap("Safety");
             UiObject2 pattern = device.findObject(By.text("显示图案"));
             UiObject2 CancelSave = device.findObject(By.text("滑动"));
             if (pattern != null) {//不为空，表示存在
-
+                screenshotCap("Safety_1");
                 UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
                 Assert.assertTrue("测试失败，显示图案默认未开启", information.isChecked());
 
             } else if (CancelSave != null) {
+                screenshotCap("Safety_2");
                 device.findObject(By.text("屏幕锁定方式")).clickAndWait(Until.newWindow(), 5000);
                 device.findObject(By.text("图案")).clickAndWait(Until.newWindow(), 5000);
 
@@ -1583,9 +1601,9 @@ public class SunmiSettings {
                 device.findObject(By.res("com.android.settings:id/footerRightButton")).clickAndWait(Until.newWindow(), 5000);
                 device.findObject(By.res("com.android.settings:id/next_button")).clickAndWait(Until.newWindow(), 5000);
 
+                screenshotCap("Safety_3");
                 UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
                 Assert.assertTrue("测试失败，显示图案默认未开启", information.isChecked());
-
 
                 device.findObject(By.text("屏幕锁定方式")).clickAndWait(Until.newWindow(), 5000);
                 UiObject2 vv = device.findObject(By.res("com.android.settings:id/lockPattern"));
@@ -1602,6 +1620,8 @@ public class SunmiSettings {
                 }else if("P1".equals(Build.MODEL)) {
 
                     device.findObject(By.text("是，移除")).clickAndWait(Until.newWindow(), 5000);
+                    screenshotCap("Safety_4");
+
                 }
             }
         }
@@ -1742,28 +1762,22 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test064CheckAllowInstallUnknownStatus() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("Safety_UnknownSource");
             UiScrollable SettingScoll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScoll.scrollTextIntoView("安全");
             device.findObject(By.text("安全")).clickAndWait(Until.newWindow(), 5000);
             screenshotCap("安全");
             sleep(2000);
 
+            screenshotCap("Safety_UnknownSource_1");
             UiScrollable Sliding1 = new UiScrollable(new UiSelector().resourceId("android:id/list"));
             UiSelector Unknown = new UiSelector().text("未知来源");
             Sliding1.scrollIntoView(Unknown);
 
-            if ("V1".equals(Build.MODEL)) {
-                sleep(2000);
-                screenshotCap("未知来源");
-                UiObject2 openQuick = device.findObjects(By.res("android:id/switchWidget")).get(1);
-                Assert.assertTrue("测试失败，未知来源默认为关闭状态", openQuick.isChecked());
-            } else if ("P1".equals(Build.MODEL)) {
-                sleep(2000);
-                screenshotCap("未知来源");
-                UiObject2 openQuick = device.findObjects(By.res("android:id/switchWidget")).get(1);
-                Assert.assertTrue("测试失败，未知来源默认为关闭状态", openQuick.isChecked());
-
-            }
+            sleep(2000);
+            screenshotCap("Safety_UnknownSource_2");
+            UiObject2 openQuick = device.findObject(By.text("未知来源")).getParent().getParent().findObject(By.res("android:id/switchWidget"));
+            Assert.assertTrue("测试失败，未知来源默认为关闭状态", openQuick.isChecked());
 
 
         }
@@ -1842,20 +1856,21 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test068ModifyDate() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("DateAndTime");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("日期和时间");
             device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);
 
             if ("V1".equals(Build.MODEL)) {
-
+                screenshotCap("DateAndTime_1");
                 UiObject2 date = device.findObject(By.text("设置日期"));
                 Assert.assertFalse("测试失败，默认可以设置日期时间", date.isEnabled());
 
                 device.findObject(By.text("自动确定日期和时间")).clickAndWait(Until.newWindow(), 5000);
                 device.findObject(By.text("关闭")).clickAndWait(Until.newWindow(), 5000);
                 sleep(SHORT_SLEEP);
-                screenshotCap("日期和时间");
 
+                screenshotCap("DateAndTime_2");
                 UiObject2 date2 = device.findObject(By.text("设置日期"));
                 Assert.assertTrue("测试失败，不可以设置日期时间", date2.isEnabled());
 
@@ -1867,7 +1882,7 @@ public class SunmiSettings {
             } else if ("P1".equals(Build.MODEL)) {
 
                 UiObject2 date = device.findObject(By.text("设置日期"));
-                screenshotCap("未知来源");
+                screenshotCap("Set the date");
                 Assert.assertFalse("测试失败，默认可以设置日期时间", date.isEnabled());
                 sleep(SHORT_SLEEP);
                 device.findObject(By.text("自动确定日期和时间")).clickAndWait(Until.newWindow(), 5000);
@@ -1965,12 +1980,14 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test072CheckDateFormatValue() throws UiObjectNotFoundException {
         if ( "P1".equals(Build.MODEL)) {
+
+            screenshotCap("DateFormat");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("日期和时间");
             device.findObject(By.text("日期和时间")).clickAndWait(Until.newWindow(), 5000);
-
             device.findObject(By.text("选择日期格式")).clickAndWait(Until.newWindow(), 5000);
 
+            screenshotCap("DateFormat");
             UiObject2 FormatObj = device.findObjects(By.res("android:id/text1")).get(3);
             Assert.assertTrue("测试失败，默认日期格式不是年月日", FormatObj.isChecked());
 
@@ -2037,20 +2054,17 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test076CheckChooseOtherSituation() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("SceneMode");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("提示音和通知");
             device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
 
-            UiObject2 format = device.findObject(By.text("选择日期格式"));
-            Assert.assertNull("测试失败，情景模式默认不是标准", format);
-
             device.findObject(By.text("静音")).clickAndWait(Until.newWindow(), 5000);
-
+            screenshotCap("SceneMode_1");
             UiObject2 FormatObj = device.findObjects(By.res("com.android.settings:id/radiobutton")).get(1);
             Assert.assertTrue("测试失败，无法点击静音", FormatObj.isChecked());
-
             device.findObject(By.text("标准")).clickAndWait(Until.newWindow(), 5000);
-
+            screenshotCap("SceneMode_2");
 
         }
     }
@@ -2144,18 +2158,17 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test080CheckDeviceRingtoneValue() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) ) {
+            screenshotCap("SceneMode_ring");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("提示音和通知");
             device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(), 5000);
             device.findObject(By.text("设备铃声")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("SceneMode_ring_1");
             UiObject2 equipmentRingtones = device.findObject(By.text("Flutey Phone"));
-            Assert.assertNotNull("测试失败，默认铃声不是Flutey Phone", equipmentRingtones);
-
+            Assert.assertTrue("测试失败，默认铃声不是Flutey Phone", equipmentRingtones.isChecked());
         }
-
     }
-
 
     //owner:zhangruili
     //-【选项】通知提示音铃声
@@ -2212,14 +2225,17 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test084CheckTouchSoundStatus() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("SceneMode_TouchTheTone");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("提示音和通知");
             device.findObject(By.text("提示音和通知")).clickAndWait(Until.newWindow(), 5000);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(), 5000);
             if ("V1".equals(Build.MODEL)){
+                screenshotCap("SceneMode_TouchTheTone_1");
                 UiObject2 touchTone = device.findObjects(By.res("android:id/switchWidget")).get(1);
                 Assert.assertFalse("测试失败，触摸提示音默认为开启",touchTone.isChecked());
             }else if("P1".equals(Build.MODEL)) {
+                screenshotCap("SceneMode_TouchTheTone_2");
                 UiObject2 touchTone = device.findObjects(By.res("android:id/switchWidget")).get(0);
                 Assert.assertFalse("测试失败，触摸提示音默认为开启",touchTone.isChecked());
             }
@@ -2301,10 +2317,12 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test088CheckOriginPrintPass() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("SceneMode_Native print");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("打印");
             device.findObject(By.text("打印")).clickAndWait(Until.newWindow(), 5000);
             device.findObject(By.text("外置打印管理")).clickAndWait(Until.newWindow(), 5000);
+            screenshotCap("SceneMode_Native print_1");
             UiObject2 print = device.findObject(By.res("com.android.settings:id/icon"));
             Assert.assertNotNull("测试失败，不显示打印", print);
         }
@@ -2382,6 +2400,7 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test092CheckAllAppsList() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL)) {
+            screenshotCap("ApplicationList_All");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView ("应用程序管理");
             device.findObject(By.text("应用程序管理")).clickAndWait(Until.newWindow(), 5000);
@@ -2392,15 +2411,18 @@ public class SunmiSettings {
             application.scrollTextIntoView("全部");
             application.scrollForward();//向←滑动
 
+            screenshotCap("ApplicationList_All_1");
             UiObject2 print = device.findObject(By.text("全部"));
             Assert.assertNotNull("测试失败，不显示打印", print);
 
         } else if ("P1".equals(Build.MODEL)) {
+            screenshotCap("ApplicationList_All_2");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView ("应用");
             device.findObject(By.text("应用")).clickAndWait(Until.newWindow(), 5000);
             device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(), 5000);
             sleep(2000);
+            screenshotCap("ApplicationList_All_3");
             UiObject2 Displays = device.findObject(By.text("显示系统进程"));//默认显示系统进程
             Assert.assertNotNull("测试失败，找不到显示系统进程", Displays);
             device.pressBack ();
@@ -2412,6 +2434,7 @@ public class SunmiSettings {
             sleep(2000);
             device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(), 5000);
             sleep(2000);
+            screenshotCap("ApplicationList_All_4");
             UiObject2 Displays2 = device.findObject(By.text("隐藏系统进程"));//默认显示系统进程
             Assert.assertNotNull("测试失败，找不到隐藏系统进程", Displays2);
 
@@ -2528,10 +2551,12 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test096CheckRAMUsedInfo() throws UiObjectNotFoundException {
         if ("P1".equals(Build.MODEL)) {
+            screenshotCap("RAM_Overview");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("内存");
             device.findObject(By.text("内存")).clickAndWait(Until.newWindow(), 5000);
             screenshotCap("内存");
+            screenshotCap("RAM_Overview_1");
             UiObject2 format = device.findObject(By.text("平均内存使用量"));
             Assert.assertNotNull("测试失败，找不到平均内存使用量", format);
         }
@@ -2595,10 +2620,26 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test100CheckPowerUsedInfo() throws UiObjectNotFoundException {
         if ("P1".equals(Build.MODEL)) {
+            screenshotCap("battery_UseSituation");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("电池");
             device.findObject(By.text("电池")).clickAndWait(Until.newWindow(), 5000);
-            screenshotCap("电池");
+            screenshotCap("battery");
+            screenshotCap("battery_UseSituation_1");
+            UiObject2 situation = device.findObject(By.res("com.android.settings:id/battery_history_chart"));
+            Assert.assertNotNull("测试失败，找不到电量使用图",situation);
+        }
+        else if ("V1".equals(Build.MODEL)) {
+            screenshotCap("battery_UseSituation_2");
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("关于设备");
+            device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), 5000);
+
+            UiScrollable SettingScrol2 = new UiScrollable(new UiSelector().resourceId("android:id/list"));
+            SettingScrol2.scrollTextIntoView("电池");
+            device.findObject(By.text("电池")).clickAndWait(Until.newWindow(), 5000);
+
+            screenshotCap("battery_UseSituation_3");
             UiObject2 situation = device.findObject(By.res("com.android.settings:id/battery_history_chart"));
             Assert.assertNotNull("测试失败，找不到电量使用图",situation);
         }
@@ -2665,10 +2706,12 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test104CheckOptimizableAppsList() throws UiObjectNotFoundException {
         if ("P1".equals(Build.MODEL)) {
+            screenshotCap("battery_ApplicationList");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("电池");
             device.findObject(By.text("电池")).clickAndWait(Until.newWindow(), 5000);
             screenshotCap("电池");
+            screenshotCap("battery_ApplicationList_1");
             UiObject2 situation = device.findObject(By.text("上次充满后的电量使用情况"));
             Assert.assertNotNull("测试失败，找不到电量使用列表",situation);
         }
@@ -2801,6 +2844,7 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test108CheckOEMStatus()throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
+            screenshotCap("OEM");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
         SettingScroll.scrollTextIntoView("关于设备");
         device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(),5000);
@@ -2808,12 +2852,13 @@ public class SunmiSettings {
         AboutScroll.scrollTextIntoView("版本号");
         for (int i = 0; i < 8; i++) {
             sleep(200);
+
             device.findObject(By.text("版本号")).click();
         }
         device.pressBack();
             sleep(2000);
             device.findObject(By.text("开发者选项")).clickAndWait(Until.newWindow(),5000);
-            screenshotCap("OEM");
+            screenshotCap("OEM_1");
         UiObject2 OEM = device.findObjects(By.res("android:id/switchWidget")).get(2);
         Assert.assertFalse("测试失败，默认不是关闭状态",OEM.isChecked());
 
@@ -2902,14 +2947,14 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test112CheckIBeaconInfo() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) ) {
+            screenshotCap("iBeacon");
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
             SettingScroll.scrollTextIntoView("其他设置");
             device.findObject(By.text("其他设置")).clickAndWait(Until.newWindow(), 5000);
             device.findObject(By.text("iBeacon")).clickAndWait(Until.newWindow(), 5000);
-            screenshotCap("iBeacon");
+            screenshotCap("iBeacon_1");
             UiObject2 iBeacon = device.findObject(By.res("com.sunmi.ibeacon:id/swi"));
             Assert.assertTrue("测试失败，iBeacon默认不是打开状态", iBeacon.isChecked());
-//            device.findObject(By.res("com.sunmi.ibeacon:id/rl_setting")).clickAndWait(Until.newWindow(), 5000);
             UiObject2 iBeaconSetting = device.findObject(By.res("com.sunmi.ibeacon:id/rl_setting"));
             if (iBeaconSetting.isClickable()) {
                 device.findObject(By.text("设置iBeacon")).clickAndWait(Until.newWindow(), 5000);
@@ -2929,11 +2974,33 @@ public class SunmiSettings {
                 sleep(2000);
                 device.findObject(By.text("确认")).clickAndWait(Until.newWindow(), 5000);
                 sleep(2000);
-                UiObject2 situation = device.findObject(By.res("com.sunmi.ibeacon:id/rl_setting"));
+
+                screenshotCap("iBeacon_2");
+                UiObject2 situation = device.findObject(By.text("10010"));
                 Assert.assertNotNull("测试失败，未能正确保存参数",situation);
             } else {
                 device.pressBack();
             }
+            device.findObject(By.text("设置iBeacon")).clickAndWait(Until.newWindow(), 5000);
+            sleep(2000);
+            UiObject major = new UiObject(new UiSelector().resourceId("com.sunmi.ibeacon:id/et_major"));
+            //输入密码
+            major.click();
+            major.setText("10073");
+            sleep(2000);
+            device.pressBack();
+            UiObject minor = new UiObject(new UiSelector().resourceId("com.sunmi.ibeacon:id/et_minor"));
+            //输入密码
+            minor.click();
+            minor.setText("61418");
+            device.pressBack();
+            sleep(2000);
+            device.findObject(By.text("确认")).clickAndWait(Until.newWindow(), 5000);
+            sleep(2000);
+
+            screenshotCap("iBeacon_3");
+            UiObject2 situation = device.findObject(By.text("10073"));
+            Assert.assertNotNull("测试失败，未能恢复默认值",situation);
         }
     }
 
@@ -3093,17 +3160,19 @@ public class SunmiSettings {
     @Category(CategorySettingsTests.class)
     public void test120CheckAndroidVersion() throws UiObjectNotFoundException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) ;
+        screenshotCap("Android_version");
         UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
         SettingScroll.scrollTextIntoView("关于设备");
         device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), 5000);
 
         if ("V1".equals(Build.MODEL)) {
+            screenshotCap("Android_version_1");
             UiObject2 version = device.findObject(By.text("5.1"));
             Assert.assertNotNull("测试失败，Android版本不是5.1", version);
             sleep(2000);
         } else if ("P1".equals(Build.MODEL)) {
             sleep(2000);
-
+            screenshotCap("Android_version_2");
             UiObject2 version = device.findObject(By.text("6.0"));
             Assert.assertNotNull("测试失败，Android版本不是6.0", version);
 
