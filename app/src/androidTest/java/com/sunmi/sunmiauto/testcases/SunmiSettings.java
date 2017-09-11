@@ -1619,10 +1619,7 @@ public class SunmiSettings {
             screenshotCap("safe");//截图
             UiObject2 pattern = device.findObject(By.text("显示图案"));//查找显示图案
             UiObject2 CancelSave = device.findObject(By.text("滑动"));//查找滑动
-            if (pattern != null) {//不为空，表示存在
-                UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
-                Assert.assertTrue("测试失败，显示图案默认未开启", information.isChecked());//显示图案不是未开启则测试失败
-            } else if (CancelSave != null) {          //显示图案未开启则：
+            if (CancelSave != null) {          //显示图案未开启则：
                 device.findObject(By.text("屏幕锁定方式")).clickAndWait(Until.newWindow(), 5000);//找到屏幕锁定方式并点击直到新的窗口打开
                 device.findObject(By.text("图案")).clickAndWait(Until.newWindow(), 5000);//找到图案并点击直到新的窗口打开
 
@@ -1641,7 +1638,8 @@ public class SunmiSettings {
                 device.findObject(By.res("com.android.settings:id/next_button")).clickAndWait(Until.newWindow(), 5000);//点击确认
                 UiObject2 information = device.findObject(By.res("android:id/switchWidget"));
                 Assert.assertTrue("测试失败，显示图案默认未开启", information.isChecked());//如果显示图案未开启则测试失败
-
+            }
+            else{
                 UiObject2 autolockObj = device.findObject(By.text("自动锁定"));//找到自动锁定
                 Assert.assertNotNull("未找到自动锁定标识", autolockObj);//未找到自动锁定标识则报错
                 UiObject2 sleepObj = device.findObject(By.text("休眠5秒后").clazz("android.widget.TextView"));
@@ -1653,8 +1651,13 @@ public class SunmiSettings {
                 sleep(5000);
                 device.findObject(By.text("滑动")).clickAndWait(Until.newWindow(),5000);
                 sleep(1000);
-                device.findObject(By.text("确定")).clickAndWait(Until.newWindow(),5000);
-            }
+                if ("V1".equals(Build.MODEL)) {
+                    device.findObject(By.text("确定")).clickAndWait(Until.newWindow(), 5000);
+                }
+                else {
+                    device.findObject(By.text("是，移除")).clickAndWait(Until.newWindow(),5000);
+                }
+              }
         }
     }
 
@@ -1782,8 +1785,12 @@ public class SunmiSettings {
                 //V1没有应用权限功能
             }
             else {
-                UiObject2 authorityButton = device.findObject(By.res("android:id/switchWidget"));
-                Assert.assertEquals("应用权限默认是关闭状态", true, authorityButton.isChecked());//应用权限开关默认是关闭状态
+//                UiScrollable scroll2 = new UiScrollable(new UiSelector().className("android.widget.ListView"));
+//                UiSelector message2 = new UiSelector().text("应用权限");
+//                scroll2.scrollIntoView(message2);//向上滚动查找到安全
+                UiObject2 authorityObj = device.findObject(By.text("\uFEFF应用权限"));
+                UiObject2 authorityButton= authorityObj.getParent().getParent().findObject(By.clazz("android.widget.Switch"));
+                Assert.assertEquals("应用权限默认是关闭状态", false, authorityButton.isChecked());//应用权限开关默认是关闭状态
                 screenshotCap("app");//截图
             }
         }
@@ -2460,6 +2467,8 @@ public class SunmiSettings {
                 sleep(2000);
                 device.findObject(By.text("已停用")).click();//点击已停用
                 sleep(2000);
+                UiObject2 stopPage = device.findObject(By.res("com.android.settings:id/list_container"));
+                Assert.assertNotNull("未找到已停用页面",stopPage);
                 UiObject2 stopObj = device.findObject(By.text("计算器"));//查找计算器
                 Assert.assertNotNull("未找到计算器标识", stopObj);
                 device.findObject(By.text("计算器")).clickAndWait(Until.newWindow(), 5000);//点击计算器
