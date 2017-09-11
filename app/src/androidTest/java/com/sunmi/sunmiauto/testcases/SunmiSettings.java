@@ -69,12 +69,7 @@ public class SunmiSettings {
     @Before
     public void setup() throws IOException, RemoteException {
         TestUtils.clearAllRecentApps();
-        TestUtils.findAppByText("设置");
-        long begin = System.currentTimeMillis();
-        UiObject2 setObj = device.findObject(By.text("设置"));
-        long end = System.currentTimeMillis();
-        Log.v(LOG_V, String.valueOf(end - begin));
-        setObj.clickAndWait(Until.newWindow(), LONG_WAIT);
+        TestUtils.findAppAndOpenByText("设置");
     }
 
     @Test
@@ -473,13 +468,13 @@ public class SunmiSettings {
             UiObject2 picObj = device.findObject(By.text("图案"));
             picObj.clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
-            //确定所要绘制的图案为倒L形
-            TestUtils.drawLPattern();
+            //确定所要绘制的图案为L形
+            TestUtils.drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             sleep(SHORT_SLEEP);
             UiObject2 goonObj = device.findObject(By.res("com.android.settings:id/footerRightButton"));
             goonObj.click();
             sleep(SHORT_SLEEP);
-            TestUtils.drawLPattern();
+            TestUtils.drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             sleep(SHORT_SLEEP);
             UiObject2 confirmObj1 = device.findObject(By.res("com.android.settings:id/footerRightButton"));
             confirmObj1.clickAndWait(Until.newWindow(), LONG_WAIT);
@@ -522,7 +517,7 @@ public class SunmiSettings {
             UiObject2 lockStyleObj = device.findObject(By.text("屏幕锁定方式"));
             lockStyleObj.clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
-            TestUtils.drawLPattern();
+            TestUtils.drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             sleep(SHORT_SLEEP);
             UiObject2 swipeObj = device.findObject(By.text("滑动"));
             swipeObj.clickAndWait(Until.newWindow(), LONG_WAIT);
