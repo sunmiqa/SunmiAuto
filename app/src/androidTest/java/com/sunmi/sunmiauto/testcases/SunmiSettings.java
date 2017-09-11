@@ -881,10 +881,11 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             bluetooth.click();
             sleep(SHORT_SLEEP);
-            UiObject2 dayin = device.findObject(By.text("InnerPrinter"));
-            Assert.assertNotNull("未找到打印机", dayin);
-
-
+            UiObject2 dayin = device.findObject(By.text("已配对的设备"));
+            sleep(SHORT_SLEEP);
+           UiObject2 InnerPrinter = device.findObject(By.res("com.android.settings:id/deviceDetails")).getParent().getParent().getParent().findObject(By.text("InnerPrinter"));
+            Assert.assertNotNull("无已配对的设备列表",dayin );
+            Assert.assertNotNull("无法找到InnerPrinter",InnerPrinter);
         }
     }
 
@@ -1005,13 +1006,9 @@ public class SunmiSettings {
             //点击蓝牙上方的更多选项
             sleep(SHORT_SLEEP);
             gengduo.click();
-            sleep(120000);
-            UiObject2 shuaxin = device.findObject(By.text("刷新"));
-            //点击更多里面的刷新
             sleep(SHORT_SLEEP);
-            shuaxin.click();
-
-
+            UiObject2 shuaxin = device.findObject(By.text("正在搜索..."));
+            Assert.assertNotNull("无搜索状态",shuaxin);
         }
     }
 
@@ -1049,7 +1046,7 @@ public class SunmiSettings {
     //【开关】便携式WLAN热点
     @Test
     public void test042CheckAPStatus(){
-        if("P1".equals(Build.MODEL)) {
+        if("V1".equals(Build.MODEL)|| "P1".equals(Build.MODEL)){
         UiObject2 options = device.findObject(By.text("更多"));
         //点击设置中的更多
         sleep(SHORT_SLEEP);
@@ -1067,9 +1064,6 @@ public class SunmiSettings {
         sleep(SHORT_SLEEP);
         UiObject2 WLANguanbi = device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertFalse("显示为开启", WLANguanbi.isChecked());
-
-        }
-        else if ("V1".equals(Build.MODEL)){
 
         }
 
@@ -1135,11 +1129,9 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             Anoverviewof.click();
             sleep(SHORT_SLEEP);
-            UiObject2 verviewof = device.findObject(By.text("概览"));
+            UiObject2 verviewof = device.findObject(By.text("概览").selected(true));
             Assert.assertNotNull("无概览功能", verviewof);
         }
-
-
     }
 
     //owner:wangshilin
@@ -1205,7 +1197,8 @@ public class SunmiSettings {
     //默认亮度
     @Test
     public void test050CheckDefaultBrightness() {
-        if ("P1".equals(Build.MODEL)) {
+        UiObject2 WlanNameObj = null;
+        if("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)){
             UiObject2 According = device.findObject(By.text("显示"));
             //点击显示
             sleep(SHORT_SLEEP);
@@ -1216,26 +1209,14 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             brightness.click();
             sleep(SHORT_SLEEP);
-            UiObject2 WlanNameObj = device.findObject(By.text("屏幕亮度"));
+            if("V1".equals(Build.MODEL)){
+                WlanNameObj = device.findObject(By.desc("屏幕亮度"));
+            }else if("P1".equals(Build.MODEL)){
+                WlanNameObj = device.findObject(By.text("屏幕亮度"));
+            }
+
             screenshotCap("设置显示页面");
             Assert.assertNotNull("测试失败未弹出亮度显示", WlanNameObj);
-
-        }
-        else if ("V1".equals(Build.MODEL)){
-            UiObject2 According = device.findObject(By.text("显示"));
-            //点击显示
-            sleep(SHORT_SLEEP);
-            According.click();
-            sleep(SHORT_SLEEP);
-            UiObject2 brightness = device.findObject(By.text("亮度"));
-            //点击显示页面的亮度
-            sleep(SHORT_SLEEP);
-            brightness.click();
-            sleep(SHORT_SLEEP);
-            UiObject2 WlanNameObj = device.findObject(By.desc("屏幕亮度"));
-            screenshotCap("设置显示页面");
-            Assert.assertNotNull("测试失败未弹出亮度显示", WlanNameObj);
-
         }
     }
 
