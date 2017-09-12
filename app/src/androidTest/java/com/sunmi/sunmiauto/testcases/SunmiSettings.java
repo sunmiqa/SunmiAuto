@@ -758,7 +758,6 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
             pwdObj.setText(NETWORKPWDTEST);
-            device.pressBack();
             sleep(SHORT_SLEEP);
             UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
             saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
@@ -951,8 +950,6 @@ public class SunmiSettings {
             device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
-            device.pressBack();
-            sleep(SHORT_SLEEP);
             screenshotCap("test02");
             device.findObject(By.text("确定")).click();
             sleep(SHORT_SLEEP);
@@ -963,8 +960,6 @@ public class SunmiSettings {
             device.findObject(By.text("测试重命名")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
-            device.pressBack();
-            sleep(SHORT_SLEEP);
             screenshotCap("test03");
             device.findObject(By.text("确定")).click();
         }
@@ -1316,7 +1311,7 @@ public class SunmiSettings {
             device.pressBack();
             sleep(SHORT_SLEEP);
             device.findObject(By.text("保存")).clickAndWait(Until.newWindow(), LONG_WAIT);
-            sleep(SHORT_SLEEP);
+            sleep(SHORT_SLEEP*3);
             device.findObject(By.text("SUNMI")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
             UiObject username = new UiObject(new UiSelector().resourceId("com.android.settings:id/username"));
@@ -1817,7 +1812,7 @@ public class SunmiSettings {
 //                UiScrollable scroll2 = new UiScrollable(new UiSelector().className("android.widget.ListView"));
 //                UiSelector message2 = new UiSelector().text("应用权限");
 //                scroll2.scrollIntoView(message2);//向上滚动查找到安全
-                UiObject2 authorityObj = device.findObject(By.text("\uFEFF应用权限"));
+                UiObject2 authorityObj = device.findObject(By.textContains("应用权限"));
                 UiObject2 authorityButton = authorityObj.getParent().getParent().findObject(By.clazz("android.widget.Switch"));
                 Assert.assertEquals("应用权限默认是关闭状态", false, authorityButton.isChecked());//应用权限开关默认是关闭状态
                 screenshotCap("app");//截图
