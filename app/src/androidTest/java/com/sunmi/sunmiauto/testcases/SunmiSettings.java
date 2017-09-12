@@ -1133,7 +1133,7 @@ public class SunmiSettings {
     @Test
     @Category(CategorySettingsTests.class)
     public void test042CheckAPStatus(){
-        if("V1".equals(Build.MODEL)|| "P1".equals(Build.MODEL)){
+        if("P1".equals(Build.MODEL)){
         UiObject2 options = device.findObject(By.text("更多"));
         //点击设置中的更多
         sleep(SHORT_SLEEP);
@@ -1152,6 +1152,7 @@ public class SunmiSettings {
         sleep(SHORT_SLEEP);
         UiObject2 WLANguanbi = device.findObject(By.res("com.android.settings:id/switch_widget"));
         Assert.assertFalse("显示为开启", WLANguanbi.isChecked());
+        }else if("V1".equals(Build.MODEL)){
 
         }
 
@@ -1439,8 +1440,8 @@ public class SunmiSettings {
 
             if ("V1".equals(Build.MODEL)) {
                 screenshotCap("Sleep_V1");
-                UiObject2 Sleep = device.findObject(By.text("1分钟"));
-                Assert.assertTrue("测试失败，默认显示不为1分钟", Sleep.isChecked());
+                UiObject2 Sleep = device.findObject(By.text("1周"));
+                Assert.assertTrue("测试失败，默认显示不为1周", Sleep.isChecked());
                 sleep(2000);
             } else if ("P1".equals(Build.MODEL)) {
                 sleep(2000);
@@ -1676,7 +1677,12 @@ public class SunmiSettings {
                 sleep(2000);
                 device.findObject(By.text("滑动")).click();
                 sleep(2000);
-                device.findObject(By.text("是，移除")).clickAndWait(Until.newWindow(),5000);
+                if ("V1".equals(Build.MODEL)){
+                    device.findObject(By.text("确定")).clickAndWait(Until.newWindow(), 5000);
+                }else if("P1".equals(Build.MODEL)) {
+                    device.findObject(By.text("是，移除")).clickAndWait(Until.newWindow(), 5000);
+                    screenshotCap("Safety_4");
+                }
             }
 //            else{
 //                UiObject2 autolockObj = device.findObject(By.text("自动锁定"));//找到自动锁定
