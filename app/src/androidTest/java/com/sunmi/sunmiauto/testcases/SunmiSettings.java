@@ -947,7 +947,7 @@ public class SunmiSettings {
                 switchObj.click();
             }
             sleep(SHORT_SLEEP*3);
-            device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
+            device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
             screenshotCap("test02");
@@ -957,7 +957,7 @@ public class SunmiSettings {
             UiObject2 testObj = device.findObject(By.text("测试重命名"));
             Assert.assertNotNull("测试失败，未找到修改后的蓝牙名", testObj);
             sleep(SHORT_SLEEP*3);
-            device.findObject(By.text("测试重命名")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
+            device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
             screenshotCap("test03");
@@ -1326,7 +1326,8 @@ public class SunmiSettings {
             password.setText("qscvhi$$!_");
             device.pressBack();
             sleep(SHORT_SLEEP);
-            device.findObject(By.res("com.android.settings:id/save_login")).clickAndWait(Until.newWindow(), LONG_WAIT);
+            device.findObject(By.res("com.android.settings:id/save_login")).click();
+            sleep(SHORT_SLEEP);
             device.findObject(By.text("连接")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
             screenshotCap("More_VPN_1");
