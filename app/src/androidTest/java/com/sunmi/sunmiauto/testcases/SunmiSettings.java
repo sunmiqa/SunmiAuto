@@ -292,6 +292,8 @@ public class SunmiSettings {
             UiObject2 nameObj = device.findObject(By.focused(true));
             nameObj.clear();
             nameObj.setText("TESTV1");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject2 renameBtn = device.findObject(By.text("重命名"));
             renameBtn.clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
@@ -310,6 +312,8 @@ public class SunmiSettings {
             } else if ("P1".equals(Build.MODEL)) {
                 nameObj1.setText(P1_BT_NAME);
             }
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject2 renameBtn1 = device.findObject(By.text("重命名"));
             renameBtn1.clickAndWait(Until.newWindow(), LONG_WAIT);
         }
@@ -385,6 +389,8 @@ public class SunmiSettings {
             setMAJORObj.setText("12345");
             UiObject2 setMINORObj = device.findObject(By.res("com.sunmi.ibeacon:id/et_minor"));
             setMINORObj.setText("54321");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject2 confirmObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_confirm"));
             confirmObj.click();
             UiObject2 UUIDObj = device.findObject(By.res("com.sunmi.ibeacon:id/tv_uuid").text("11111111-2222-3333-4444-012345678910"));
@@ -437,6 +443,8 @@ public class SunmiSettings {
             UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
             pwdObj.clear();
             pwdObj.setText("12345678");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
             saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
             UiObject2 APInfoObj = device.findObject(By.text("SUNMITEST WPA2 PSK便携式WLAN热点"));
@@ -488,6 +496,8 @@ public class SunmiSettings {
             VPNNameObj.setText("testVPN");
             serverObj.clear();
             serverObj.setText("p1.hk2.heyjump.com");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject2 saveVPNObj = device.findObject(By.res("android:id/button1"));
             saveVPNObj.click();
             sleep(SHORT_SLEEP);
@@ -500,6 +510,7 @@ public class SunmiSettings {
             userName.setText("Jzorrof");
             UiObject2 pwdObj = device.findObjects(By.clazz("android.widget.EditText")).get(1);
             pwdObj.setText("qscvhi$$!_");
+            device.pressBack();
             sleep(SHORT_SLEEP);
             UiObject2 linkObj = device.findObject(By.res("android:id/button1"));
             linkObj.clickAndWait(Until.newWindow(), LONG_WAIT);
@@ -629,6 +640,8 @@ public class SunmiSettings {
             searchBtnObj.clickAndWait(Until.newWindow(), LONG_WAIT);
             UiObject2 searchTextObj = device.findObject(By.focused(true));
             searchTextObj.setText("W");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             screenshotCap("test02");
             UiScrollable resultScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/list_results"));
             Boolean searched = resultScroll.scrollTextIntoView("WLAN");
@@ -745,6 +758,7 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             UiObject2 pwdObj = device.findObject(By.res("com.android.settings:id/password"));
             pwdObj.setText(NETWORKPWDTEST);
+            device.pressBack();
             sleep(SHORT_SLEEP);
             UiObject2 saveObj = device.findObject(By.res("android:id/button1"));
             saveObj.clickAndWait(Until.newWindow(), LONG_WAIT);
@@ -937,6 +951,7 @@ public class SunmiSettings {
             device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
+            device.pressBack();
             sleep(SHORT_SLEEP);
             screenshotCap("test02");
             device.findObject(By.text("确定")).click();
@@ -948,6 +963,7 @@ public class SunmiSettings {
             device.findObject(By.text("测试重命名")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
+            device.pressBack();
             sleep(SHORT_SLEEP);
             screenshotCap("test03");
             device.findObject(By.text("确定")).click();
@@ -1040,11 +1056,15 @@ public class SunmiSettings {
             if ("V1".equals(Build.MODEL)) {
                 UiObject2 name1 = device.findObject(By.res("com.android.settings:id/edittext").clazz("android.widget.EditText"));
                 name1Obj.setText("V1");//更改为V1
+                device.pressBack();
+                sleep(SHORT_SLEEP);
                 device.findObject(By.text("重命名")).click();//点击重命名
                 screenshotCap("BT-name");
             } else if ("P1".equals(Build.MODEL)) {
                 UiObject2 name1 = device.findObject(By.res("com.android.settings:id/edittext").clazz("android.widget.EditText"));
                 name1Obj.setText("Sunmi P1");//更改为Sunmi P1
+                device.pressBack();
+                sleep(SHORT_SLEEP);
                 device.findObject(By.text("重命名")).click();//点击重命名
                 screenshotCap("BT-name");
                 sleep(SHORT_SLEEP);
@@ -1266,6 +1286,7 @@ public class SunmiSettings {
             //输入密码
             enterPassword.click();
             enterPassword.setText("L111111");
+            device.pressBack();
             sleep(SHORT_SLEEP);
             device.findObject(By.text("继续")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
@@ -1273,6 +1294,7 @@ public class SunmiSettings {
             //输入密码
             enterPassword2.click();
             enterPassword2.setText("L111111");
+            device.pressBack();
             sleep(SHORT_SLEEP);
             device.findObject(By.text("确定")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
@@ -1285,10 +1307,14 @@ public class SunmiSettings {
             //输入vpn名称
             name.click();
             name.setText("SUNMI");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject serverAddress = new UiObject(new UiSelector().resourceId("com.android.settings:id/server"));
             //输入服务器地址
             serverAddress.click();
             serverAddress.setText("p1.hk2.heyjump.com");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             device.findObject(By.text("保存")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
             device.findObject(By.text("SUNMI")).clickAndWait(Until.newWindow(), LONG_WAIT);
@@ -1297,10 +1323,14 @@ public class SunmiSettings {
             //输入用户名
             username.click();
             username.setText("Jzorrof");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             UiObject password = new UiObject(new UiSelector().resourceId("com.android.settings:id/password"));
             //输入用户名
             password.click();
             password.setText("qscvhi$$!_");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/save_login")).clickAndWait(Until.newWindow(), LONG_WAIT);
             device.findObject(By.text("连接")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
@@ -2045,6 +2075,7 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             UiObject2 sceneObj = device.findObject(By.res("com.android.settings:id/edittext"));//查找输入栏
             sceneObj.setText("工作模式");//输入工作模式
+            device.pressBack();
             sleep(SHORT_SLEEP);
             device.findObject(By.text("确定")).click();//点击确定
             UiObject2 workObj = device.findObject(By.text("工作模式"));
@@ -2078,6 +2109,7 @@ public class SunmiSettings {
             sleep(SHORT_SLEEP);
             UiObject2 sceneObj = device.findObject(By.res("com.android.settings:id/edittext"));//查找输入栏
             sceneObj.setText("工作模式");//输入工作模式
+            device.pressBack();
             sleep(SHORT_SLEEP);
             device.findObject(By.text("确定")).click();//点击确定
             sleep(SHORT_SLEEP);
@@ -2333,7 +2365,7 @@ public class SunmiSettings {
             UiObject2 run = device.findObject(By.text("正在运行"));
             //点击正在运行
             run.click();
-            sleep(SHORT_SLEEP);
+            sleep(SHORT_SLEEP*3);
             UiObject2 shyong = device.findObject(By.text("应用内存使用情况"));
             //sleep(7000);
             Assert.assertNotNull("正在运行页面无信息", shyong);
