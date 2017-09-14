@@ -76,6 +76,7 @@ public class UiobjectFinder {
                 uiObject2 = null;
             }else{
                 uiObject2 = list1.get(number);
+                return uiObject2;
             }
             if(i == 19){
                 screenshotCap("wrong UI");

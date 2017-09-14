@@ -924,7 +924,7 @@ public class SunmiSettings {
             screenshotCap("test01");
             UiObject2 dayin = device.findObject(By.text("已配对的设备"));
             sleep(SHORT_SLEEP);
-            UiObject2 InnerPrinter = device.findObject(By.res("com.android.settings:id/deviceDetails")).getParent().getParent().getParent().findObject(By.text("InnerPrinter"));
+            UiObject2 InnerPrinter = device.findObject(By.text("InnerPrinter"));
             Assert.assertNotNull("无已配对的设备列表", dayin);
             Assert.assertNotNull("无法找到InnerPrinter", InnerPrinter);
             if("P1".equals(Build.MODEL)){
@@ -946,10 +946,12 @@ public class SunmiSettings {
             if ("P1".equals(Build.MODEL)) {
                 switchObj.click();
             }
-            sleep(SHORT_SLEEP*3);
+            sleep(SHORT_SLEEP*5);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
+            device.pressBack();
+            sleep(SHORT_SLEEP);
             screenshotCap("test02");
             device.findObject(By.text("确定")).click();
             sleep(SHORT_SLEEP);
@@ -1329,7 +1331,7 @@ public class SunmiSettings {
             device.findObject(By.res("com.android.settings:id/save_login")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.text("连接")).clickAndWait(Until.newWindow(), LONG_WAIT);
-            sleep(SHORT_SLEEP);
+            sleep(SHORT_SLEEP*5);
             screenshotCap("More_VPN_1");
             UiObject2 configurationFile = device.findObject(By.text("SUNMI"));
             Assert.assertNotNull("测试失败,未找到配置文件", configurationFile);

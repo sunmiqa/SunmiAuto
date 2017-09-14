@@ -180,10 +180,11 @@ public class TestUtils {
             device.pressHome();
             device.pressHome();
             device.pressRecentApps();
-            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT);
-            sleep(SHORT_SLEEP);
-            UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
-            clearObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+            CommonAction.clickById("com.android.systemui:id/loading");
+//            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT);
+//            sleep(SHORT_SLEEP);
+//            UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
+//            clearObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         }catch (NullPointerException e){
             device.pressHome();
             device.pressHome();
@@ -242,8 +243,9 @@ public class TestUtils {
             appIcon1.clickAndWait(Until.newWindow(),LONG_WAIT);
             return true;
         }
-        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),LONG_WAIT);
-        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
+//        device.wait(Until.hasObject(By.res("com.woyou.launcher:id/page_indicator")),LONG_WAIT);
+//        int pages = device.findObject(By.res("com.woyou.launcher:id/page_indicator")).getChildCount();
+        int pages = UiobjectFinder.findById("com.woyou.launcher:id/page_indicator").getChildCount();
         Log.v(LOG_V,Integer.toString(pages));
         device.swipe(5,device.getDisplayHeight()/2,device.getDisplayWidth()-5,device.getDisplayHeight()/2,20);
         sleep(SHORT_SLEEP);

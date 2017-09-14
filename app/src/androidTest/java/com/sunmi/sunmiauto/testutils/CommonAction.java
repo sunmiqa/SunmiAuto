@@ -179,6 +179,16 @@ public class CommonAction {
         device.swipe(5,deviceHeight/2,deviceWidth-5,deviceHeight/2,30);
     }
 
+    //向下滑动屏幕（从屏幕最顶部中心位置滑动到屏幕最底部中心位置）
+    public static void swipeToBottom(){
+        device.swipe(deviceWidth/2,5,deviceWidth/2,deviceHeight-5,30);
+    }
+
+    //向上滑动屏幕（从屏幕最底部中心位置滑动到屏幕最顶部中心位置）
+    public static void swipeToTop(){
+        device.swipe(deviceWidth/2,deviceHeight-5,deviceWidth/2,5,30);
+    }
+
     //滚动到text，默认使用resourceId为"android:id/list"的uiscrollable（默认垂直滚动）
     public static void scrollToText(String text){
         scrollToText("android:id/list",text);
