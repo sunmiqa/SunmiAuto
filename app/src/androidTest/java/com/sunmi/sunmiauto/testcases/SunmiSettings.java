@@ -950,7 +950,9 @@ public class SunmiSettings {
             device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
-            device.pressBack();
+            if("V1".equals(Build.MODEL)){
+                device.pressBack();
+            }
             sleep(SHORT_SLEEP);
             screenshotCap("test02");
             device.findObject(By.text("确定")).click();
@@ -988,7 +990,7 @@ public class SunmiSettings {
                 openQuick.click();
                 Assert.assertEquals(true, openQuick.wait(Until.checked(true), 10000));
             }
-            sleep(SHORT_SLEEP*3);
+            sleep(SHORT_SLEEP*10);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
             if ("P1".equals(Build.MODEL)) {
@@ -1007,7 +1009,7 @@ public class SunmiSettings {
             Sliding1.scrollIntoView(selector1);
             Sliding1.flingToBeginning(20);
             screenshotCap("test03");
-            sleep(40000);
+//            sleep(40000);
             UiObject2 pairedSetBtn = device.findObject(By.text("InnerPrinter")).getParent().getParent().findObject(By.res("com.android.settings:id/deviceDetails"));
             Assert.assertNotNull(pairedSetBtn);//
             sleep(SHORT_SLEEP);
