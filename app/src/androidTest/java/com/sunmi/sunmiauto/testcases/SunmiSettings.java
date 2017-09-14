@@ -950,7 +950,7 @@ public class SunmiSettings {
             device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
-            if("V1".equals(Build.MODEL)){
+            if("P1".equals(Build.MODEL)){
                 device.pressBack();
             }
             sleep(SHORT_SLEEP);
