@@ -946,7 +946,8 @@ public class SunmiSettings {
             if ("P1".equals(Build.MODEL)) {
                 switchObj.click();
             }
-            sleep(SHORT_SLEEP*5);
+            device.wait(Until.hasObject(By.res("com.android.settings:id/scanning_progress")),LONG_WAIT);
+            device.wait(Until.gone(By.res("com.android.settings:id/scanning_progress")),LONG_WAIT*2);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("测试重命名");
@@ -960,7 +961,8 @@ public class SunmiSettings {
             screenshotCap("after_enter");
             UiObject2 testObj = device.findObject(By.text("测试重命名"));
             Assert.assertNotNull("测试失败，未找到修改后的蓝牙名", testObj);
-            sleep(SHORT_SLEEP*3);
+            device.wait(Until.hasObject(By.res("com.android.settings:id/scanning_progress")),LONG_WAIT);
+            device.wait(Until.gone(By.res("com.android.settings:id/scanning_progress")),LONG_WAIT*2);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).click();
             sleep(SHORT_SLEEP);
             device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
@@ -990,7 +992,8 @@ public class SunmiSettings {
                 openQuick.click();
                 Assert.assertEquals(true, openQuick.wait(Until.checked(true), 10000));
             }
-            sleep(SHORT_SLEEP*10);
+            device.wait(Until.hasObject(By.res("com.android.settings:id/scanning_progress")),LONG_WAIT);
+            device.wait(Until.gone(By.res("com.android.settings:id/scanning_progress")),LONG_WAIT*2);
             device.findObject(By.res("com.android.settings:id/deviceDetails")).clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
             if ("P1".equals(Build.MODEL)) {
