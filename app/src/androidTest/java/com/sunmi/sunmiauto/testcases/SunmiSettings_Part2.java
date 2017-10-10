@@ -1373,6 +1373,8 @@ public class SunmiSettings_Part2 {
             screenshotCap("screenPinnedOpenedPage");
             device.pressHome();
             device.pressRecentApps();
+            device.pressHome();
+            device.pressRecentApps();
             UiObject2 pinObj = UiobjectFinder.findById("com.android.systemui:id/lock_to_app_fab");
             screenshotCap("screenPinnedButtonPage");
             Assert.assertNotNull("没有出现固定按钮", pinObj);
