@@ -43,6 +43,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.P1_SETTINGSLIST;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.drawPattern;
+import static com.sunmi.sunmiauto.testutils.TestUtils.hasSIMCard;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
 import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
 import static com.sunmi.sunmiauto.testutils.TestConstants.V1_BT_NAME;
@@ -968,12 +969,13 @@ public class SunmiSettings {
             device.findObject(By.res("com.android.settings:id/name")).setText("InnerPrinter");
             screenshotCap("test03");
             device.findObject(By.text("确定")).click();
+            sleep(SHORT_SLEEP);
+            if ("P1".equals(Build.MODEL)) {
+                UiObject2 switchObj1 = device.findObject(By.res("com.android.settings:id/switch_widget"));
+                switchObj.click();
+            }
         }
-        sleep(SHORT_SLEEP);
-        if ("P1".equals(Build.MODEL)) {
-            UiObject2 switchObj = device.findObject(By.res("com.android.settings:id/switch_widget"));
-            switchObj.click();
-        }
+
     }
 
     //owner:liuyang
@@ -1395,7 +1397,11 @@ public class SunmiSettings {
             device.findObject(By.text("更多")).clickAndWait(Until.newWindow(), LONG_WAIT);//找到更多
             UiObject2 netObj = device.findObject(By.text("移动网络"));//找到移动网络
             boolean a = netObj.isEnabled();
-            Assert.assertFalse("移动网络没有被禁用", a);//检查移动网络是否被禁用
+            if(!hasSIMCard()){
+                Assert.assertFalse("移动网络没有被禁用", a);//检查移动网络是否被禁用
+            }else{
+                Assert.assertTrue("移动网络没有被启用", a);//检查移动网络是否被禁用
+            }
             screenshotCap("Mobile");//截图
         }
     }
@@ -1962,12 +1968,12 @@ public class SunmiSettings {
             screenshotCap("test01");
             UiScrollable dataScroll = new UiScrollable(new UiSelector().resourceId("android:id/list"));
             dataScroll.scrollTextIntoView("使用24小时制");
-        }
-        UiObject2 formatObj = device.findObjects(By.res("android:id/switchWidget")).get(1);
-        if ("P1".equals(Build.MODEL)) {
-            Assert.assertTrue("测试失败，使用24小时制开关默认不是打开状态", formatObj.isChecked());//判断使用24小时制开关是否是打开状态
-        } else if ("V1".equals(Build.MODEL)) {
-            Assert.assertFalse("测试失败，使用24小时制开关默认不是关闭状态", formatObj.isChecked());//判断使用24小时制开关是否是关闭状态
+            UiObject2 formatObj = device.findObjects(By.res("android:id/switchWidget")).get(1);
+            if ("P1".equals(Build.MODEL)) {
+                Assert.assertTrue("测试失败，使用24小时制开关默认不是打开状态", formatObj.isChecked());//判断使用24小时制开关是否是打开状态
+            } else if ("V1".equals(Build.MODEL)) {
+                Assert.assertFalse("测试失败，使用24小时制开关默认不是关闭状态", formatObj.isChecked());//判断使用24小时制开关是否是关闭状态
+            }
         }
     }
 
@@ -2151,16 +2157,17 @@ public class SunmiSettings {
             screenshotCap("c");
             UiObject2 alarmObj = device.findObject(By.text("闹钟音量"));
             Assert.assertNotNull("测试失败，没有找到闹钟音量选项", alarmObj);
-        } else if ("P1".equals(Build.MODEL)) {
-            UiObject2 noticeObj = device.findObject(By.text("通知音量"));
-            Assert.assertNotNull("测试失败，没有找到通知音量选项", noticeObj);
-        } else if ("V1".equals(Build.MODEL)) {
-            UiObject2 bellObj = device.findObject(By.text("铃声音量"));
-            Assert.assertNotNull("测试失败，没有找到铃声音量选项", bellObj);
-            UiObject2 mediaObj = device.findObject(By.text("铃声音量"));
-            Assert.assertNotNull("测试失败，没有找到通知音量选项", mediaObj);
+            if ("P1".equals(Build.MODEL)) {
+                UiObject2 noticeObj = device.findObject(By.text("通知音量"));
+                Assert.assertNotNull("测试失败，没有找到通知音量选项", noticeObj);
+            }
+            if ("V1".equals(Build.MODEL)) {
+                UiObject2 bellObj = device.findObject(By.text("铃声音量"));
+                Assert.assertNotNull("测试失败，没有找到铃声音量选项", bellObj);
+                UiObject2 mediaObj = device.findObject(By.text("媒体音量"));
+                Assert.assertNotNull("测试失败，没有找到媒体音量选项", mediaObj);
+            }
         }
-
     }
 
     //owner:liuyang
@@ -3162,23 +3169,23 @@ public class SunmiSettings {
     @Test
     @Category(CategorySettingsTests.class)
     public void test120CheckAndroidVersion() throws UiObjectNotFoundException {
-        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) ;
-        screenshotCap("Android_version");
-        UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
-        SettingScroll.scrollTextIntoView("关于设备");
-        device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), LONG_WAIT);
-        if ("V1".equals(Build.MODEL)) {
-            screenshotCap("Android_version_1");
-            UiObject2 version = device.findObject(By.text("5.1"));
-            Assert.assertNotNull("测试失败，Android版本不是5.1", version);
-            sleep(SHORT_SLEEP);
-        } else if ("P1".equals(Build.MODEL)) {
-            sleep(SHORT_SLEEP);
-            screenshotCap("Android_version_2");
-            UiObject2 version = device.findObject(By.text("6.0"));
-            Assert.assertNotNull("测试失败，Android版本不是6.0", version);
+        if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            screenshotCap("Android_version");
+            UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("android:id/content"));
+            SettingScroll.scrollTextIntoView("关于设备");
+            device.findObject(By.text("关于设备")).clickAndWait(Until.newWindow(), LONG_WAIT);
+            if ("V1".equals(Build.MODEL)) {
+                screenshotCap("Android_version_1");
+                UiObject2 version = device.findObject(By.text("5.1"));
+                Assert.assertNotNull("测试失败，Android版本不是5.1", version);
+                sleep(SHORT_SLEEP);
+            } else if ("P1".equals(Build.MODEL)) {
+                sleep(SHORT_SLEEP);
+                screenshotCap("Android_version_2");
+                UiObject2 version = device.findObject(By.text("6.0"));
+                Assert.assertNotNull("测试失败，Android版本不是6.0", version);
+            }
         }
-
     }
 
     //检查音量自定义开启状态正确

@@ -1,12 +1,18 @@
 package com.sunmi.sunmiauto.testutils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Properties;
 
 /**
  * Created by fengy on 2017/7/26.
  */
 
-public class TestConstants {
+public class TestConstants{
     public static final int SHORT_SLEEP = 2000;//短暂休眠
     public static final int LONG_WAIT = 20000;//等待新窗口出现最长时间
     public static final int DOWNLOAD_WAIT = 300000;//等待应用市场应用下载完成最长时间
@@ -65,4 +71,34 @@ public class TestConstants {
             add("关于设备");
         }
     };
+    public static final String P1_VERSION_NAME = getProp("P1_版本号");
+    public static final String P1_VERSION_CODE = getProp("P1_固件版本");
+    public static final String P1_SECURITY_CODE = getProp("P1_安全固件版本");
+    public static final String P1_FW = getProp("P1_FW");
+    public static final String P1_KERNEL_CODE = getProp("P1_内核版本");
+    public static final String P1_BASE_CODE = getProp("P1_基带版本");
+    public static final String P1_PATCH_LEVEL = getProp("P1_安全补丁");
+    public static final String V1_VERSION_NAME = getProp("V1_版本号");
+    public static final String V1_VERSION_CODE = getProp("V1_固件版本");
+    public static final String V1_KERNEL_CODE = getProp("V1_内核版本");
+    public static final String V1_PATCH_LEVEL = getProp("V1_安全补丁");
+
+    private static String getProp(String key){
+        InputStream is = null;
+        Properties properties = null;
+        try{
+            is = new FileInputStream(new File("data/local/tmp/info.properties"));
+            properties = new Properties();
+            properties.load(is);
+        }catch (IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return properties.getProperty(key);
+    }
 }

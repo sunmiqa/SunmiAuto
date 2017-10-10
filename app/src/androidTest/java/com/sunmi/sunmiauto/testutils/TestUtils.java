@@ -1,8 +1,12 @@
 package com.sunmi.sunmiauto.testutils;
 
 import android.app.Instrumentation;
+import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.RemoteException;
@@ -15,6 +19,7 @@ import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.UiWatcher;
 import android.support.test.uiautomator.Until;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -27,6 +32,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Properties;
 import java.util.regex.Pattern;
 
 import static com.sunmi.sunmiauto.testutils.CommonAction.deviceHeight;
@@ -42,7 +49,14 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
+    public static Context context = InstrumentationRegistry.getContext();
 
+    public static String getprop(String args) throws IOException {
+        InputStream is = new FileInputStream(new File("data/local/tmp/info.properties"));
+        Properties properties = new Properties();
+        properties.load(is);
+        return properties.getProperty(args);
+    }
 
     //注册监听器
     public static void uiwatchSuite(){
@@ -177,10 +191,19 @@ public class TestUtils {
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {
         try{
-            device.pressHome();
-            device.pressHome();
             device.pressRecentApps();
-            CommonAction.clickById("com.android.systemui:id/loading");
+            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT/5);
+            UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
+            if(clearObj != null){
+                clearObj.click();
+            }else{
+                Log.e("myautotest","yiliaozhizhong");
+                device.pressHome();
+                device.pressHome();
+                device.pressRecentApps();
+                device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT/5);
+                device.findObject(By.res("com.android.systemui:id/loading")).click();
+            }
 //            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT);
 //            sleep(SHORT_SLEEP);
 //            UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
@@ -191,6 +214,7 @@ public class TestUtils {
             device.pressRecentApps();
             device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT);
             sleep(SHORT_SLEEP);
+            Log.e("myautotest","zhejiubuheshile");
             UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
             clearObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         }
@@ -376,5 +400,157 @@ public class TestUtils {
             sleep(2000);
             device.swipe(deviceWidth/2,deviceHeight-5,deviceWidth/2,deviceHeight/2,20);
         }
+    }
+
+    //将数字星期转换为中文的星期（星期从周日开始，周日=1）
+    public static String dayToChineseDay(int dayNumber){
+        switch(dayNumber){
+            case 1:return "日";
+            case 2:return "一";
+            case 3:return "二";
+            case 4:return "三";
+            case 5:return "四";
+            case 6:return "五";
+            case 7:return "六";
+            default:return null;
+        }
+    }
+
+    //判断是否存在SIM卡
+    public static boolean hasSIMCard(){
+        Context context = InstrumentationRegistry.getContext();
+        TelephonyManager telMgr = (TelephonyManager)
+                context.getSystemService(Context.TELEPHONY_SERVICE);
+        int simState = telMgr.getSimState();
+        Log.e("myautotest", String.valueOf(simState));
+        if(simState != telMgr.SIM_STATE_ABSENT && simState != telMgr.SIM_STATE_UNKNOWN){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    //判断数据网络是否打开
+    public boolean isMobileConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mMobileNetworkInfo = mConnectivityManager
+                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if (mMobileNetworkInfo != null) {
+                return mMobileNetworkInfo.isAvailable();
+            }
+        }
+        return false;
+    }
+
+    //判断WIFI网络开关是否打开
+    public static boolean isWIFIOpened(){
+        WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
+        if(wifiManager.isWifiEnabled()){
+            return true;
+        }
+        return false;
+    }
+    //判断WIFI网络是否连接
+    public static boolean isWIFIConnected(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
+        if (activeNetInfo != null
+                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 检测当的网络（WLAN、3G/2G）状态
+     * @param context Context
+     * @return true 表示网络可用（可用但是不一定能够连接外网）
+     */
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivity = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo info = connectivity.getActiveNetworkInfo();
+            if (info != null && info.isConnected())
+            {
+                // 当前网络是连接的
+                if (info.getState() == NetworkInfo.State.CONNECTED)
+                {
+                    // 当前所连接的网络可用
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /*
+    判断是否有外网连接（普通方法不能判断外网的网络是否连接，比如连接上局域网）
+    */
+    public static final boolean ping() {
+        String result = null;
+        try {
+            String ip = "www.baidu.com";// ping 的地址，可以换成任何一种可靠的外网
+            Process p = Runtime.getRuntime().exec("ping -c 3 -w 100 " + ip);// ping网址3次
+            // 读取ping的内容，可以不加
+            InputStream input = p.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer stringBuffer = new StringBuffer();
+            String content = "";
+            while ((content = in.readLine()) != null) {
+                stringBuffer.append(content);
+            }
+            Log.d("------ping-----", "result content : " + stringBuffer.toString());
+            // ping的状态
+            int status = p.waitFor();
+            if (status == 0) {
+                result = "success";
+                return true;
+            } else {
+                result = "failed";
+            }
+        } catch (IOException e) {
+            result = "IOException";
+        } catch (InterruptedException e) {
+            result = "InterruptedException";
+        } finally {
+            Log.d("----result---", "result = " + result);
+        }
+        return false;
+    }
+
+    public static final boolean pingYoutube() {
+        String result = null;
+        try {
+            String ip = "www.youtube.com";// ping 的地址，可以换成任何一种可靠的外网
+            Process p = Runtime.getRuntime().exec("ping -c 3 -w 100 " + ip);// ping网址3次
+            // 读取ping的内容，可以不加
+            InputStream input = p.getInputStream();
+            BufferedReader in = new BufferedReader(new InputStreamReader(input));
+            StringBuffer stringBuffer = new StringBuffer();
+            String content = "";
+            while ((content = in.readLine()) != null) {
+                stringBuffer.append(content);
+            }
+            Log.d("------ping-----", "result content : " + stringBuffer.toString());
+            // ping的状态
+            int status = p.waitFor();
+            if (status == 0) {
+                result = "success";
+                return true;
+            } else {
+                result = "failed";
+            }
+        } catch (IOException e) {
+            result = "IOException";
+        } catch (InterruptedException e) {
+            result = "InterruptedException";
+        } finally {
+            Log.d("----result---", "result = " + result);
+        }
+        return false;
     }
 }
