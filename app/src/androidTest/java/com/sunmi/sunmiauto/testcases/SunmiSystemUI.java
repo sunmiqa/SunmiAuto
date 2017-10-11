@@ -224,6 +224,12 @@ public class SunmiSystemUI {
         CommonAction.clickById("android:id/button2");
         screenshotCap("settingsBTPage");
         sleep(SHORT_SLEEP);
+        if("P1".equals(Build.MODEL)){
+            UiObject2 BTSwitch = UiobjectFinder.findByClazz("android.widget.Switch");
+            if(BTSwitch.isChecked()){
+                BTSwitch.click();
+            }
+        }
         UiObject2 BTInterfaceObj = device.findObject(By.text("蓝牙").pkg("com.android.settings"));
         Assert.assertNotNull("未能够进入到设置中的蓝牙", BTInterfaceObj);
     }

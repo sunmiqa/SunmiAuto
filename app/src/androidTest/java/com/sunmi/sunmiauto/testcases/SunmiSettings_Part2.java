@@ -1170,12 +1170,14 @@ public class SunmiSettings_Part2 {
             Assert.assertFalse("锁定SIM卡开关默认应该为关", lockObj.isChecked());
             lockObj.click();
             CommonAction.setText("1234");
+            device.pressBack();
             CommonAction.clickByText("确定");
             screenshotCap("afterSetSIMLockStylePage");
             UiObject2 changeSIMPINObj = UiobjectFinder.findByText("更改SIM卡PIN码");
             Assert.assertTrue("没有能够锁定SIM卡", changeSIMPINObj.isEnabled());
             CommonAction.clickById("android:id/switchWidget");
             CommonAction.setText("1234");
+            device.pressBack();
             CommonAction.clickByText("确定");
         }
     }
