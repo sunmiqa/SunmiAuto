@@ -41,6 +41,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.V1_PATCH_LEVEL;
 import static com.sunmi.sunmiauto.testutils.TestConstants.V1_VERSION_CODE;
 import static com.sunmi.sunmiauto.testutils.TestConstants.V1_VERSION_NAME;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
+import static com.sunmi.sunmiauto.testutils.TestUtils.drawLPattern;
 import static com.sunmi.sunmiauto.testutils.TestUtils.hasSIMCard;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
 import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
@@ -538,7 +539,7 @@ public class SunmiSettings_Part2 {
     连接登陆VPN
     已经包含在之前的增删改VPN配置文件中，提取出来
      */
-    @Ignore
+//    @Ignore
     @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
     @Test
     public void test155LoginVPN() throws UiObjectNotFoundException {
@@ -551,15 +552,11 @@ public class SunmiSettings_Part2 {
                 CommonAction.clickById("com.android.settings:id/vpn_create");
             }
             CommonAction.clickByText("确定");
-            CommonAction.clickByText("密码");
-            //输入密码
-            CommonAction.clickById("com.android.settings:id/password_entry");
-            CommonAction.setText("L111111");
-            device.pressBack();
+            CommonAction.clickByText("图案");
+            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             CommonAction.clickByText("继续");
-            //输入密码
-            CommonAction.setText("L111111");
-            CommonAction.clickByText("确定");
+            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            CommonAction.clickByText("确认");
             CommonAction.clickByText("完成");
             if ("V1".equals(Build.MODEL)) {
                 CommonAction.clickById("com.android.settings:id/vpn_create");
@@ -588,7 +585,10 @@ public class SunmiSettings_Part2 {
             screenshotCap("connectedPage");
             UiObject2 connectedObj = UiobjectFinder.findByText("已连接");
             if (connectedObj == null) {
-
+                CommonAction.clickByText("SUNMI");
+                CommonAction.clickByText("连接");
+                device.wait(Until.hasObject(By.text("已连接")), LONG_WAIT);
+                screenshotCap("connectedPage_1");
             }
             UiObject2 configurationFile = UiobjectFinder.findByText("SUNMI");
             Assert.assertNotNull("测试失败,未找到配置文件", configurationFile);
@@ -609,9 +609,7 @@ public class SunmiSettings_Part2 {
             CommonAction.scrollToText("com.android.settings:id/dashboard", "安全");
             CommonAction.clickByText("安全");
             CommonAction.clickByText("屏幕锁定方式");
-            //输入用户名
-            CommonAction.setText("L111111");
-            device.pressEnter();
+            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             CommonAction.clickByText("滑动");
             if ("V1".equals(Build.MODEL)) {
                 CommonAction.clickByText("确定");
@@ -624,7 +622,6 @@ public class SunmiSettings_Part2 {
         }
     }
 
-    @Ignore
     /*
     断开VPN连接
     已经包含在之前的增删改VPN配置文件中，提取出来
@@ -641,15 +638,11 @@ public class SunmiSettings_Part2 {
                 CommonAction.clickById("com.android.settings:id/vpn_create");
             }
             CommonAction.clickByText("确定");
-            CommonAction.clickByText("密码");
-            //输入密码
-            CommonAction.clickById("com.android.settings:id/password_entry");
-            CommonAction.setText("L111111");
-            device.pressBack();
+            CommonAction.clickByText("图案");
+            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             CommonAction.clickByText("继续");
-            //输入密码
-            CommonAction.setText("L111111");
-            CommonAction.clickByText("确定");
+            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            CommonAction.clickByText("确认");
             CommonAction.clickByText("完成");
             if ("V1".equals(Build.MODEL)) {
                 CommonAction.clickById("com.android.settings:id/vpn_create");
@@ -676,11 +669,14 @@ public class SunmiSettings_Part2 {
             CommonAction.clickByText("连接");
             device.wait(Until.hasObject(By.text("已连接")), LONG_WAIT);
             screenshotCap("connectedPage");
+            UiObject2 connectedObj = UiobjectFinder.findByText("已连接");
             UiObject2 configurationFile = UiobjectFinder.findByText("SUNMI");
             Assert.assertNotNull("测试失败,未找到配置文件", configurationFile);
             boolean vpnOK = TestUtils.pingYoutube();
-            CommonAction.clickByText("SUNMI");
-            CommonAction.clickByText("断开连接");
+            if(connectedObj != null){
+                CommonAction.clickByText("SUNMI");
+                CommonAction.clickByText("断开连接");
+            }
             screenshotCap("disconnectedPage");
             boolean vpnFail = TestUtils.pingYoutube();
             Assert.assertFalse("断开VPN，仍然可以访问YOUTUBE", vpnFail);
@@ -700,9 +696,7 @@ public class SunmiSettings_Part2 {
             CommonAction.scrollToText("com.android.settings:id/dashboard", "安全");
             CommonAction.clickByText("安全");
             CommonAction.clickByText("屏幕锁定方式");
-            //输入用户名
-            CommonAction.setText("L111111");
-            device.pressEnter();
+            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
             CommonAction.clickByText("滑动");
             if ("V1".equals(Build.MODEL)) {
                 CommonAction.clickByText("确定");

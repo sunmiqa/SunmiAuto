@@ -402,6 +402,19 @@ public class TestUtils {
         }
     }
 
+    //计算一个字符串中包含另一个字符串的个数
+    public static int calString(String str,String s){
+        int counter=0;
+        if (str.indexOf(s) == -1) {
+            return 0;
+        }
+        while(str.indexOf(s)!=-1){
+            counter++;
+            str=str.substring(str.indexOf(s)+s.length());
+        }
+        return counter;
+    }
+
     //将数字星期转换为中文的星期（星期从周日开始，周日=1）
     public static String dayToChineseDay(int dayNumber){
         switch(dayNumber){
@@ -465,7 +478,7 @@ public class TestUtils {
     }
 
     /**
-     * 检测当的网络（WLAN、3G/2G）状态
+     * 检测当前的网络（WLAN、3G/2G）状态
      * @param context Context
      * @return true 表示网络可用（可用但是不一定能够连接外网）
      */
@@ -494,7 +507,7 @@ public class TestUtils {
         String result = null;
         try {
             String ip = "www.baidu.com";// ping 的地址，可以换成任何一种可靠的外网
-            Process p = Runtime.getRuntime().exec("ping -c 3 -w 100 " + ip);// ping网址3次
+            Process p = Runtime.getRuntime().exec("ping -c 3 -w 10 " + ip);// ping网址3次
             // 读取ping的内容，可以不加
             InputStream input = p.getInputStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(input));
@@ -526,7 +539,7 @@ public class TestUtils {
         String result = null;
         try {
             String ip = "www.youtube.com";// ping 的地址，可以换成任何一种可靠的外网
-            Process p = Runtime.getRuntime().exec("ping -c 3 -w 100 " + ip);// ping网址3次
+            Process p = Runtime.getRuntime().exec("ping -c 3 -w 10 " + ip);// ping网址3次
             // 读取ping的内容，可以不加
             InputStream input = p.getInputStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(input));
