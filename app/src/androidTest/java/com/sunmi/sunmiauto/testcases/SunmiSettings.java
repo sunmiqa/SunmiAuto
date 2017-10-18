@@ -61,8 +61,6 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.USER_CENTER_PKG;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SunmiSettings {
 
-    private long timeoutSeconds;
-
     @BeforeClass
     public static void beforeTestClass() {
 
@@ -718,7 +716,7 @@ public class SunmiSettings {
     public void test004RefreshWifi() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL) || "M1".equals(Build.MODEL)) {
             UiObject2 wifiops = device.findObject(By.text("WLAN"));//找到WLAN
-            wifiops.clickAndWait(Until.newWindow(), timeoutSeconds);//点击WLAN
+            wifiops.clickAndWait(Until.newWindow(), LONG_WAIT);//点击WLAN
             sleep(SHORT_SLEEP);
             device.findObject(By.desc("更多选项")).clickAndWait(Until.newWindow(), LONG_WAIT);//点击更多选项
             device.waitForIdle(LONG_WAIT);
@@ -1009,7 +1007,7 @@ public class SunmiSettings {
             }//p1点击已配对的蓝牙时自动弹出输入框
             sleep(SHORT_SLEEP);
             UiObject2 cancel = device.findObject(By.text("取消保存"));
-            cancel.clickAndWait(Until.newWindow(), timeoutSeconds);
+            cancel.clickAndWait(Until.newWindow(), LONG_WAIT);
             sleep(SHORT_SLEEP);
             UiScrollable Sliding = new UiScrollable(new UiSelector().resourceId("android:id/list"));//取主屏幕
             UiSelector selector = new UiSelector().text("InnerPrinter");//查找APP名称
@@ -2677,16 +2675,22 @@ public class SunmiSettings {
                     CommonAction.scrollToText("电池");
                     device.findObject(By.text("电池")).clickAndWait(Until.newWindow(), LONG_WAIT);//点击电池
                     UiObject2 electricityObj = device.findObject(By.text("上次充满后的电量使用情况"));
-                    Assert.assertNotNull("未找到上次充满后的电量使用情况标识", electricityObj);//检查是否显示上次充满后的电量使用情况
-                    screenshotCap("electricity_use");//截图
+                    UiObject2 noUsedInfoObj =  device.findObject(By.text("没有电池使用数据。"));
+                    if(noUsedInfoObj != null){
+                        Assert.assertNotNull("未找到上次充满后的电量使用情况标识", electricityObj);//检查是否显示上次充满后的电量使用情况
+                        screenshotCap("electricity_use");//截图
+                    }
                 } else {
                     UiScrollable scroll1 = new UiScrollable(new UiSelector().className("android.widget.ScrollView"));
                     UiSelector message1 = new UiSelector().text("电池");//查找电池
                     scroll1.scrollIntoView(message1);
                     device.findObject(By.text("电池")).clickAndWait(Until.newWindow(), LONG_WAIT);//点击电池
                     UiObject2 electricityObj = device.findObject(By.text("上次充满后的电量使用情况"));
-                    Assert.assertNotNull("未找到上次充满后的电量使用情况标识", electricityObj);//检查是否显示上次充满后的电量使用情况
-                    screenshotCap("electricity_use");//截图
+                    UiObject2 noUsedInfoObj =  device.findObject(By.text("没有电池使用数据。"));
+                    if(noUsedInfoObj != null) {
+                        Assert.assertNotNull("未找到上次充满后的电量使用情况标识", electricityObj);//检查是否显示上次充满后的电量使用情况
+                        screenshotCap("electricity_use");//截图
+                    }
             }
         }
 
