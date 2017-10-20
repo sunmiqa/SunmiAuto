@@ -179,9 +179,14 @@ public class SunmiSettings_Part2 {
             CommonAction.clickByText("WPS PIN码输入");
             screenshotCap("WPSPINDialog2");
             UiObject2 PINInfoObj2 = UiobjectFinder.findById("com.android.settings:id/wps_dialog_txt");
-            String pinInfo2 = CommandUtils.match(PINInfoObj2.getText(), "PIN码", "。").get(0);
-            device.pressBack();
-            Assert.assertNotEquals("两次产生的PIN一样，可能存在问题", pinInfo1, pinInfo2);
+            String wpsDialogString = PINInfoObj2.getText();
+            if(wpsDialogString.startsWith("已连接到WLAN网络")){
+                Assert.assertTrue(true);
+            }else{
+                String pinInfo2 = CommandUtils.match(PINInfoObj2.getText(), "PIN码", "。").get(0);
+                device.pressBack();
+                Assert.assertNotEquals("两次产生的PIN一样，可能存在问题", pinInfo1, pinInfo2);
+            }
         }
     }
 

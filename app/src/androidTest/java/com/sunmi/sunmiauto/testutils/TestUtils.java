@@ -190,35 +190,21 @@ public class TestUtils {
 
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {
-        try{
+        try {
             device.pressRecentApps();
-            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT/5);
+            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")), LONG_WAIT / 5);
             UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
-            if(clearObj != null){
-                clearObj.click();
-            }else{
-                Log.e("myautotest","yiliaozhizhong");
-                device.pressHome();
-                device.pressHome();
-                device.pressRecentApps();
-                device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT/5);
-                device.findObject(By.res("com.android.systemui:id/loading")).click();
-            }
-//            device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT);
-//            sleep(SHORT_SLEEP);
-//            UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
-//            clearObj.clickAndWait(Until.newWindow(),LONG_WAIT);
+            clearObj.click();
         }catch (NullPointerException e){
             device.pressHome();
             device.pressHome();
             device.pressRecentApps();
             device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")),LONG_WAIT);
             sleep(SHORT_SLEEP);
-            Log.e("myautotest","zhejiubuheshile");
+            Log.e("myautotest","first fail,try second");
             UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
             clearObj.clickAndWait(Until.newWindow(),LONG_WAIT);
         }
-
     }
 
     //传递一个应用名称，找到该名称的应用，找到返回true，未找到返回false（为了适配不同版本桌面，增加了应用未打开前名称带●的判断）

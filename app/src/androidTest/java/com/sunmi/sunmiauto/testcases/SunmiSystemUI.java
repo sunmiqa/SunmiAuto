@@ -357,6 +357,9 @@ public class SunmiSystemUI {
     @Category({CategorySystemUI_P1.class})
     @Test
     public void test131CheckPressMenu() throws RemoteException {
+        device.pressHome();
+        device.pressRecentApps();
+        device.pressHome();
         device.pressRecentApps();
         screenshotCap("recentAppsPage");
         UiObject2 clearBtn = UiobjectFinder.findById("com.android.systemui:id/loading");
@@ -375,11 +378,16 @@ public class SunmiSystemUI {
         screenshotCap("settingsPage");
         device.pressHome();
         device.pressRecentApps();
+        device.pressHome();
+        device.pressRecentApps();
         sleep(SHORT_SLEEP);
         screenshotCap("recentAppsPage");
         UiObject2 blankRecentApps = device.findObject(By.text("您最近浏览过的屏幕会显示在此处"));
         Assert.assertNull("设置不显示在最近使用应用中", blankRecentApps);
         CommonAction.clickById("com.android.systemui:id/loading");
+        device.pressHome();
+        device.pressRecentApps();
+        device.pressHome();
         device.pressRecentApps();
         sleep(SHORT_SLEEP);
         screenshotCap("recentAppsPageAfterClear");
@@ -409,10 +417,11 @@ public class SunmiSystemUI {
             if (ACCharge || USBCharge || WirelessCharge) {
                 UiObject2 chargeInfoObj = UiobjectFinder.findById("com.android.systemui:id/keyguard_indication_text");
                 String chargeInfo = chargeInfoObj.getText();
+                boolean b = chargeInfo.equals("已充满") || chargeInfo.equals("充电完成");
                 if (batteryLevel == 100) {
                     CommonAction.swipeToTop();
                     screenshotCap("homePage");
-                    Assert.assertEquals("当前电量为100，充电描述信息不正确", "已充满", chargeInfo);
+                    Assert.assertTrue("当前电量为100，充电描述信息不正确",b);
                 } else if (batteryLevel < 100) {
                     CommonAction.swipeToTop();
                     screenshotCap("homePage");

@@ -13,6 +13,11 @@ import java.util.Properties;
  */
 
 public class TestConstants{
+    public final static String LOG_KEYWORD = "ZJTest => ";
+    public final static long WAIT = 3000L;
+    final static String SNAPSHOT_PATH = "/sdcard/snapshot";
+    final static String LOGCAT_LOG_PATH = "/sdcard/log";
+    public final static String LOG_LEVEL_DEBUG = "D";
     public static final int SHORT_SLEEP = 2000;//短暂休眠
     public static final int LONG_WAIT = 20000;//等待新窗口出现最长时间
     public static final int DOWNLOAD_WAIT = 300000;//等待应用市场应用下载完成最长时间
