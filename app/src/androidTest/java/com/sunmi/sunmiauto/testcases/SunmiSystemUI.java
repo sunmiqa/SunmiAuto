@@ -10,6 +10,7 @@ import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
 
+import com.sunmi.sunmiauto.testcategory.CategoryForTest;
 import com.sunmi.sunmiauto.testcategory.CategorySystemUI_P1;
 import com.sunmi.sunmiauto.testutils.CommandUtils;
 import com.sunmi.sunmiauto.testutils.CommonAction;
@@ -354,11 +355,12 @@ public class SunmiSystemUI {
     1.按下最近任务键
     2.检查弹出最近任务列表
      */
-    @Category({CategorySystemUI_P1.class})
+    @Category({CategorySystemUI_P1.class, CategoryForTest.class})
     @Test
     public void test131CheckPressMenu() throws RemoteException {
         device.pressHome();
         device.pressRecentApps();
+        sleep(SHORT_SLEEP);
         device.pressHome();
         device.pressRecentApps();
         screenshotCap("recentAppsPage");
@@ -371,13 +373,14 @@ public class SunmiSystemUI {
     1.按下最近任务键
     2.点击批量清理按钮，任务被批量清理
      */
-    @Category({CategorySystemUI_P1.class})
+    @Category({CategorySystemUI_P1.class, CategoryForTest.class})
     @Test
     public void test132CheckClearButton() throws RemoteException {
         TestUtils.findAppAndOpenByText("设置");
         screenshotCap("settingsPage");
         device.pressHome();
         device.pressRecentApps();
+        sleep(SHORT_SLEEP);
         device.pressHome();
         device.pressRecentApps();
         sleep(SHORT_SLEEP);
@@ -387,6 +390,7 @@ public class SunmiSystemUI {
         CommonAction.clickById("com.android.systemui:id/loading");
         device.pressHome();
         device.pressRecentApps();
+        sleep(SHORT_SLEEP);
         device.pressHome();
         device.pressRecentApps();
         sleep(SHORT_SLEEP);

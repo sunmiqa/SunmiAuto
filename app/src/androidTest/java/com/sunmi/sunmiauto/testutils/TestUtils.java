@@ -191,8 +191,10 @@ public class TestUtils {
     //清除最近使用程序
     public static void clearAllRecentApps() throws RemoteException {
         try {
+            device.pressHome();
             device.pressRecentApps();
             device.wait(Until.hasObject(By.res("com.android.systemui:id/loading")), LONG_WAIT / 5);
+            sleep(1000);
             UiObject2 clearObj = device.findObject(By.res("com.android.systemui:id/loading"));
             clearObj.click();
         }catch (NullPointerException e){

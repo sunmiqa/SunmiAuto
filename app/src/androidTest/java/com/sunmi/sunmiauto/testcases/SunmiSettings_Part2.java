@@ -10,6 +10,7 @@ import android.support.test.uiautomator.UiSelector;
 import android.support.test.uiautomator.Until;
 import android.util.Log;
 
+import com.sunmi.sunmiauto.testcategory.CategoryForTest;
 import com.sunmi.sunmiauto.testcategory.CategorySettings_Part2_P1;
 import com.sunmi.sunmiauto.testcategory.CategorySettings_Part2_V1;
 import com.sunmi.sunmiauto.testutils.CommandUtils;
@@ -631,7 +632,7 @@ public class SunmiSettings_Part2 {
     断开VPN连接
     已经包含在之前的增删改VPN配置文件中，提取出来
      */
-    @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
+    @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class, CategoryForTest.class})
     @Test
     public void test156DisconnectVPN() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
@@ -719,7 +720,7 @@ public class SunmiSettings_Part2 {
     1.进入到移动网络界面
     2.检查默认状态
      */
-    @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
+    @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class, CategoryForTest.class})
     @Test
     public void test157CheckMobileDataRoamStatus() {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
@@ -1358,7 +1359,7 @@ public class SunmiSettings_Part2 {
     2.查看屏幕固定状态
     3.点击进入到屏幕固定界面"
      */
-    @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
+    @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class, CategoryForTest.class})
     @Test
     public void test184CheckScreenPinned() throws RemoteException {
         if ("P1".equals(Build.MODEL) || "V1".equals(Build.MODEL)) {
@@ -1374,6 +1375,7 @@ public class SunmiSettings_Part2 {
             screenshotCap("screenPinnedOpenedPage");
             device.pressHome();
             device.pressRecentApps();
+            sleep(SHORT_SLEEP);
             device.pressHome();
             device.pressRecentApps();
             UiObject2 pinObj = UiobjectFinder.findById("com.android.systemui:id/lock_to_app_fab");
