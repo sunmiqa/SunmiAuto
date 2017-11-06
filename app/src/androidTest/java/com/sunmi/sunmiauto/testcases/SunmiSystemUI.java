@@ -18,8 +18,10 @@ import com.sunmi.sunmiauto.testutils.TestUtils;
 import com.sunmi.sunmiauto.testutils.UiobjectFinder;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -27,6 +29,8 @@ import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.util.Calendar;
+
+import javax.mail.MessagingException;
 
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
@@ -53,6 +57,18 @@ public class SunmiSystemUI {
         device.pressHome();
         device.pressHome();
         device.pressHome();
+    }
+
+    @BeforeClass
+    //该测试类开始前执行操作
+    public static void initLiza(){
+        device.registerWatcher("allwatchers",TestUtils.allWatchers);
+    }
+
+    @AfterClass
+    //该测试类结束后执行操作
+    public static void clearDown() throws MessagingException, RemoteException {
+        device.removeWatcher("allwatchers");
     }
 
     /*

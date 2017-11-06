@@ -160,7 +160,7 @@ public class CommonAction {
 
 
     public static boolean longClick(UiObject2 uiObject2){
-        boolean b = longClick(uiObject2,2000);
+        boolean b = longClick(uiObject2,3000);
         return b;
     }
 
@@ -315,5 +315,17 @@ public class CommonAction {
 
     public static void dragToCenter(UiObject2 uiObject2){
         uiObject2.drag(new Point(deviceWidth/2,deviceHeight/2),200);
+    }
+
+    public static void clearAccidentEvents(){
+        //解决SIM卡弹出对话框问题
+        if("com.android.stk".equals(device.getCurrentPackageName())){
+            clickById("com.android.stk:id/button_ok");
+        }
+        //解决应用崩溃弹框问题
+        if("android".equals(device.getCurrentPackageName()) && UiobjectFinder.findById("android:id/message")!= null){
+            clickById("android:id/button1");
+        }
+
     }
 }

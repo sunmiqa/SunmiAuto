@@ -16,6 +16,7 @@ import android.support.test.uiautomator.Until;
 import android.telephony.CarrierConfigManager;
 import android.util.Log;
 
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -63,13 +64,18 @@ public class SunmiSettings {
 
     @BeforeClass
     public static void beforeTestClass() {
-
+        device.registerWatcher("allwatchers",TestUtils.allWatchers);
     }
 
     @Before
     public void setup() throws IOException, RemoteException {
         TestUtils.clearAllRecentApps();
         TestUtils.findAppAndOpenByText("设置");
+    }
+
+    @AfterClass
+    public static void afterTestClass(){
+        device.removeWatcher("allwatchers");
     }
 
 //    @Test
@@ -1937,8 +1943,11 @@ public class SunmiSettings {
             dates.click();
             sleep(SHORT_SLEEP);
             UiObject2 guanbishqu1 = device.findObject(By.text("自动确定时区"));
-            //关闭自动确定时区
-            guanbishqu1.click();
+            boolean autoSwitch = guanbishqu1.getParent().getParent().findObject(By.res("android:id/switchWidget")).isChecked();
+            if(autoSwitch == true){
+                //关闭自动确定时区
+                guanbishqu1.click();
+            }
             sleep(SHORT_SLEEP);
             UiObject2 xiuanzeshqu = device.findObject(By.text("选择时区"));
             //点击修改时区
@@ -1951,7 +1960,11 @@ public class SunmiSettings {
             UiObject2 xianggangshjian = device.findObject(By.text("GMT+08:00 香港标准时间"));
             //找到使用网络提供时间
             Assert.assertNotNull("无法手动选择时区", xianggangshjian);
-            device.findObject(By.text("自动确定时区")).click();
+            UiObject2 guanbishqu2 = device.findObject(By.text("自动确定时区"));
+            boolean autoSwitch2 = guanbishqu2.getParent().getParent().findObject(By.res("android:id/switchWidget")).isChecked();
+            if(autoSwitch != autoSwitch2){
+                device.findObject(By.text("自动确定时区")).click();
+            }
         }
     }
 

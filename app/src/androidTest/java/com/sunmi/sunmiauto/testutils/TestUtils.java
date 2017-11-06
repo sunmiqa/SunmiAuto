@@ -50,30 +50,58 @@ public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
     public static Context context = InstrumentationRegistry.getContext();
+    //注册监听器
+    public static UiWatcher allWatchers = new UiWatcher(){
+        @Override
+        public boolean checkForCondition() {
+            boolean flag = false;
+            Log.v("myautotest","enterWatch");
+            //解决灭屏问题
+            try {
+                if(device.isScreenOn() != true){
+                    flag = true;
+                    device.wakeUp();
+                    if(!"com.woyou.launcher".equals(device.getCurrentPackageName())){
+                        Log.e(LOG_V,"notLauncher");
+                        CommonAction.swipeToTop();
+                        sleep(1000);
+                        if(device.findObject(By.res("com.android.systemui:id/lockPatternView")) != null){
+                            Log.e(LOG_V,"lockpattern");
+                            drawLPattern(device.findObject(By.res("com.android.systemui:id/lockPatternView")));
+                        }else if(device.findObject(By.res("com.android.systemui:id/pinEntry")) != null){
+                            Log.e(LOG_V,"lockpin");
+                            device.findObject(By.res("com.android.systemui:id/pinEntry")).setText("1234");
+                            device.pressEnter();
+                        }else if(device.findObject(By.res("com.android.systemui:id/passwordEntry")) != null){
+                            Log.e(LOG_V,"lockpassword");
+                            device.findObject(By.res("com.android.systemui:id/passwordEntry")).setText("sunmi");
+                            device.pressEnter();
+                        }
+                    }
+
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+            //解决SIM卡弹出对话框问题
+            if("com.android.stk".equals(device.getCurrentPackageName())){
+                flag = true;
+                CommonAction.clickById("com.android.stk:id/button_ok");
+            }
+            //解决应用崩溃弹框问题
+            if("android".equals(device.getCurrentPackageName()) && UiobjectFinder.findById("android:id/message")!= null){
+                flag = true;
+                CommonAction.clickById("android:id/button1");
+            }
+            return flag;
+        }
+    };
 
     public static String getprop(String args) throws IOException {
         InputStream is = new FileInputStream(new File("data/local/tmp/info.properties"));
         Properties properties = new Properties();
         properties.load(is);
         return properties.getProperty(args);
-    }
-
-    //注册监听器
-    public static void uiwatchSuite(){
-        device.registerWatcher("crash", new UiWatcher() {
-            @Override
-            public boolean checkForCondition() {
-                UiObject2 crashObj = device.findObject(By.textEndsWith("已停止运行。"));
-                Log.v("myautotest","enterWatch");
-                if(crashObj != null){
-                    sleep(SHORT_SLEEP);
-                    device.findObject(By.text("确定")).clickAndWait(Until.newWindow(),LONG_WAIT);
-                    return true;
-                }
-                return false;
-            }
-        });
-
     }
 
     //初始化存储截图的文件夹
@@ -431,20 +459,6 @@ public class TestUtils {
         }
     }
 
-    //判断数据网络是否打开
-    public boolean isMobileConnected(Context context) {
-        if (context != null) {
-            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
-                    .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo mMobileNetworkInfo = mConnectivityManager
-                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-            if (mMobileNetworkInfo != null) {
-                return mMobileNetworkInfo.isAvailable();
-            }
-        }
-        return false;
-    }
-
     //判断WIFI网络开关是否打开
     public static boolean isWIFIOpened(){
         WifiManager wifiManager = (WifiManager) context.getSystemService(context.WIFI_SERVICE);
@@ -551,6 +565,20 @@ public class TestUtils {
             result = "InterruptedException";
         } finally {
             Log.d("----result---", "result = " + result);
+        }
+        return false;
+    }
+
+    //判断数据网络是否打开
+    public boolean isMobileConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mMobileNetworkInfo = mConnectivityManager
+                    .getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+            if (mMobileNetworkInfo != null) {
+                return mMobileNetworkInfo.isAvailable();
+            }
         }
         return false;
     }

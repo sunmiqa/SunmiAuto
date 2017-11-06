@@ -31,6 +31,7 @@ import com.sunmi.sunmiauto.testutils.TestUtils;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_ACCOUNT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.USERCENTER_PWD;
+import static com.sunmi.sunmiauto.testutils.TestUtils.allWatchers;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestConstants.DOWNLOAD_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
@@ -61,12 +62,13 @@ public class SunmiAppStore_v3_3_15 {
     @BeforeClass
     //该测试类开始前执行操作
     public static void initLiza(){
+        device.registerWatcher("allwatchers",TestUtils.allWatchers);
     }
 
     @AfterClass
     //该测试类结束后执行操作
     public static void clearDown() throws MessagingException, RemoteException {
-
+        device.removeWatcher("allwatchers");
     }
 
 

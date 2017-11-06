@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOGCAT_LOG_PATH;
+import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SNAPSHOT_PATH;
 import static com.sunmi.sunmiauto.testutils.TestConstants.WAIT;
 
@@ -41,6 +42,7 @@ public final class ShellUtils {
 
     public static CommandResult execCommand(
             String command, boolean isRoot, boolean isReturnResultMsg) {
+        Log.e(LOG_V,"exec1");
         return execCommand(new String[]{command}, isRoot, isReturnResultMsg);
     }
 
@@ -53,6 +55,7 @@ public final class ShellUtils {
 
     public static CommandResult execCommand(
             String[] commands, boolean isRoot, boolean isReturnResultMsg) {
+        Log.e(LOG_V,"exec2");
         final int DEFAULT_ERROR_CODE = -1;
         final CommandResult defaultCommandResult =
                 new CommandResult(DEFAULT_ERROR_CODE, null, null);
@@ -71,8 +74,11 @@ public final class ShellUtils {
         try {
             process = Runtime.getRuntime().exec(isRoot ? COMMAND_SU : COMMAND_SH);
             os = new DataOutputStream(process.getOutputStream());
+            Log.e(LOG_V,"process OS...");
             for (String command : commands) {
+                Log.e(LOG_V,"commands ...");
                 if (StringUtils.isEmpty(command)) {
+                    Log.e(LOG_V,"isempty ...");
                     continue;
                 }
                 os.write(command.getBytes());
@@ -100,6 +106,7 @@ public final class ShellUtils {
                 }
             }
         } catch (Exception e) {
+            Log.e(LOG_V,"exec exception...");
             e.printStackTrace();
             return defaultCommandResult;
         } finally {
@@ -118,10 +125,11 @@ public final class ShellUtils {
             }
 
             if (process != null) {
+                Log.e(LOG_V,"exec4");
                 process.destroy();
             }
         }
-
+        Log.e(LOG_V,"exec3");
         return new CommandResult(result,
                 (successMsg != null ? successMsg.toString() : null),
                 (errorMsg != null ? errorMsg.toString() : null));
@@ -178,24 +186,30 @@ public final class ShellUtils {
                 }
                 String cmdLogcat = String.format("logcat -c && logcat -v time *:%s > %s"
                         , logLevel, getLogcatFilePath());
+                Log.e(LOG_V,"before exec run...");
                 ShellUtils.execCommand(cmdLogcat, false, false);
+                Log.e(LOG_V,"after exec run...");
             }
         });
         t.start();
+        Log.e(LOG_V,"after start run...");
         return t;
     }
 
     public static void stopLogcatLog(Thread t) {
+        Log.e(LOG_V,"stop start...");
         String logcatPid;
         try {
             logcatPid = getLogcatProcessInfo().split("\\s+")[1];
         } catch (ArrayIndexOutOfBoundsException e) {
+            Log.e(LOG_V,"outofBounds...");
             e.printStackTrace();
             return;
         }
         killProcessById(logcatPid);
-
+        Log.e(LOG_V,"stopLogcat1...");
         if (t != null && t.isAlive()) {
+            Log.e(LOG_V,"stopLogcat2...");
             try {
                 t.join(WAIT);
             } catch (InterruptedException e) {
@@ -206,7 +220,7 @@ public final class ShellUtils {
 
     private static String getLogcatProcessInfo() {
         String emptyInfo = "null";
-        String cmdFind = "ps | grep logcat | grep system";
+        String cmdFind = "ps | grep logcat";
 
         ShellUtils.CommandResult result = ShellUtils.execCommand(cmdFind, false, true);
         if (result.mReturnCode != 0) {
@@ -225,9 +239,10 @@ public final class ShellUtils {
         if (!StringUtils.isNumeric(pid)) {
             return;
         }
-
+        Log.e(LOG_V,"killprocess");
         String cmdKill = String.format("kill %s", pid);
         ShellUtils.CommandResult result = ShellUtils.execCommand(cmdKill, false, false);
+        Log.e(LOG_V,"afterkill...");
         if (result.mReturnCode != 0) {
             Log.e(TAG, String.format("Failed to kill process (%d)", result.mReturnCode));
         }
