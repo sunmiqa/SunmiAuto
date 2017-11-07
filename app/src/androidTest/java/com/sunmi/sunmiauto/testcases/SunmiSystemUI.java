@@ -343,9 +343,11 @@ public class SunmiSystemUI {
         device.openNotification();
         sleep(SHORT_SLEEP);
         screenshotCap("quickSettingsPage");
+        device.runWatchers();
         Assert.assertEquals("没有进入到快捷设置面板", "com.android.systemui", device.getCurrentPackageName());
         device.pressBack();
         screenshotCap("homePage");
+        device.runWatchers();
         Assert.assertEquals("返回键没有效果", "com.woyou.launcher", device.getCurrentPackageName());
     }
 

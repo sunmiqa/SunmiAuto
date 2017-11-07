@@ -45,6 +45,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.V1_KERNEL_CODE;
 import static com.sunmi.sunmiauto.testutils.TestConstants.V1_PATCH_LEVEL;
 import static com.sunmi.sunmiauto.testutils.TestConstants.V1_VERSION_CODE;
 import static com.sunmi.sunmiauto.testutils.TestConstants.V1_VERSION_NAME;
+import static com.sunmi.sunmiauto.testutils.TestUtils.changeLockStyleToSwipe;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.drawLPattern;
 import static com.sunmi.sunmiauto.testutils.TestUtils.hasSIMCard;
@@ -521,8 +522,10 @@ public class SunmiSettings_Part2 {
      */
     @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
     @Test
-    public void test154VPNAlwaysON() {
+    public void test154VPNAlwaysON() throws RemoteException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
+            CommonAction.scrollToText("com.android.settings:id/dashboard","更多");
             CommonAction.clickByText("更多");
             screenshotCap("morePage");
             CommonAction.clickByText("VPN");
@@ -564,8 +567,10 @@ public class SunmiSettings_Part2 {
 //    @Ignore
     @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
     @Test
-    public void test155LoginVPN() throws UiObjectNotFoundException {
+    public void test155LoginVPN() throws UiObjectNotFoundException, RemoteException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
+            CommonAction.scrollToText("com.android.settings:id/dashboard","更多");
             CommonAction.clickByText("更多");
             screenshotCap("morePage");
             CommonAction.clickByText("VPN");
@@ -650,8 +655,10 @@ public class SunmiSettings_Part2 {
      */
     @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class, CategoryForTest.class})
     @Test
-    public void test156DisconnectVPN() {
+    public void test156DisconnectVPN() throws RemoteException {
         if ("V1".equals(Build.MODEL) || "P1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
+            CommonAction.scrollToText("com.android.settings:id/dashboard","更多");
             CommonAction.clickByText("更多");
             screenshotCap("morePage");
             CommonAction.clickByText("VPN");
@@ -1337,8 +1344,9 @@ public class SunmiSettings_Part2 {
      */
     @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
     @Test
-    public void test182ClearCredential() {
+    public void test182ClearCredential() throws RemoteException {
         if ("P1".equals(Build.MODEL) || "V1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
             CommonAction.scrollToText("com.android.settings:id/dashboard", "安全");
             CommonAction.clickByText("安全");
             screenshotCap("securityPage");
@@ -1356,8 +1364,9 @@ public class SunmiSettings_Part2 {
      */
     @Category({CategorySettings_Part2_P1.class, CategorySettings_Part2_V1.class})
     @Test
-    public void test183EnterTrustedAgentInterface() {
+    public void test183EnterTrustedAgentInterface() throws RemoteException {
         if ("P1".equals(Build.MODEL) || "V1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
             CommonAction.scrollToText("com.android.settings:id/dashboard", "安全");
             CommonAction.clickByText("安全");
             screenshotCap("securityPage");
@@ -1744,8 +1753,9 @@ public class SunmiSettings_Part2 {
      */
     @Category({CategorySettings_Part2_V1.class})
     @Test
-    public void test202FactoryReset() {
+    public void test202FactoryReset() throws RemoteException {
         if ("V1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
             CommonAction.scrollToText("com.android.settings:id/dashboard", "其他设置");
             CommonAction.clickByText("其他设置");
             screenshotCap("oterSettingsPage");

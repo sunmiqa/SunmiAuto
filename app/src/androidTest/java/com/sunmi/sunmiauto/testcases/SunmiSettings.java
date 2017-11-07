@@ -42,6 +42,7 @@ import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.P1_BT_NAME;
 import static com.sunmi.sunmiauto.testutils.TestConstants.P1_SETTINGSLIST;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
+import static com.sunmi.sunmiauto.testutils.TestUtils.changeLockStyleToSwipe;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
 import static com.sunmi.sunmiauto.testutils.TestUtils.drawLPattern;
 import static com.sunmi.sunmiauto.testutils.TestUtils.drawPattern;
@@ -1360,7 +1361,7 @@ public class SunmiSettings {
                 sleep(SHORT_SLEEP);
             } else if ("V1".equals(Build.MODEL) || "M1".equals(Build.MODEL)) {
                 UiObject2 setting = device.findObject(By.text("SUNMI"));
-                device.swipe(setting.getVisibleBounds().centerX(), setting.getVisibleBounds().centerY(), setting.getVisibleBounds().centerX(), setting.getVisibleBounds().centerY(), 300);
+                CommonAction.longClick(setting);
                 sleep(SHORT_SLEEP);
                 device.findObject(By.text("删除配置文件")).clickAndWait(Until.newWindow(), LONG_WAIT);
                 sleep(SHORT_SLEEP);
@@ -1564,8 +1565,9 @@ public class SunmiSettings {
     //【选项】屏幕锁定方式
     @Test
     @Category(CategorySettingsTests.class)
-    public void test037CheckLockStylePass() throws UiObjectNotFoundException {
+    public void test037CheckLockStylePass() throws UiObjectNotFoundException, RemoteException {
         if ("P1".equals(Build.MODEL) || "V1".equals(Build.MODEL) || "M1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
             UiScrollable SettingScroll = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
             SettingScroll.scrollTextIntoView("安全");
             //找到安全
@@ -1716,8 +1718,9 @@ public class SunmiSettings {
     //【开关】电源按钮即时锁定
     @Test
     @Category(CategorySettingsTests.class)
-    public void test041CheckPowerKeyLockImmediateStatus() throws UiObjectNotFoundException {
+    public void test041CheckPowerKeyLockImmediateStatus() throws UiObjectNotFoundException, RemoteException {
         if ("P1".equals(Build.MODEL) || "V1".equals(Build.MODEL) || "M1".equals(Build.MODEL)) {
+            changeLockStyleToSwipe();
             UiScrollable anquan = new UiScrollable(new UiSelector().resourceId("com.android.settings:id/dashboard"));
             anquan.scrollTextIntoView("安全");
             //找到安全

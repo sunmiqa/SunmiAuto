@@ -1,15 +1,19 @@
 package com.sunmi.sunmiauto.testutils;
 
 import android.app.Instrumentation;
+import android.app.admin.DevicePolicyManager;
+import android.app.admin.SecurityLog;
 import android.content.Context;
 import android.graphics.Point;
 import android.graphics.Rect;
+import android.media.MediaCodec;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
 import android.os.RemoteException;
+import android.provider.Settings;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.uiautomator.By;
 import android.support.test.uiautomator.UiDevice;
@@ -21,6 +25,7 @@ import android.support.test.uiautomator.UiWatcher;
 import android.support.test.uiautomator.Until;
 import android.telephony.TelephonyManager;
 import android.util.Log;
+import android.util.Patterns;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -33,11 +38,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.List;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
+import static com.sunmi.sunmiauto.testutils.CommonAction.clickByText;
 import static com.sunmi.sunmiauto.testutils.CommonAction.deviceHeight;
 import static com.sunmi.sunmiauto.testutils.CommonAction.deviceWidth;
+import static com.sunmi.sunmiauto.testutils.CommonAction.longClick;
+import static com.sunmi.sunmiauto.testutils.CommonAction.scrollToText;
+import static com.sunmi.sunmiauto.testutils.CommonAction.setText;
+import static com.sunmi.sunmiauto.testutils.CommonAction.uiObject2;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
@@ -579,6 +590,62 @@ public class TestUtils {
             if (mMobileNetworkInfo != null) {
                 return mMobileNetworkInfo.isAvailable();
             }
+        }
+        return false;
+    }
+
+    public static boolean changeLockStyleToSwipe() throws RemoteException {
+        clearAllRecentApps();
+        findAppAndOpenByText("设置");
+        scrollToText("com.android.settings:id/dashboard","更多");
+        clickByText("更多");
+        clickByText("VPN");
+        if(UiobjectFinder.findByText("确定") == null){
+            List<UiObject2> vpnList = UiobjectFinder.findById("android:id/list").getChildren();
+            if(vpnList.size() > 0){
+                for(int i = 0;i < vpnList.size();i++){
+                    longClick(UiobjectFinder.findById("android:id/list").getChildren().get(0));
+                    clickByText("删除配置文件");
+                }
+            }
+        }
+        device.pressBack();
+        device.pressBack();
+        scrollToText("com.android.settings:id/dashboard","安全");
+        clickByText("安全");
+        String lockStyle = UiobjectFinder.findByText("屏幕锁定方式").getParent().findObject(By.res("android:id/summary")).getText();
+        clickByText("屏幕锁定方式");
+        switch (lockStyle){
+            case "无":
+                clickByText("滑动");
+                break;
+            case "滑动":
+                device.pressBack();
+                break;
+            case "图案":
+                drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
+                clickByText("滑动");
+                clickByText("确定");
+                break;
+            case "PIN码":
+                setText("1234");
+                device.pressBack();
+                clickByText("继续");
+                clickByText("滑动");
+                clickByText("确定");
+                break;
+            case "密码":
+                setText("sunmi");
+                device.pressBack();
+                clickByText("继续");
+                clickByText("滑动");
+                clickByText("确定");
+                break;
+        }
+        lockStyle = UiobjectFinder.findByText("屏幕锁定方式").getParent().findObject(By.res("android:id/summary")).getText();
+        device.pressBack();
+        if("滑动".equals(lockStyle)){
+            return true;
         }
         return false;
     }
