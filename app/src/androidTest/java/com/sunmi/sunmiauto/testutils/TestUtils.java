@@ -61,7 +61,7 @@ public class TestUtils {
     public static Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     public static UiDevice device = UiDevice.getInstance(instrumentation);
     public static Context context = InstrumentationRegistry.getContext();
-    //注册监听器
+    //实例监听器
     public static UiWatcher allWatchers = new UiWatcher(){
         @Override
         public boolean checkForCondition() {
@@ -101,9 +101,11 @@ public class TestUtils {
             }
             //解决应用崩溃弹框问题
             if("android".equals(device.getCurrentPackageName()) && UiobjectFinder.findById("android:id/message")!= null){
+                TestUtils.screenshotCap("crashPic");
                 flag = true;
                 CommonAction.clickById("android:id/button1");
             }
+            //后续可能的anr以及其他问题，待收集添加
             return flag;
         }
     };

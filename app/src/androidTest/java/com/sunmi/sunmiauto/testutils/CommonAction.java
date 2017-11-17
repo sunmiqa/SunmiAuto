@@ -277,6 +277,10 @@ public class CommonAction {
         new Thread(multiThread2,"pro2").start();
     }
 
+    public static void dragToCenter(UiObject2 uiObject2){
+        uiObject2.drag(new Point(deviceWidth/2,deviceHeight/2),200);
+    }
+
     // 长按物理键
     public  static boolean longPressKeyCode(int keyCode,int PressTime) throws InvocationTargetException {
         try {
@@ -313,7 +317,30 @@ public class CommonAction {
         return false;
     }
 
-    public static void dragToCenter(UiObject2 uiObject2){
-        uiObject2.drag(new Point(deviceWidth/2,deviceHeight/2),200);
+    //拖动一个对象到指定坐标
+    public static void dragObjectToXY(UiObject2 uiObject2,int x,int y){
+        device.drag(uiObject2.getVisibleBounds().centerX(),uiObject2.getVisibleBounds().centerY(),x,y,20);
+    }
+
+    //拖动一个对象到另一个对象上
+    public static void dragObjectToObject(UiObject2 uiObject,UiObject2 uiObject2){
+        device.drag(uiObject.getVisibleBounds().centerX(),uiObject.getVisibleBounds().centerY(),
+                uiObject2.getVisibleBounds().centerX(),uiObject2.getVisibleBounds().centerY(),20);
+    }
+
+    //从一个对象位置滑动到指定坐标（如果对象距离目标坐标点非常近，则滑动可能产生长按的效果，取决于传递参数的步数，此处默认20步，一步需要5ms时间）
+    public static void swipObjectToXY(UiObject2 uiObject,int x,int y){
+        device.swipe(uiObject.getVisibleBounds().centerX(),uiObject.getVisibleBounds().centerY(),x,y,20);
+    }
+
+    //从一个对象位置滑动到另一个对象位置
+    public static void swipObjectToObject(UiObject2 uiObject,UiObject2 uiObject2){
+        device.swipe(uiObject.getVisibleBounds().centerX(),uiObject.getVisibleBounds().centerY(),
+                uiObject2.getVisibleBounds().centerX(),uiObject2.getVisibleBounds().centerY(),20);
+    }
+
+    //从一个位置滑动到另一个位置
+    public static void swipeXYToXY(int startX,int startY,int endX,int endY){
+        device.swipe(startX,startY,endX,endY,20);
     }
 }

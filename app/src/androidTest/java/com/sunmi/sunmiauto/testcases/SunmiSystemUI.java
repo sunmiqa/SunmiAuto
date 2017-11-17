@@ -450,6 +450,9 @@ public class SunmiSystemUI {
                     Log.v("myautotest", chargeInfo.substring(0, 4));
                     Assert.assertEquals("当前电量低于100，充电描述信息不正确", "正在充电", chargeInfo.substring(0, 4));
                 }
+            } else if("V1".equals(Build.MODEL) && batteryLevel == 100){
+                UiObject2 chargeInfoObj = UiobjectFinder.findById("com.android.systemui:id/keyguard_indication_text");
+                Assert.assertNull("V1锁屏充电状态有问题",chargeInfoObj);
             } else {
                 CommonAction.swipeToTop();
                 screenshotCap("homePage");

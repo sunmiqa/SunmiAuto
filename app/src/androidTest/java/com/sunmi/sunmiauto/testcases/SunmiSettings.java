@@ -1945,12 +1945,14 @@ public class SunmiSettings {
             //点击日期和时间
             dates.click();
             sleep(SHORT_SLEEP);
+            screenshotCap("date_time");
             UiObject2 guanbishqu1 = device.findObject(By.text("自动确定时区"));
             boolean autoSwitch = guanbishqu1.getParent().getParent().findObject(By.res("android:id/switchWidget")).isChecked();
             if(autoSwitch == true){
                 //关闭自动确定时区
                 guanbishqu1.click();
             }
+            screenshotCap("close_auto_zone");
             sleep(SHORT_SLEEP);
             UiObject2 xiuanzeshqu = device.findObject(By.text("选择时区"));
             //点击修改时区
@@ -1968,6 +1970,7 @@ public class SunmiSettings {
             if(autoSwitch != autoSwitch2){
                 device.findObject(By.text("自动确定时区")).click();
             }
+            screenshotCap("open_auto_zone");
         }
     }
 
