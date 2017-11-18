@@ -580,9 +580,9 @@ public class SunmiSettings_Part2 {
             }
             CommonAction.clickByText("确定");
             CommonAction.clickByText("图案");
-            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
             CommonAction.clickByText("继续");
-            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
             CommonAction.clickByText("确认");
             CommonAction.clickByText("完成");
             if ("V1".equals(Build.MODEL)) {
@@ -636,7 +636,7 @@ public class SunmiSettings_Part2 {
             CommonAction.scrollToText("com.android.settings:id/dashboard", "安全");
             CommonAction.clickByText("安全");
             CommonAction.clickByText("屏幕锁定方式");
-            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
             CommonAction.clickByText("滑动");
             if ("V1".equals(Build.MODEL)) {
                 CommonAction.clickByText("确定");
@@ -668,9 +668,9 @@ public class SunmiSettings_Part2 {
             }
             CommonAction.clickByText("确定");
             CommonAction.clickByText("图案");
-            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
             CommonAction.clickByText("继续");
-            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
             CommonAction.clickByText("确认");
             CommonAction.clickByText("完成");
             if ("V1".equals(Build.MODEL)) {
@@ -725,7 +725,7 @@ public class SunmiSettings_Part2 {
             CommonAction.scrollToText("com.android.settings:id/dashboard", "安全");
             CommonAction.clickByText("安全");
             CommonAction.clickByText("屏幕锁定方式");
-            drawLPattern(device.findObject(By.res("com.android.settings:id/lockPattern")));
+            drawLPattern(UiobjectFinder.findById("com.android.settings:id/lockPattern"));
             CommonAction.clickByText("滑动");
             if ("V1".equals(Build.MODEL)) {
                 CommonAction.clickByText("确定");
