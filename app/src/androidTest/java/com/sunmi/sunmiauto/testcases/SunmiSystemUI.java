@@ -32,10 +32,12 @@ import java.util.Calendar;
 
 import javax.mail.MessagingException;
 
+import static com.sunmi.sunmiauto.testutils.TestConstants.LOG_V;
 import static com.sunmi.sunmiauto.testutils.TestConstants.LONG_WAIT;
 import static com.sunmi.sunmiauto.testutils.TestConstants.SHORT_SLEEP;
 import static com.sunmi.sunmiauto.testutils.TestUtils.dayToChineseDay;
 import static com.sunmi.sunmiauto.testutils.TestUtils.device;
+import static com.sunmi.sunmiauto.testutils.TestUtils.drawLPattern;
 import static com.sunmi.sunmiauto.testutils.TestUtils.hasSIMCard;
 import static com.sunmi.sunmiauto.testutils.TestUtils.screenshotCap;
 import static com.sunmi.sunmiauto.testutils.TestUtils.sleep;
@@ -62,6 +64,31 @@ public class SunmiSystemUI {
     @BeforeClass
     //该测试类开始前执行操作
     public static void initLiza(){
+        //解决灭屏问题
+        try {
+            if(device.isScreenOn() != true){
+                device.wakeUp();
+                if(!"com.woyou.launcher".equals(device.getCurrentPackageName())){
+                    Log.e(LOG_V,"notLauncher");
+                    CommonAction.swipeToTop();
+                    sleep(1000);
+                    if(device.findObject(By.res("com.android.systemui:id/lockPatternView")) != null){
+                        Log.e(LOG_V,"lockpattern");
+                        drawLPattern(device.findObject(By.res("com.android.systemui:id/lockPatternView")));
+                    }else if(device.findObject(By.res("com.android.systemui:id/pinEntry")) != null){
+                        Log.e(LOG_V,"lockpin");
+                        device.findObject(By.res("com.android.systemui:id/pinEntry")).setText("1234");
+                        device.pressEnter();
+                    }else if(device.findObject(By.res("com.android.systemui:id/passwordEntry")) != null){
+                        Log.e(LOG_V,"lockpassword");
+                        device.findObject(By.res("com.android.systemui:id/passwordEntry")).setText("sunmi");
+                        device.pressEnter();
+                    }
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
         device.registerWatcher("allwatchers",TestUtils.allWatchers);
     }
 

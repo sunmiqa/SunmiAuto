@@ -8,6 +8,7 @@ import android.support.test.uiautomator.UiObject2;
 import android.support.test.uiautomator.UiObjectNotFoundException;
 import android.support.test.uiautomator.UiScrollable;
 import android.support.test.uiautomator.UiSelector;
+import android.support.test.uiautomator.Until;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyCharacterMap;
@@ -342,5 +343,28 @@ public class CommonAction {
     //从一个位置滑动到另一个位置
     public static void swipeXYToXY(int startX,int startY,int endX,int endY){
         device.swipe(startX,startY,endX,endY,20);
+    }
+
+    //点击一个对象
+    public static void click(UiObject2 uiObject2){
+        uiObject2.click();
+    }
+
+    //等待某个对象出现
+    public static void waitForExist(BySelector by){
+        waitForExist(by,10000);
+    }
+
+    public static void waitForExist(BySelector by,int mills){
+        device.wait(Until.findObject(by),mills);
+    }
+
+    //等待某个对象消失
+    public static void waitForGone(BySelector by){
+        waitForGone(by,10000);
+    }
+
+    public static void waitForGone(BySelector by,int mills){
+        device.wait(Until.gone(by),mills);
     }
 }
